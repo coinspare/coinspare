@@ -1,169 +1,117 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin Panel • CoinSpare</title>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Admin • CoinSpare</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#1e3a8a',
-            accent: '#2563eb',
-            light: '#f8fafc'
-          }
-        }
-      }
-    }
-  </script>
+  <style>body{font-family:Inter,system-ui}</style>
 </head>
-<body class="bg-light min-h-screen flex flex-col">
-
-<!-- Header -->
-<header class="border-b bg-white sticky top-0 z-50">
-  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-2">
-      <div class="w-9 h-9 rounded-2xl bg-accent/10 flex items-center justify-center text-accent font-black">C</div>
-      <span class="font-extrabold text-xl text-primary">CoinSpare</span>
-    </a>
-    <div class="flex items-center gap-4">
-      <span id="adminName" class="text-sm text-slate-600"></span>
-      <button onclick="logout()" class="text-sm px-3 py-1 bg-accent text-white rounded-xl hover:bg-blue-700">Logout</button>
+<body class="bg-slate-50 min-h-screen">
+  <header class="border-b bg-white sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-blue-100 flex items-center justify-center font-bold text-blue-700">C</div>
+        <div>
+          <div class="text-lg font-bold text-blue-800">CoinSpare Admin</div>
+          <div class="text-xs text-slate-400">Overview</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span id="adminWho" class="text-sm text-slate-600"></span>
+        <button id="logoutBtn" class="px-3 py-1 rounded-lg border">Logout</button>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
-<!-- Admin Panel -->
-<main class="flex-grow max-w-6xl mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold text-primary mb-6">Admin Panel</h1>
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold text-blue-800 mb-6">Admin Panel</h1>
 
-  <!-- Users Section -->
-  <section class="mb-10">
-    <h2 class="text-lg font-semibold text-primary mb-3">Registered Users</h2>
-    <table class="w-full bg-white shadow rounded-2xl overflow-hidden">
-      <thead class="bg-accent text-white">
-        <tr>
-          <th class="px-4 py-2 text-left">Name</th>
-          <th class="px-4 py-2 text-left">Email</th>
-          <th class="px-4 py-2 text-left">Status</th>
-          <th class="px-4 py-2">Action</th>
-        </tr>
-      </thead>
-      <tbody id="usersTable" class="divide-y"></tbody>
-    </table>
-  </section>
+    <section class="mb-8">
+      <h2 class="font-semibold">Registered Users</h2>
+      <div class="overflow-x-auto mt-3">
+        <table class="w-full bg-white rounded-lg overflow-hidden">
+          <thead class="bg-blue-600 text-white"><tr><th class="px-4 py-2">Name</th><th>Email</th><th>Ref Code</th><th>Ref By</th><th>Team size</th><th>Balance</th><th>Actions</th></tr></thead>
+          <tbody id="usersAdmin" class="divide-y"></tbody>
+        </table>
+      </div>
+    </section>
 
-  <!-- Trades Section -->
-  <section>
-    <h2 class="text-lg font-semibold text-primary mb-3">Recent Trades</h2>
-    <table class="w-full bg-white shadow rounded-2xl overflow-hidden">
-      <thead class="bg-accent text-white">
-        <tr>
-          <th class="px-4 py-2 text-left">User</th>
-          <th class="px-4 py-2 text-left">Asset</th>
-          <th class="px-4 py-2 text-left">Amount</th>
-          <th class="px-4 py-2 text-left">Date</th>
-        </tr>
-      </thead>
-      <tbody id="tradesTable" class="divide-y"></tbody>
-    </table>
-  </section>
-</main>
+    <section>
+      <h2 class="font-semibold">All Trades</h2>
+      <div class="overflow-x-auto mt-3">
+        <table class="w-full bg-white rounded-lg overflow-hidden">
+          <thead class="bg-blue-600 text-white"><tr><th class="px-4 py-2">User</th><th>Email</th><th>Asset</th><th>Amt</th><th>Date</th></tr></thead>
+          <tbody id="tradesAdmin" class="divide-y"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
-<!-- Footer -->
-<footer class="border-t bg-white">
-  <div class="max-w-6xl mx-auto px-4 py-6 text-center text-xs text-slate-500">
-    © <span id="year"></span> CoinSpare. All rights reserved.
-  </div>
-</footer>
+  <footer class="border-t">
+    <div class="max-w-6xl mx-auto px-4 py-4 text-xs text-slate-500">© <span id="year"></span> CoinSpare</div>
+  </footer>
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
+  <script src="app.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const cur = currentUser();
+    if(!cur || cur.role !== 'admin' || cur.email !== 'admin@coinspare.com'){ alert('Admin only'); location.href='login.html'; throw new Error('admin only'); }
+    document.getElementById('adminWho').textContent = cur.name + ' ('+cur.email+')';
 
-  const user = JSON.parse(localStorage.getItem('currentUser'));
-  if(!user || user.email !== "admin@coinspare.com"){
-    alert("Access denied! Admins only.");
-    window.location.href = "login.html";
-  } else {
-    document.getElementById('adminName').textContent = "Admin: " + user.name;
-  }
-
-  // Load users from localStorage
-  const users = JSON.parse(localStorage.getItem('users') || "[]");
-  const usersTable = document.getElementById('usersTable');
-
-  function renderUsers(){
-    usersTable.innerHTML = "";
-    if(users.length === 0){
-      usersTable.innerHTML = '<tr><td colspan="4" class="text-center text-slate-500 py-3">No users found</td></tr>';
-    } else {
-      users.forEach((u, index) => {
-        usersTable.innerHTML += `
-          <tr>
-            <td class="px-4 py-2">${u.name}</td>
-            <td class="px-4 py-2">${u.email}</td>
-            <td class="px-4 py-2">${u.status || "Pending"}</td>
-            <td class="px-4 py-2 text-center">
-              <button onclick="approveUser(${index})" class="text-xs px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600">Approve</button>
-              <button onclick="blockUser(${index})" class="text-xs px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">Block</button>
-            </td>
-          </tr>
-        `;
+    function renderUsersAdmin(){
+      const users = getAllUsers();
+      const el = document.getElementById('usersAdmin');
+      el.innerHTML = '';
+      users.forEach(u=>{
+        const teamSize = (u.team || []).length;
+        const bal = u.portfolio ? '₹' + u.portfolio.balance : '-';
+        el.innerHTML += `<tr>
+          <td class="px-4 py-2">${u.name}</td>
+          <td>${u.email}</td>
+          <td>${u.refCode || '-'}</td>
+          <td>${u.refBy || '-'}</td>
+          <td>${teamSize}</td>
+          <td>${bal}</td>
+          <td class="px-4 py-2">
+            <button onclick="impersonate('${u.email}')" class="px-2 py-1 text-xs rounded bg-blue-600 text-white">Impersonate</button>
+            <button onclick="toggleBlock('${u.email}')" class="px-2 py-1 text-xs rounded bg-red-500 text-white">Block/Unblock</button>
+          </td>
+        </tr>`;
       });
     }
-  }
-  renderUsers();
+    renderUsersAdmin();
 
-  function approveUser(i){
-    users[i].status = "Approved";
-    localStorage.setItem("users", JSON.stringify(users));
-    renderUsers();
-  }
-
-  function blockUser(i){
-    users[i].status = "Blocked";
-    localStorage.setItem("users", JSON.stringify(users));
-    renderUsers();
-  }
-
-  // Load trades from all users
-  const tradesTable = document.getElementById('tradesTable');
-  function renderTrades(){
-    tradesTable.innerHTML = "";
-    let allTrades = [];
-    users.forEach(u => {
-      let pf = JSON.parse(localStorage.getItem('portfolio_' + u.email) || "{}");
-      if(pf.trades){
-        pf.trades.forEach(t => {
-          allTrades.push({user:u.name, ...t});
-        });
-      }
-    });
-
-    if(allTrades.length === 0){
-      tradesTable.innerHTML = '<tr><td colspan="4" class="text-center text-slate-500 py-3">No trades found</td></tr>';
-    } else {
-      allTrades.forEach(t => {
-        tradesTable.innerHTML += `
-          <tr>
-            <td class="px-4 py-2">${t.user}</td>
-            <td class="px-4 py-2">${t.asset}</td>
-            <td class="px-4 py-2">₹${t.amount}</td>
-            <td class="px-4 py-2">${t.date}</td>
-          </tr>
-        `;
+    function renderTradesAdmin(){
+      const arr = allTradesFlatten();
+      const el = document.getElementById('tradesAdmin');
+      el.innerHTML = '';
+      if(arr.length === 0) el.innerHTML = '<tr><td colspan="5" class="text-slate-500 py-2">No trades yet</td></tr>';
+      else arr.forEach(t=>{
+        el.innerHTML += `<tr><td class="px-4 py-2">${t.user}</td><td>${t.email}</td><td>${t.asset}</td><td>₹${t.amount}</td><td>${t.date}</td></tr>`;
       });
     }
-  }
-  renderTrades();
+    renderTradesAdmin();
 
-  function logout(){
-    localStorage.removeItem('currentUser');
-    window.location.href = 'login.html';
-  }
-</script>
+    function impersonate(email){
+      // set current user to this user (admin still can access admin page)
+      const u = getUserByEmail(email);
+      if(!u) return alert('User not found');
+      setCurrentUser(u);
+      alert('Impersonating ' + u.email + '. Redirecting to dashboard.');
+      location.href = 'dashboard.html';
+    }
 
+    function toggleBlock(email){
+      const users = getAllUsers();
+      const i = users.findIndex(x=>x.email===email);
+      if(i===-1) return;
+      users[i].status = users[i].status === 'blocked' ? 'active' : 'blocked';
+      saveAllUsers(users);
+      renderUsersAdmin();
+      alert('Toggled block for ' + email);
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', ()=> logoutAndRedirect('login.html'));
+  </script>
 </body>
 </html>
