@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ForexPro - Professional Trading Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
     <style>
         :root {
             --primary-blue: #1a56db;
@@ -798,6 +802,45 @@
         .notification.warning i {
             color: var(--warning);
         }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-blue);
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Real-time Update Indicator */
+        .update-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 10px 15px;
+            border-radius: 4px;
+            display: none;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .update-indicator.show {
+            display: flex;
+        }
+
+        .update-indicator i {
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
@@ -1031,19 +1074,19 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>Account Balance</h3>
-                        <div class="value">$12,456.78</div>
+                        <div class="value" id="account-balance">$12,456.78</div>
                     </div>
                     <div class="stat-card">
                         <h3>Today's P&L</h3>
-                        <div class="value" style="color: var(--success);">+$234.56</div>
+                        <div class="value" style="color: var(--success);" id="today-pl">+$234.56</div>
                     </div>
                     <div class="stat-card">
                         <h3>Total Portfolio Value</h3>
-                        <div class="value">$45,678.90</div>
+                        <div class="value" id="portfolio-value">$45,678.90</div>
                     </div>
                     <div class="stat-card">
                         <h3>Available Margin</h3>
-                        <div class="value">$8,765.43</div>
+                        <div class="value" id="available-margin">$8,765.43</div>
                     </div>
                 </div>
                 
@@ -1063,19 +1106,19 @@
                     <h3>Your Team Performance</h3>
                     <div class="team-stats">
                         <div class="team-stat-card">
-                            <div class="value">12</div>
+                            <div class="value" id="direct-referrals">12</div>
                             <div class="label">Direct Referrals</div>
                         </div>
                         <div class="team-stat-card">
-                            <div class="value">48</div>
+                            <div class="value" id="total-team-size">48</div>
                             <div class="label">Total Team Size</div>
                         </div>
                         <div class="team-stat-card">
-                            <div class="value">$1,245.67</div>
+                            <div class="value" id="team-commission">$1,245.67</div>
                             <div class="label">Team Commission</div>
                         </div>
                         <div class="team-stat-card">
-                            <div class="value">$3,456.78</div>
+                            <div class="value" id="team-trading-volume">$3,456.78</div>
                             <div class="label">Team Trading Volume</div>
                         </div>
                     </div>
@@ -1095,46 +1138,7 @@
                             </tr>
                         </thead>
                         <tbody id="referrals-table">
-                            <tr>
-                                <td>Sarah Johnson</td>
-                                <td>sarah@example.com</td>
-                                <td>2023-05-15</td>
-                                <td>$2,345.67</td>
-                                <td>$23.45</td>
-                                <td><span class="status success">Active</span></td>
-                            </tr>
-                            <tr>
-                                <td>Michael Brown</td>
-                                <td>michael@example.com</td>
-                                <td>2023-05-10</td>
-                                <td>$1,876.54</td>
-                                <td>$18.76</td>
-                                <td><span class="status success">Active</span></td>
-                            </tr>
-                            <tr>
-                                <td>Emily Davis</td>
-                                <td>emily@example.com</td>
-                                <td>2023-05-05</td>
-                                <td>$0.00</td>
-                                <td>$0.00</td>
-                                <td><span class="status warning">Inactive</span></td>
-                            </tr>
-                            <tr>
-                                <td>David Wilson</td>
-                                <td>david@example.com</td>
-                                <td>2023-04-28</td>
-                                <td>$3,210.98</td>
-                                <td>$32.10</td>
-                                <td><span class="status success">Active</span></td>
-                            </tr>
-                            <tr>
-                                <td>Lisa Anderson</td>
-                                <td>lisa@example.com</td>
-                                <td>2023-04-20</td>
-                                <td>$1,543.21</td>
-                                <td>$15.43</td>
-                                <td><span class="status success">Active</span></td>
-                            </tr>
+                            <!-- Referrals will be populated here -->
                         </tbody>
                     </table>
                 </div>
@@ -1174,22 +1178,22 @@
                 <div class="admin-stats">
                     <div class="admin-stat-card">
                         <i class="fas fa-users"></i>
-                        <div class="value">1,245</div>
+                        <div class="value" id="total-users">1,245</div>
                         <div class="label">Total Users</div>
                     </div>
                     <div class="admin-stat-card">
                         <i class="fas fa-user-plus"></i>
-                        <div class="value">325</div>
+                        <div class="value" id="new-users">325</div>
                         <div class="label">New Users (This Month)</div>
                     </div>
                     <div class="admin-stat-card">
                         <i class="fas fa-exchange-alt"></i>
-                        <div class="value">3,567</div>
+                        <div class="value" id="today-trades">3,567</div>
                         <div class="label">Today's Trades</div>
                     </div>
                     <div class="admin-stat-card">
                         <i class="fas fa-dollar-sign"></i>
-                        <div class="value">$1.2M</div>
+                        <div class="value" id="daily-volume">$1.2M</div>
                         <div class="label">Daily Volume</div>
                     </div>
                 </div>
@@ -1223,66 +1227,7 @@
                             </tr>
                         </thead>
                         <tbody id="admin-users-table">
-                            <tr>
-                                <td>#USR-12345</td>
-                                <td>John Smith</td>
-                                <td>john@example.com</td>
-                                <td>FXP12345</td>
-                                <td>-</td>
-                                <td>2023-05-15</td>
-                                <td><span class="status success">Active</span></td>
-                                <td>
-                                    <button class="btn" style="padding: 5px 10px; font-size: 12px;" onclick="viewUserDetails('USR-12345')">View</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#USR-12346</td>
-                                <td>Sarah Johnson</td>
-                                <td>sarah@example.com</td>
-                                <td>FXP12346</td>
-                                <td>FXP12345</td>
-                                <td>2023-05-14</td>
-                                <td><span class="status success">Active</span></td>
-                                <td>
-                                    <button class="btn" style="padding: 5px 10px; font-size: 12px;" onclick="viewUserDetails('USR-12346')">View</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#USR-12347</td>
-                                <td>Michael Brown</td>
-                                <td>michael@example.com</td>
-                                <td>FXP12347</td>
-                                <td>FXP12345</td>
-                                <td>2023-05-10</td>
-                                <td><span class="status success">Active</span></td>
-                                <td>
-                                    <button class="btn" style="padding: 5px 10px; font-size: 12px;" onclick="viewUserDetails('USR-12347')">View</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#USR-12348</td>
-                                <td>Emily Davis</td>
-                                <td>emily@example.com</td>
-                                <td>FXP12348</td>
-                                <td>FXP12346</td>
-                                <td>2023-05-05</td>
-                                <td><span class="status warning">Inactive</span></td>
-                                <td>
-                                    <button class="btn" style="padding: 5px 10px; font-size: 12px;" onclick="viewUserDetails('USR-12348')">View</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#USR-12349</td>
-                                <td>David Wilson</td>
-                                <td>david@example.com</td>
-                                <td>FXP12349</td>
-                                <td>FXP12347</td>
-                                <td>2023-04-28</td>
-                                <td><span class="status success">Active</span></td>
-                                <td>
-                                    <button class="btn" style="padding: 5px 10px; font-size: 12px;" onclick="viewUserDetails('USR-12349')">View</button>
-                                </td>
-                            </tr>
+                            <!-- Users will be populated here -->
                         </tbody>
                     </table>
                 </div>
@@ -1296,123 +1241,32 @@
         <span id="notification-message">Operation successful!</span>
     </div>
 
-    <script>
-        // Mock database for users
-        let users = [
-            {
-                id: 'USR-12345',
-                name: 'John Smith',
-                email: 'john@example.com',
-                password: 'password123',
-                referralCode: 'FXP12345',
-                referredBy: null,
-                joinDate: '2023-05-15',
-                status: 'Active',
-                isAdmin: false
-            },
-            {
-                id: 'USR-12346',
-                name: 'Sarah Johnson',
-                email: 'sarah@example.com',
-                password: 'password123',
-                referralCode: 'FXP12346',
-                referredBy: 'FXP12345',
-                joinDate: '2023-05-14',
-                status: 'Active',
-                isAdmin: false
-            },
-            {
-                id: 'USR-12347',
-                name: 'Michael Brown',
-                email: 'michael@example.com',
-                password: 'password123',
-                referralCode: 'FXP12347',
-                referredBy: 'FXP12345',
-                joinDate: '2023-05-10',
-                status: 'Active',
-                isAdmin: false
-            },
-            {
-                id: 'USR-12348',
-                name: 'Emily Davis',
-                email: 'emily@example.com',
-                password: 'password123',
-                referralCode: 'FXP12348',
-                referredBy: 'FXP12346',
-                joinDate: '2023-05-05',
-                status: 'Inactive',
-                isAdmin: false
-            },
-            {
-                id: 'USR-12349',
-                name: 'David Wilson',
-                email: 'david@example.com',
-                password: 'password123',
-                referralCode: 'FXP12349',
-                referredBy: 'FXP12347',
-                joinDate: '2023-04-28',
-                status: 'Active',
-                isAdmin: false
-            },
-            {
-                id: 'USR-12350',
-                name: 'Admin User',
-                email: 'admin@forexpro.com',
-                password: 'admin123',
-                referralCode: 'FXPADMIN',
-                referredBy: null,
-                joinDate: '2023-01-01',
-                status: 'Active',
-                isAdmin: true
-            }
-        ];
+    <!-- Real-time Update Indicator -->
+    <div id="update-indicator" class="update-indicator">
+        <i class="fas fa-sync-alt"></i>
+        <span>Updating data...</span>
+    </div>
 
-        // Mock referrals data
-        let referrals = [
-            {
-                name: 'Sarah Johnson',
-                email: 'sarah@example.com',
-                joinDate: '2023-05-15',
-                tradingVolume: '$2,345.67',
-                commission: '$23.45',
-                status: 'Active'
-            },
-            {
-                name: 'Michael Brown',
-                email: 'michael@example.com',
-                joinDate: '2023-05-10',
-                tradingVolume: '$1,876.54',
-                commission: '$18.76',
-                status: 'Active'
-            },
-            {
-                name: 'Emily Davis',
-                email: 'emily@example.com',
-                joinDate: '2023-05-05',
-                tradingVolume: '$0.00',
-                commission: '$0.00',
-                status: 'Inactive'
-            },
-            {
-                name: 'David Wilson',
-                email: 'david@example.com',
-                joinDate: '2023-04-28',
-                tradingVolume: '$3,210.98',
-                commission: '$32.10',
-                status: 'Active'
-            },
-            {
-                name: 'Lisa Anderson',
-                email: 'lisa@example.com',
-                joinDate: '2023-04-20',
-                tradingVolume: '$1,543.21',
-                commission: '$15.43',
-                status: 'Active'
-            }
-        ];
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxIujPFlHfqgL_-fLbsoSYo3gaGf2iPHQ",
+            authDomain: "sabjiwalahere.firebaseapp.com",
+            projectId: "sabjiwalahere",
+            storageBucket: "sabjiwalahere.firebasestorage.app",
+            messagingSenderId: "418578879301",
+            appId: "1:418578879301:web:56bdf323bf186cbbe1a42c",
+            measurementId: "G-4DGEQXXDLG"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
 
         // Current logged in user
         let currentUser = null;
+        let usersData = [];
+        let referralsData = [];
 
         // Page Navigation
         function showPage(pageId) {
@@ -1424,6 +1278,13 @@
             
             // Show the selected page
             document.getElementById(pageId).classList.add('active');
+            
+            // Load data based on page
+            if (pageId === 'user-dashboard') {
+                loadUserDashboard();
+            } else if (pageId === 'admin-dashboard') {
+                loadAdminDashboard();
+            }
         }
 
         // Auth Tab Switching
@@ -1455,23 +1316,36 @@
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             
-            // Find user in mock database
-            const user = users.find(u => u.email === email && u.password === password);
+            // Show loading state
+            showNotification('Logging in...', 'warning');
             
-            if (user) {
-                currentUser = user;
-                document.getElementById('user-name').textContent = user.name;
-                
-                if (user.isAdmin) {
-                    showPage('admin-dashboard');
-                } else {
-                    showPage('user-dashboard');
-                }
-                
-                showNotification('Login successful!', 'success');
-            } else {
-                showNotification('Invalid email or password!', 'error');
-            }
+            // Query Firestore for user
+            db.collection('users').where('email', '==', email).where('password', '==', password).get()
+                .then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        showNotification('Invalid email or password!', 'error');
+                        return;
+                    }
+                    
+                    const userDoc = querySnapshot.docs[0];
+                    currentUser = userDoc.data();
+                    currentUser.id = userDoc.id;
+                    
+                    // Update UI
+                    document.getElementById('user-name').textContent = currentUser.name;
+                    
+                    if (currentUser.isAdmin) {
+                        showPage('admin-dashboard');
+                    } else {
+                        showPage('user-dashboard');
+                    }
+                    
+                    showNotification('Login successful!', 'success');
+                })
+                .catch((error) => {
+                    console.error("Error logging in: ", error);
+                    showNotification('Login failed. Please try again.', 'error');
+                });
         }
 
         // Handle Register
@@ -1484,39 +1358,82 @@
             const password = document.getElementById('register-password').value;
             const referralCode = document.getElementById('register-referral').value;
             
+            // Show loading state
+            showNotification('Creating account...', 'warning');
+            
             // Check if user already exists
-            const existingUser = users.find(u => u.email === email);
-            
-            if (existingUser) {
-                showNotification('User with this email already exists!', 'error');
-                return;
-            }
-            
-            // Generate unique referral code
-            const newReferralCode = 'FXP' + Math.floor(10000 + Math.random() * 90000);
-            
-            // Create new user
-            const newUser = {
-                id: 'USR-' + Math.floor(10000 + Math.random() * 90000),
-                name: firstName + ' ' + lastName,
-                email: email,
-                password: password,
-                referralCode: newReferralCode,
-                referredBy: referralCode || null,
-                joinDate: new Date().toISOString().split('T')[0],
-                status: 'Active',
-                isAdmin: false
-            };
-            
-            // Add to users array
-            users.push(newUser);
-            
-            // Log in the new user
-            currentUser = newUser;
-            document.getElementById('user-name').textContent = newUser.name;
-            
-            showPage('user-dashboard');
-            showNotification('Registration successful!', 'success');
+            db.collection('users').where('email', '==', email).get()
+                .then((querySnapshot) => {
+                    if (!querySnapshot.empty) {
+                        showNotification('User with this email already exists!', 'error');
+                        return;
+                    }
+                    
+                    // Generate unique referral code
+                    const newReferralCode = 'FXP' + Math.floor(10000 + Math.random() * 90000);
+                    
+                    // Create new user
+                    const newUser = {
+                        name: firstName + ' ' + lastName,
+                        email: email,
+                        password: password,
+                        referralCode: newReferralCode,
+                        referredBy: referralCode || null,
+                        joinDate: new Date().toISOString().split('T')[0],
+                        isActive: false,
+                        isAdmin: false,
+                        accountBalance: 0,
+                        portfolioValue: 0,
+                        todayPL: 0,
+                        availableMargin: 0,
+                        directReferrals: 0,
+                        totalTeamSize: 0,
+                        teamCommission: 0,
+                        teamTradingVolume: 0
+                    };
+                    
+                    // Add to Firestore
+                    db.collection('users').add(newUser)
+                        .then((docRef) => {
+                            // If referred by someone, update their referral count
+                            if (referralCode) {
+                                db.collection('users').where('referralCode', '==', referralCode).get()
+                                    .then((querySnapshot) => {
+                                        if (!querySnapshot.empty) {
+                                            const referrerDoc = querySnapshot.docs[0];
+                                            const referrer = referrerDoc.data();
+                                            
+                                            // Update referrer's direct referrals count
+                                            db.collection('users').doc(referrerDoc.id).update({
+                                                directReferrals: firebase.firestore.FieldValue.increment(1)
+                                            });
+                                            
+                                            // Create referral record
+                                            db.collection('referrals').add({
+                                                referrerId: referrerDoc.id,
+                                                referredId: docRef.id,
+                                                referralDate: new Date().toISOString().split('T')[0],
+                                                commission: 0,
+                                                status: 'Pending'
+                                            });
+                                        }
+                                    });
+                            }
+                            
+                            // Log in the new user
+                            currentUser = newUser;
+                            currentUser.id = docRef.id;
+                            
+                            document.getElementById('user-name').textContent = currentUser.name;
+                            
+                            showPage('user-dashboard');
+                            showNotification('Registration successful!', 'success');
+                        })
+                        .catch((error) => {
+                            console.error("Error registering user: ", error);
+                            showNotification('Registration failed. Please try again.', 'error');
+                        });
+                });
         }
 
         // Handle Logout
@@ -1542,12 +1459,287 @@
             showNotification('Referral link copied to clipboard!', 'success');
         }
 
+        // Load User Dashboard
+        function loadUserDashboard() {
+            if (!currentUser) return;
+            
+            // Update user referral code and link
+            document.getElementById('user-referral-code').value = currentUser.referralCode;
+            document.getElementById('user-referral-link').value = `https://forexpro.com/ref/${currentUser.referralCode}`;
+            
+            // Update user stats
+            document.getElementById('account-balance').textContent = `$${currentUser.accountBalance.toFixed(2)}`;
+            document.getElementById('today-pl').textContent = `${currentUser.todayPL >= 0 ? '+' : ''}$${currentUser.todayPL.toFixed(2)}`;
+            document.getElementById('portfolio-value').textContent = `$${currentUser.portfolioValue.toFixed(2)}`;
+            document.getElementById('available-margin').textContent = `$${currentUser.availableMargin.toFixed(2)}`;
+            
+            // Update team stats
+            document.getElementById('direct-referrals').textContent = currentUser.directReferrals || 0;
+            document.getElementById('total-team-size').textContent = currentUser.totalTeamSize || 0;
+            document.getElementById('team-commission').textContent = `$${(currentUser.teamCommission || 0).toFixed(2)}`;
+            document.getElementById('team-trading-volume').textContent = `$${(currentUser.teamTradingVolume || 0).toFixed(2)}`;
+            
+            // Load referrals
+            loadReferrals();
+        }
+
+        // Load Referrals
+        function loadReferrals() {
+            if (!currentUser) return;
+            
+            // Show update indicator
+            showUpdateIndicator();
+            
+            // Get referrals for current user
+            db.collection('referrals').where('referrerId', '==', currentUser.id).get()
+                .then((querySnapshot) => {
+                    const referralsTable = document.getElementById('referrals-table');
+                    referralsTable.innerHTML = '';
+                    
+                    if (querySnapshot.empty) {
+                        const row = referralsTable.insertRow();
+                        row.innerHTML = '<td colspan="6" style="text-align: center;">No referrals found</td>';
+                        return;
+                    }
+                    
+                    // Process each referral
+                    const referralPromises = [];
+                    querySnapshot.forEach((doc) => {
+                        const referral = doc.data();
+                        referral.id = doc.id;
+                        
+                        // Get referred user details
+                        const userPromise = db.collection('users').doc(referral.referredId).get()
+                            .then((userDoc) => {
+                                if (userDoc.exists) {
+                                    const user = userDoc.data();
+                                    return {
+                                        ...referral,
+                                        userName: user.name,
+                                        userEmail: user.email,
+                                        userJoinDate: user.joinDate,
+                                        userStatus: user.isActive ? 'Active' : 'Inactive'
+                                    };
+                                }
+                                return null;
+                            });
+                        
+                        referralPromises.push(userPromise);
+                    });
+                    
+                    // Wait for all user details to be fetched
+                    Promise.all(referralPromises).then((referralDetails) => {
+                        referralDetails.forEach((detail) => {
+                            if (detail) {
+                                const row = referralsTable.insertRow();
+                                
+                                // Status class
+                                let statusClass = 'warning';
+                                if (detail.userStatus === 'Active') {
+                                    statusClass = 'success';
+                                }
+                                
+                                row.innerHTML = `
+                                    <td>${detail.userName}</td>
+                                    <td>${detail.userEmail}</td>
+                                    <td>${detail.userJoinDate}</td>
+                                    <td>$${(detail.tradingVolume || 0).toFixed(2)}</td>
+                                    <td>$${(detail.commission || 0).toFixed(2)}</td>
+                                    <td><span class="status ${statusClass}">${detail.userStatus}</span></td>
+                                `;
+                            }
+                        });
+                        
+                        // Hide update indicator
+                        hideUpdateIndicator();
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error loading referrals: ", error);
+                    showNotification('Failed to load referrals', 'error');
+                    hideUpdateIndicator();
+                });
+        }
+
+        // Load Admin Dashboard
+        function loadAdminDashboard() {
+            if (!currentUser || !currentUser.isAdmin) return;
+            
+            // Load users
+            loadAdminUsers();
+            
+            // Load platform stats
+            loadPlatformStats();
+        }
+
+        // Load Admin Users
+        function loadAdminUsers() {
+            // Show update indicator
+            showUpdateIndicator();
+            
+            // Get all users
+            db.collection('users').get()
+                .then((querySnapshot) => {
+                    const usersTable = document.getElementById('admin-users-table');
+                    usersTable.innerHTML = '';
+                    
+                    if (querySnapshot.empty) {
+                        const row = usersTable.insertRow();
+                        row.innerHTML = '<td colspan="8" style="text-align: center;">No users found</td>';
+                        return;
+                    }
+                    
+                    querySnapshot.forEach((doc) => {
+                        const user = doc.data();
+                        user.id = doc.id;
+                        
+                        const row = usersTable.insertRow();
+                        
+                        // Status class
+                        let statusClass = 'warning';
+                        if (user.isActive) {
+                            statusClass = 'success';
+                        }
+                        
+                        row.innerHTML = `
+                            <td>#${user.id.substring(0, 8)}</td>
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${user.referralCode}</td>
+                            <td>${user.referredBy || '-'}</td>
+                            <td>${user.joinDate}</td>
+                            <td><span class="status ${statusClass}">${user.isActive ? 'Active' : 'Inactive'}</span></td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px;" onclick="viewUserDetails('${user.id}')">View</button>
+                                ${!user.isActive ? `<button class="btn" style="padding: 5px 10px; font-size: 12px; margin-left: 5px;" onclick="activateUser('${user.id}')">Activate</button>` : ''}
+                            </td>
+                        `;
+                    });
+                    
+                    // Hide update indicator
+                    hideUpdateIndicator();
+                })
+                .catch((error) => {
+                    console.error("Error loading users: ", error);
+                    showNotification('Failed to load users', 'error');
+                    hideUpdateIndicator();
+                });
+        }
+
+        // Load Platform Stats
+        function loadPlatformStats() {
+            // Get total users count
+            db.collection('users').get().then((querySnapshot) => {
+                document.getElementById('total-users').textContent = querySnapshot.size;
+            });
+            
+            // Get new users this month
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+            
+            db.collection('users')
+                .where('joinDate', '>=', firstDayOfMonth.toISOString().split('T')[0])
+                .get()
+                .then((querySnapshot) => {
+                    document.getElementById('new-users').textContent = querySnapshot.size;
+                });
+            
+            // Mock data for trades and volume
+            document.getElementById('today-trades').textContent = '3,567';
+            document.getElementById('daily-volume').textContent = '$1.2M';
+        }
+
         // View User Details (Admin)
         function viewUserDetails(userId) {
-            const user = users.find(u => u.id === userId);
-            if (user) {
-                alert(`User Details:\n\nName: ${user.name}\nEmail: ${user.email}\nReferral Code: ${user.referralCode}\nReferred By: ${user.referredBy || 'None'}\nJoin Date: ${user.joinDate}\nStatus: ${user.status}`);
+            db.collection('users').doc(userId).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        const user = doc.data();
+                        alert(`User Details:\n\nName: ${user.name}\nEmail: ${user.email}\nReferral Code: ${user.referralCode}\nReferred By: ${user.referredBy || 'None'}\nJoin Date: ${user.joinDate}\nStatus: ${user.isActive ? 'Active' : 'Inactive'}\nAccount Balance: $${user.accountBalance.toFixed(2)}`);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error getting user details: ", error);
+                    showNotification('Failed to load user details', 'error');
+                });
+        }
+
+        // Activate User (Admin)
+        function activateUser(userId) {
+            if (!confirm('Are you sure you want to activate this user? This will award a 50% bonus to their referrer.')) {
+                return;
             }
+            
+            // Show loading state
+            showNotification('Activating user...', 'warning');
+            
+            // Get user details
+            db.collection('users').doc(userId).get()
+                .then((doc) => {
+                    if (!doc.exists) {
+                        showNotification('User not found', 'error');
+                        return;
+                    }
+                    
+                    const user = doc.data();
+                    
+                    // Update user status
+                    return db.collection('users').doc(userId).update({
+                        isActive: true
+                    });
+                })
+                .then(() => {
+                    // Find referrer and award bonus
+                    return db.collection('users').doc(userId).get();
+                })
+                .then((doc) => {
+                    const user = doc.data();
+                    
+                    if (user.referredBy) {
+                        // Find referrer
+                        return db.collection('users').where('referralCode', '==', user.referredBy).get()
+                            .then((querySnapshot) => {
+                                if (!querySnapshot.empty) {
+                                    const referrerDoc = querySnapshot.docs[0];
+                                    const referrer = referrerDoc.data();
+                                    
+                                    // Calculate bonus (50% of 100 = 50)
+                                    const bonus = 50;
+                                    
+                                    // Update referrer's account balance and commission
+                                    return db.collection('users').doc(referrerDoc.id).update({
+                                        accountBalance: firebase.firestore.FieldValue.increment(bonus),
+                                        teamCommission: firebase.firestore.FieldValue.increment(bonus)
+                                    });
+                                }
+                            });
+                    }
+                })
+                .then(() => {
+                    // Update referral record
+                    return db.collection('referrals')
+                        .where('referredId', '==', userId)
+                        .get()
+                        .then((querySnapshot) => {
+                            if (!querySnapshot.empty) {
+                                const referralDoc = querySnapshot.docs[0];
+                                return db.collection('referrals').doc(referralDoc.id).update({
+                                    commission: 50,
+                                    status: 'Completed'
+                                });
+                            }
+                        });
+                })
+                .then(() => {
+                    showNotification('User activated successfully!', 'success');
+                    // Reload admin dashboard
+                    loadAdminDashboard();
+                })
+                .catch((error) => {
+                    console.error("Error activating user: ", error);
+                    showNotification('Failed to activate user', 'error');
+                });
         }
 
         // Show Notification
@@ -1579,6 +1771,16 @@
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 3000);
+        }
+
+        // Show Update Indicator
+        function showUpdateIndicator() {
+            document.getElementById('update-indicator').classList.add('show');
+        }
+
+        // Hide Update Indicator
+        function hideUpdateIndicator() {
+            document.getElementById('update-indicator').classList.remove('show');
         }
 
         // Initialize the page
