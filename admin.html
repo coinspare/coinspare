@@ -1,17 +1,169 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Coinspare - Admin Panel</title>
-  <link rel="stylesheet" href="style.css">
-  <script type="module" src="app.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Panel • CoinSpare</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e3a8a',
+            accent: '#2563eb',
+            light: '#f8fafc'
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body>
-  <header>Coinspare - Admin Panel</header>
+<body class="bg-light min-h-screen flex flex-col">
 
-  <div class="container">
-    <h2>All Users</h2>
-    <ul id="allUsers"></ul>
+<!-- Header -->
+<header class="border-b bg-white sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-2xl bg-accent/10 flex items-center justify-center text-accent font-black">C</div>
+      <span class="font-extrabold text-xl text-primary">CoinSpare</span>
+    </a>
+    <div class="flex items-center gap-4">
+      <span id="adminName" class="text-sm text-slate-600"></span>
+      <button onclick="logout()" class="text-sm px-3 py-1 bg-accent text-white rounded-xl hover:bg-blue-700">Logout</button>
+    </div>
   </div>
+</header>
+
+<!-- Admin Panel -->
+<main class="flex-grow max-w-6xl mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-primary mb-6">Admin Panel</h1>
+
+  <!-- Users Section -->
+  <section class="mb-10">
+    <h2 class="text-lg font-semibold text-primary mb-3">Registered Users</h2>
+    <table class="w-full bg-white shadow rounded-2xl overflow-hidden">
+      <thead class="bg-accent text-white">
+        <tr>
+          <th class="px-4 py-2 text-left">Name</th>
+          <th class="px-4 py-2 text-left">Email</th>
+          <th class="px-4 py-2 text-left">Status</th>
+          <th class="px-4 py-2">Action</th>
+        </tr>
+      </thead>
+      <tbody id="usersTable" class="divide-y"></tbody>
+    </table>
+  </section>
+
+  <!-- Trades Section -->
+  <section>
+    <h2 class="text-lg font-semibold text-primary mb-3">Recent Trades</h2>
+    <table class="w-full bg-white shadow rounded-2xl overflow-hidden">
+      <thead class="bg-accent text-white">
+        <tr>
+          <th class="px-4 py-2 text-left">User</th>
+          <th class="px-4 py-2 text-left">Asset</th>
+          <th class="px-4 py-2 text-left">Amount</th>
+          <th class="px-4 py-2 text-left">Date</th>
+        </tr>
+      </thead>
+      <tbody id="tradesTable" class="divide-y"></tbody>
+    </table>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="border-t bg-white">
+  <div class="max-w-6xl mx-auto px-4 py-6 text-center text-xs text-slate-500">
+    © <span id="year"></span> CoinSpare. All rights reserved.
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const user = JSON.parse(localStorage.getItem('currentUser'));
+  if(!user || user.email !== "admin@coinspare.com"){
+    alert("Access denied! Admins only.");
+    window.location.href = "login.html";
+  } else {
+    document.getElementById('adminName').textContent = "Admin: " + user.name;
+  }
+
+  // Load users from localStorage
+  const users = JSON.parse(localStorage.getItem('users') || "[]");
+  const usersTable = document.getElementById('usersTable');
+
+  function renderUsers(){
+    usersTable.innerHTML = "";
+    if(users.length === 0){
+      usersTable.innerHTML = '<tr><td colspan="4" class="text-center text-slate-500 py-3">No users found</td></tr>';
+    } else {
+      users.forEach((u, index) => {
+        usersTable.innerHTML += `
+          <tr>
+            <td class="px-4 py-2">${u.name}</td>
+            <td class="px-4 py-2">${u.email}</td>
+            <td class="px-4 py-2">${u.status || "Pending"}</td>
+            <td class="px-4 py-2 text-center">
+              <button onclick="approveUser(${index})" class="text-xs px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600">Approve</button>
+              <button onclick="blockUser(${index})" class="text-xs px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">Block</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+  }
+  renderUsers();
+
+  function approveUser(i){
+    users[i].status = "Approved";
+    localStorage.setItem("users", JSON.stringify(users));
+    renderUsers();
+  }
+
+  function blockUser(i){
+    users[i].status = "Blocked";
+    localStorage.setItem("users", JSON.stringify(users));
+    renderUsers();
+  }
+
+  // Load trades from all users
+  const tradesTable = document.getElementById('tradesTable');
+  function renderTrades(){
+    tradesTable.innerHTML = "";
+    let allTrades = [];
+    users.forEach(u => {
+      let pf = JSON.parse(localStorage.getItem('portfolio_' + u.email) || "{}");
+      if(pf.trades){
+        pf.trades.forEach(t => {
+          allTrades.push({user:u.name, ...t});
+        });
+      }
+    });
+
+    if(allTrades.length === 0){
+      tradesTable.innerHTML = '<tr><td colspan="4" class="text-center text-slate-500 py-3">No trades found</td></tr>';
+    } else {
+      allTrades.forEach(t => {
+        tradesTable.innerHTML += `
+          <tr>
+            <td class="px-4 py-2">${t.user}</td>
+            <td class="px-4 py-2">${t.asset}</td>
+            <td class="px-4 py-2">₹${t.amount}</td>
+            <td class="px-4 py-2">${t.date}</td>
+          </tr>
+        `;
+      });
+    }
+  }
+  renderTrades();
+
+  function logout(){
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+  }
+</script>
+
 </body>
 </html>
