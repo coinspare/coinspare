@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ForexPro - Professional Trading Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
     <style>
         :root {
             --primary-blue: #1a56db;
@@ -35,6 +31,7 @@
             background-color: var(--white);
             color: var(--text-color);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .container {
@@ -46,13 +43,15 @@
 
         /* Header Styles */
         header {
-            background-color: var(--primary-blue);
+            background-color: rgba(26, 86, 219, 0.95);
             color: var(--white);
             padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
+            position: fixed;
+            width: 100%;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .header-container {
@@ -62,7 +61,7 @@
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
             display: flex;
             align-items: center;
@@ -79,13 +78,14 @@
         }
 
         nav ul li {
-            margin-left: 25px;
+            margin-left: 30px;
         }
 
         nav ul li a {
             color: var(--white);
             text-decoration: none;
             font-weight: 500;
+            font-size: 16px;
             transition: color 0.3s;
         }
 
@@ -95,20 +95,23 @@
 
         .btn {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 12px 24px;
             background-color: var(--light-blue);
             color: var(--white);
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
         }
 
         .btn:hover {
             background-color: var(--dark-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(59, 130, 246, 0.4);
         }
 
         .btn-outline {
@@ -124,328 +127,199 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
-            color: var(--white);
-            padding: 100px 0;
+            height: 100vh;
+            background: linear-gradient(rgba(26, 86, 219, 0.8), rgba(30, 64, 175, 0.8)), 
+                        url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 20px;
         }
 
         .hero h1 {
-            font-size: 48px;
+            font-size: 64px;
+            font-weight: 700;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease;
         }
 
         .hero p {
-            font-size: 20px;
-            max-width: 700px;
-            margin: 0 auto 30px;
+            font-size: 22px;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease 0.2s;
+            animation-fill-mode: both;
         }
 
         .hero-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
+            animation: fadeInUp 1s ease 0.4s;
+            animation-fill-mode: both;
         }
 
         /* Features Section */
         .features {
-            padding: 80px 0;
+            padding: 100px 0;
             background-color: var(--light-gray);
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 70px;
         }
 
         .section-title h2 {
-            font-size: 36px;
+            font-size: 42px;
             color: var(--primary-blue);
             margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--light-blue);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            font-size: 18px;
+            color: var(--dark-gray);
+            max-width: 700px;
+            margin: 20px auto 0;
         }
 
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            gap: 40px;
         }
 
         .feature-card {
             background-color: var(--white);
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--light-blue));
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
-        .feature-card i {
-            font-size: 40px;
-            color: var(--light-blue);
-            margin-bottom: 20px;
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .feature-icon i {
+            font-size: 36px;
+            color: var(--white);
         }
 
         .feature-card h3 {
-            font-size: 22px;
+            font-size: 24px;
             margin-bottom: 15px;
             color: var(--primary-blue);
         }
 
-        /* Dashboard Styles */
-        .dashboard {
-            display: flex;
-            min-height: 100vh;
+        .feature-card p {
+            color: var(--dark-gray);
+            line-height: 1.8;
         }
 
-        .sidebar {
-            width: 250px;
-            background-color: var(--primary-blue);
+        /* CTA Section */
+        .cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
             color: var(--white);
-            padding: 20px 0;
-        }
-
-        .sidebar-header {
-            padding: 0 20px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-        }
-
-        .sidebar-menu li {
-            margin-bottom: 5px;
-        }
-
-        .sidebar-menu a {
-            display: block;
-            padding: 12px 20px;
-            color: var(--white);
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-
-        .sidebar-menu a:hover,
-        .sidebar-menu a.active {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar-menu i {
-            margin-right: 10px;
-            width: 20px;
             text-align: center;
         }
 
-        .main-content {
-            flex: 1;
-            padding: 30px;
-            background-color: var(--light-gray);
-        }
-
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .dashboard-title {
-            font-size: 28px;
-            color: var(--primary-blue);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-        }
-
-        .user-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .stat-card h3 {
-            font-size: 16px;
-            color: var(--dark-gray);
-            margin-bottom: 10px;
-        }
-
-        .stat-card .value {
-            font-size: 28px;
-            font-weight: bold;
-            color: var(--primary-blue);
-        }
-
-        .chart-container {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-        }
-
-        .chart-container h3 {
+        .cta h2 {
+            font-size: 36px;
             margin-bottom: 20px;
-            color: var(--primary-blue);
         }
 
-        .chart-placeholder {
-            height: 300px;
-            background-color: var(--light-gray);
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--dark-gray);
-        }
-
-        /* Table Styles */
-        .table-container {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            overflow-x: auto;
-        }
-
-        .table-container h3 {
-            margin-bottom: 20px;
-            color: var(--primary-blue);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table th, table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--medium-gray);
-        }
-
-        table th {
-            background-color: var(--light-gray);
-            color: var(--primary-blue);
-            font-weight: 600;
-        }
-
-        table tr:hover {
-            background-color: var(--light-gray);
-        }
-
-        .status {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .status.success {
-            background-color: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .status.danger {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
-
-        .status.warning {
-            background-color: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-        }
-
-        /* Form Styles */
-        .form-container {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        .cta p {
+            font-size: 18px;
             max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .form-container h3 {
-            margin-bottom: 20px;
-            color: var(--primary-blue);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--medium-gray);
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        .form-control:focus {
-            border-color: var(--light-blue);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .form-row {
-            display: flex;
-            gap: 20px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
+            margin: 0 auto 30px;
         }
 
         /* Footer Styles */
         footer {
             background-color: var(--primary-blue);
             color: var(--white);
-            padding: 50px 0 20px;
+            padding: 60px 0 20px;
         }
 
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
+            gap: 40px;
+            margin-bottom: 50px;
         }
 
         .footer-column h4 {
-            font-size: 18px;
-            margin-bottom: 20px;
+            font-size: 20px;
+            margin-bottom: 25px;
             position: relative;
-            padding-bottom: 10px;
+            padding-bottom: 12px;
         }
 
         .footer-column h4::after {
@@ -454,7 +328,7 @@
             left: 0;
             bottom: 0;
             width: 40px;
-            height: 2px;
+            height: 3px;
             background-color: var(--light-blue);
         }
 
@@ -463,56 +337,48 @@
         }
 
         .footer-column ul li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .footer-column ul li a {
             color: var(--white);
             text-decoration: none;
             transition: color 0.3s;
+            font-size: 15px;
         }
 
         .footer-column ul li a:hover {
             color: var(--light-blue);
         }
 
+        .footer-column p {
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
         .copyright {
             text-align: center;
-            padding-top: 20px;
+            padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 14px;
         }
 
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .dashboard {
-                flex-direction: column;
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
             }
-
-            .sidebar {
-                width: 100%;
-                padding: 15px 0;
-            }
-
-            .sidebar-menu {
-                display: flex;
-                overflow-x: auto;
-            }
-
-            .sidebar-menu li {
-                margin-bottom: 0;
-                margin-right: 5px;
-            }
-
-            .sidebar-menu a {
-                white-space: nowrap;
-                padding: 10px 15px;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        @media (max-width: 768px) {
+        /* Responsive Styles */
+        @media (max-width: 992px) {
             .hero h1 {
-                font-size: 36px;
+                font-size: 48px;
             }
 
             .hero p {
@@ -524,16 +390,13 @@
                 align-items: center;
             }
 
-            .form-row {
-                flex-direction: column;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .features-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 30px;
             }
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
                 text-align: center;
@@ -546,1267 +409,229 @@
             nav ul li {
                 margin: 0 10px;
             }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .section-title h2 {
+                font-size: 32px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-column h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
         }
 
-        /* Page Specific Styles */
-        .page {
-            display: none;
-        }
+        @media (max-width: 576px) {
+            .hero {
+                height: auto;
+                padding: 120px 0 80px;
+            }
 
-        .page.active {
-            display: block;
-        }
+            .hero h1 {
+                font-size: 32px;
+            }
 
-        /* Login/Register Page Styles */
-        .auth-container {
-            display: flex;
-            min-height: 100vh;
-        }
+            .hero p {
+                font-size: 16px;
+            }
 
-        .auth-image {
-            flex: 1;
-            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            padding: 30px;
-        }
-
-        .auth-image-content {
-            max-width: 500px;
-        }
-
-        .auth-image h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-
-        .auth-form {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
-        }
-
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 30px;
-            border-bottom: 1px solid var(--medium-gray);
-        }
-
-        .auth-tab {
-            flex: 1;
-            text-align: center;
-            padding: 15px;
-            cursor: pointer;
-            font-weight: 500;
-            color: var(--dark-gray);
-            border-bottom: 2px solid transparent;
-        }
-
-        .auth-tab.active {
-            color: var(--primary-blue);
-            border-bottom-color: var(--primary-blue);
-        }
-
-        .auth-content {
-            display: none;
-        }
-
-        .auth-content.active {
-            display: block;
-        }
-
-        /* Referral Section Styles */
-        .referral-container {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-        }
-
-        .referral-container h3 {
-            margin-bottom: 20px;
-            color: var(--primary-blue);
-        }
-
-        .referral-code {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .referral-code input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid var(--medium-gray);
-            border-radius: 4px 0 0 4px;
-            font-size: 16px;
-        }
-
-        .referral-code button {
-            padding: 12px 15px;
-            background-color: var(--light-blue);
-            color: var(--white);
-            border: none;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
-        }
-
-        .referral-link {
-            display: flex;
-            align-items: center;
-        }
-
-        .referral-link input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid var(--medium-gray);
-            border-radius: 4px 0 0 4px;
-            font-size: 16px;
-        }
-
-        .referral-link button {
-            padding: 12px 15px;
-            background-color: var(--light-blue);
-            color: var(--white);
-            border: none;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
-        }
-
-        /* Team Section Styles */
-        .team-container {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-        }
-
-        .team-container h3 {
-            margin-bottom: 20px;
-            color: var(--primary-blue);
-        }
-
-        .team-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .team-stat-card {
-            background-color: var(--light-gray);
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .team-stat-card .value {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary-blue);
-        }
-
-        .team-stat-card .label {
-            color: var(--dark-gray);
-            font-size: 14px;
-        }
-
-        /* Admin Panel Styles */
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .admin-stat-card {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            text-align: center;
-        }
-
-        .admin-stat-card i {
-            font-size: 30px;
-            color: var(--light-blue);
-            margin-bottom: 10px;
-        }
-
-        .admin-stat-card .value {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary-blue);
-        }
-
-        .admin-stat-card .label {
-            color: var(--dark-gray);
-            font-size: 14px;
-        }
-
-        .admin-actions {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .admin-actions .btn {
-            padding: 8px 15px;
-            font-size: 14px;
-        }
-
-        /* Notification Styles */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            background-color: var(--white);
-            border-left: 4px solid var(--success);
-            border-radius: 4px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            transform: translateX(120%);
-            transition: transform 0.3s ease;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification i {
-            margin-right: 10px;
-            color: var(--success);
-        }
-
-        .notification.error {
-            border-left-color: var(--danger);
-        }
-
-        .notification.error i {
-            color: var(--danger);
-        }
-
-        .notification.warning {
-            border-left-color: var(--warning);
-        }
-
-        .notification.warning i {
-            color: var(--warning);
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            border-top: 4px solid var(--primary-blue);
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Real-time Update Indicator */
-        .update-indicator {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--primary-blue);
-            color: var(--white);
-            padding: 10px 15px;
-            border-radius: 4px;
-            display: none;
-            align-items: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .update-indicator.show {
-            display: flex;
-        }
-
-        .update-indicator i {
-            margin-right: 8px;
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Landing Page -->
-    <div id="landing-page" class="page active">
-        <header>
-            <div class="container header-container">
-                <div class="logo">
-                    <i class="fas fa-chart-line"></i>
-                    <span>ForexPro</span>
-                </div>
-                <nav>
-                    <ul>
-                        <li><a href="#" onclick="showPage('landing-page')">Home</a></li>
-                        <li><a href="#" onclick="showPage('features')">Features</a></li>
-                        <li><a href="#" onclick="showPage('about')">About</a></li>
-                        <li><a href="#" onclick="showPage('contact')">Contact</a></li>
-                        <li><a href="#" onclick="showPage('login')">Login</a></li>
-                    </ul>
-                </nav>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>ForexPro</span>
             </div>
-        </header>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#login" class="btn">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-        <section class="hero">
-            <div class="container">
-                <h1>Professional Forex Trading Platform</h1>
-                <p>Trade currencies with our advanced platform designed for both beginners and professionals. Join thousands of traders worldwide.</p>
-                <div class="hero-buttons">
-                    <a href="#" class="btn" onclick="showPage('register')">Get Started</a>
-                    <a href="#" class="btn btn-outline" onclick="showPage('login')">Login</a>
-                </div>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Professional Forex Trading Platform</h1>
+            <p>Trade currencies with confidence using our advanced platform designed for both beginners and professional traders worldwide.</p>
+            <div class="hero-buttons">
+                <a href="#register" class="btn">Start Trading Now</a>
+                <a href="#demo" class="btn btn-outline">Try Demo Account</a>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="features" id="features">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Platform Features</h2>
-                    <p>Everything you need to succeed in Forex trading</p>
-                </div>
-                <div class="features-grid">
-                    <div class="feature-card">
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose ForexPro?</h2>
+                <p>Everything you need to succeed in the world of Forex trading</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
                         <i class="fas fa-chart-bar"></i>
-                        <h3>Advanced Charts</h3>
-                        <p>Professional-grade charts with multiple indicators for technical analysis.</p>
                     </div>
-                    <div class="feature-card">
+                    <h3>Advanced Trading Tools</h3>
+                    <p>Access professional-grade charts, technical indicators, and drawing tools for comprehensive market analysis.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
                         <i class="fas fa-shield-alt"></i>
-                        <h3>Secure Trading</h3>
-                        <p>Bank-level security with encrypted transactions and fund protection.</p>
                     </div>
-                    <div class="feature-card">
+                    <h3>Bank-Level Security</h3>
+                    <p>Your funds and data are protected with military-grade encryption and secure transaction protocols.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
                         <i class="fas fa-mobile-alt"></i>
-                        <h3>Mobile Trading</h3>
-                        <p>Trade on the go with our responsive mobile platform available on all devices.</p>
                     </div>
-                    <div class="feature-card">
+                    <h3>Trade Anywhere</h3>
+                    <p>Access your account and trade on the go with our responsive mobile platform available on all devices.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
                         <i class="fas fa-users"></i>
-                        <h3>Referral Program</h3>
-                        <p>Earn commissions by referring new traders to our platform.</p>
                     </div>
-                    <div class="feature-card">
+                    <h3>Referral Program</h3>
+                    <p>Earn generous commissions by referring new traders to our platform and build your trading team.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
                         <i class="fas fa-graduation-cap"></i>
-                        <h3>Educational Resources</h3>
-                        <p>Learn trading strategies and market analysis with our comprehensive materials.</p>
                     </div>
-                    <div class="feature-card">
+                    <h3>Educational Resources</h3>
+                    <p>Learn trading strategies and market analysis with our comprehensive educational materials and webinars.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
                         <i class="fas fa-headset"></i>
-                        <h3>24/7 Support</h3>
-                        <p>Our dedicated support team is available around the clock to assist you.</p>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <footer>
-            <div class="container">
-                <div class="footer-grid">
-                    <div class="footer-column">
-                        <h4>ForexPro</h4>
-                        <p>Professional Forex trading platform for currency traders worldwide.</p>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Quick Links</h4>
-                        <ul>
-                            <li><a href="#" onclick="showPage('landing-page')">Home</a></li>
-                            <li><a href="#" onclick="showPage('features')">Features</a></li>
-                            <li><a href="#" onclick="showPage('about')">About</a></li>
-                            <li><a href="#" onclick="showPage('contact')">Contact</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Services</h4>
-                        <ul>
-                            <li><a href="#" onclick="showPage('user-dashboard')">Trading Platform</a></li>
-                            <li><a href="#" onclick="showPage('education')">Education</a></li>
-                            <li><a href="#" onclick="showPage('referral')">Referral Program</a></li>
-                            <li><a href="#" onclick="showPage('mobile')">Mobile App</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Contact Us</h4>
-                        <ul>
-                            <li><i class="fas fa-envelope"></i> support@forexpro.com</li>
-                            <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
-                            <li><i class="fas fa-map-marker-alt"></i> 123 Trading St, Finance City</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="copyright">
-                    <p>&copy; 2023 ForexPro. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
-    </div>
-
-    <!-- Login/Register Page -->
-    <div id="login" class="page">
-        <div class="auth-container">
-            <div class="auth-image">
-                <div class="auth-image-content">
-                    <h1>Welcome to ForexPro</h1>
-                    <p>Access your professional trading dashboard and start making informed currency trading decisions.</p>
-                    <p>Don't have an account? <a href="#" onclick="showPage('register')" style="color: var(--light-blue);">Sign up now</a></p>
-                </div>
-            </div>
-            <div class="auth-form">
-                <div class="form-container">
-                    <div class="auth-tabs">
-                        <div class="auth-tab active" onclick="switchAuthTab('login')">Login</div>
-                        <div class="auth-tab" onclick="switchAuthTab('register')">Register</div>
-                    </div>
-                    
-                    <div id="login-form" class="auth-content active">
-                        <h3>Login to Your Account</h3>
-                        <form onsubmit="handleLogin(event)">
-                            <div class="form-group">
-                                <label for="login-email">Email Address</label>
-                                <input type="email" id="login-email" class="form-control" placeholder="Enter your email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="login-password">Password</label>
-                                <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required>
-                            </div>
-                            <div class="form-group">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <div>
-                                        <input type="checkbox" id="remember-me">
-                                        <label for="remember-me">Remember me</label>
-                                    </div>
-                                    <a href="#" style="color: var(--light-blue);">Forgot password?</a>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn" style="width: 100%;">Login</button>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <div id="register-form" class="auth-content">
-                        <h3>Create a New Account</h3>
-                        <form onsubmit="handleRegister(event)">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="register-firstname">First Name</label>
-                                    <input type="text" id="register-firstname" class="form-control" placeholder="First name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="register-lastname">Last Name</label>
-                                    <input type="text" id="register-lastname" class="form-control" placeholder="Last name" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="register-email">Email Address</label>
-                                <input type="email" id="register-email" class="form-control" placeholder="Enter your email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="register-password">Password</label>
-                                <input type="password" id="register-password" class="form-control" placeholder="Create a password" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="register-referral">Referral Code (Optional)</label>
-                                <input type="text" id="register-referral" class="form-control" placeholder="Enter referral code">
-                            </div>
-                            <div class="form-group">
-                                <div>
-                                    <input type="checkbox" id="agree-terms" required>
-                                    <label for="agree-terms">I agree to the <a href="#" style="color: var(--light-blue);">Terms and Conditions</a></label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn" style="width: 100%;">Register</button>
-                            </div>
-                        </form>
-                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Our dedicated support team is available around the clock to assist you with any questions or issues.</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- User Dashboard -->
-    <div id="user-dashboard" class="page">
-        <div class="dashboard">
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <div class="logo">
-                        <i class="fas fa-chart-line"></i>
-                        <span>ForexPro</span>
-                    </div>
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Start Your Trading Journey?</h2>
+            <p>Join thousands of successful traders on ForexPro and take control of your financial future today.</p>
+            <a href="#register" class="btn">Create Free Account</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>ForexPro</h4>
+                    <p>Professional Forex trading platform for currency traders worldwide. Trade with confidence and security.</p>
                 </div>
-                <ul class="sidebar-menu">
-                    <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="#" onclick="showPage('trading')"><i class="fas fa-exchange-alt"></i> Trading</a></li>
-                    <li><a href="#" onclick="showPage('portfolio')"><i class="fas fa-briefcase"></i> Portfolio</a></li>
-                    <li><a href="#" onclick="showPage('market')"><i class="fas fa-chart-area"></i> Market Data</a></li>
-                    <li><a href="#" onclick="showPage('referral')"><i class="fas fa-users"></i> Referral Program</a></li>
-                    <li><a href="#" onclick="showPage('history')"><i class="fas fa-history"></i> History</a></li>
-                    <li><a href="#" onclick="showPage('settings')"><i class="fas fa-cog"></i> Settings</a></li>
-                    <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#trading">Trading Platform</a></li>
+                        <li><a href="#education">Education Center</a></li>
+                        <li><a href="#referral">Referral Program</a></li>
+                        <li><a href="#mobile">Mobile App</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> support@forexpro.com</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Trading St, Finance City</li>
+                    </ul>
+                </div>
             </div>
-            <div class="main-content">
-                <div class="dashboard-header">
-                    <h1 class="dashboard-title">Dashboard</h1>
-                    <div class="user-info">
-                        <span id="user-name">John Doe</span>
-                        <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User">
-                    </div>
-                </div>
-                
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3>Account Balance</h3>
-                        <div class="value" id="account-balance">$12,456.78</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Today's P&L</h3>
-                        <div class="value" style="color: var(--success);" id="today-pl">+$234.56</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Total Portfolio Value</h3>
-                        <div class="value" id="portfolio-value">$45,678.90</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Available Margin</h3>
-                        <div class="value" id="available-margin">$8,765.43</div>
-                    </div>
-                </div>
-                
-                <div class="referral-container">
-                    <h3>Your Referral Information</h3>
-                    <div class="referral-code">
-                        <input type="text" id="user-referral-code" value="FXP12345" readonly>
-                        <button type="button" onclick="copyReferralCode()"><i class="fas fa-copy"></i></button>
-                    </div>
-                    <div class="referral-link">
-                        <input type="text" id="user-referral-link" value="https://forexpro.com/ref/FXP12345" readonly>
-                        <button type="button" onclick="copyReferralLink()"><i class="fas fa-copy"></i></button>
-                    </div>
-                </div>
-                
-                <div class="team-container">
-                    <h3>Your Team Performance</h3>
-                    <div class="team-stats">
-                        <div class="team-stat-card">
-                            <div class="value" id="direct-referrals">12</div>
-                            <div class="label">Direct Referrals</div>
-                        </div>
-                        <div class="team-stat-card">
-                            <div class="value" id="total-team-size">48</div>
-                            <div class="label">Total Team Size</div>
-                        </div>
-                        <div class="team-stat-card">
-                            <div class="value" id="team-commission">$1,245.67</div>
-                            <div class="label">Team Commission</div>
-                        </div>
-                        <div class="team-stat-card">
-                            <div class="value" id="team-trading-volume">$3,456.78</div>
-                            <div class="label">Team Trading Volume</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="table-container">
-                    <h3>Your Referrals</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Join Date</th>
-                                <th>Trading Volume</th>
-                                <th>Commission</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="referrals-table">
-                            <!-- Referrals will be populated here -->
-                        </tbody>
-                    </table>
-                </div>
+            <div class="copyright">
+                <p>&copy; 2023 ForexPro. All rights reserved. | Trading involves risk</p>
             </div>
         </div>
-    </div>
-
-    <!-- Admin Dashboard -->
-    <div id="admin-dashboard" class="page">
-        <div class="dashboard">
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <div class="logo">
-                        <i class="fas fa-chart-line"></i>
-                        <span>ForexPro Admin</span>
-                    </div>
-                </div>
-                <ul class="sidebar-menu">
-                    <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="#" onclick="showPage('admin-users')"><i class="fas fa-users"></i> Users</a></li>
-                    <li><a href="#" onclick="showPage('admin-trades')"><i class="fas fa-exchange-alt"></i> Trades</a></li>
-                    <li><a href="#" onclick="showPage('admin-referrals')"><i class="fas fa-user-friends"></i> Referrals</a></li>
-                    <li><a href="#" onclick="showPage('admin-reports')"><i class="fas fa-file-alt"></i> Reports</a></li>
-                    <li><a href="#" onclick="showPage('admin-settings')"><i class="fas fa-cog"></i> Settings</a></li>
-                    <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
-            </div>
-            <div class="main-content">
-                <div class="dashboard-header">
-                    <h1 class="dashboard-title">Admin Dashboard</h1>
-                    <div class="user-info">
-                        <span>Admin User</span>
-                        <img src="https://randomuser.me/api/portraits/men/5.jpg" alt="Admin">
-                    </div>
-                </div>
-                
-                <div class="admin-stats">
-                    <div class="admin-stat-card">
-                        <i class="fas fa-users"></i>
-                        <div class="value" id="total-users">1,245</div>
-                        <div class="label">Total Users</div>
-                    </div>
-                    <div class="admin-stat-card">
-                        <i class="fas fa-user-plus"></i>
-                        <div class="value" id="new-users">325</div>
-                        <div class="label">New Users (This Month)</div>
-                    </div>
-                    <div class="admin-stat-card">
-                        <i class="fas fa-exchange-alt"></i>
-                        <div class="value" id="today-trades">3,567</div>
-                        <div class="label">Today's Trades</div>
-                    </div>
-                    <div class="admin-stat-card">
-                        <i class="fas fa-dollar-sign"></i>
-                        <div class="value" id="daily-volume">$1.2M</div>
-                        <div class="label">Daily Volume</div>
-                    </div>
-                </div>
-                
-                <div class="chart-container">
-                    <h3>Platform Activity</h3>
-                    <div class="chart-placeholder">
-                        <p>Platform Activity Chart</p>
-                    </div>
-                </div>
-                
-                <div class="table-container">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h3>All Users</h3>
-                        <div class="admin-actions">
-                            <button class="btn">Export</button>
-                            <button class="btn">Filter</button>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>User ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Referral Code</th>
-                                <th>Referred By</th>
-                                <th>Join Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-users-table">
-                            <!-- Users will be populated here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notification Container -->
-    <div id="notification" class="notification">
-        <i class="fas fa-check-circle"></i>
-        <span id="notification-message">Operation successful!</span>
-    </div>
-
-    <!-- Real-time Update Indicator -->
-    <div id="update-indicator" class="update-indicator">
-        <i class="fas fa-sync-alt"></i>
-        <span>Updating data...</span>
-    </div>
+    </footer>
 
     <script>
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyBxIujPFlHfqgL_-fLbsoSYo3gaGf2iPHQ",
-            authDomain: "sabjiwalahere.firebaseapp.com",
-            projectId: "sabjiwalahere",
-            storageBucket: "sabjiwalahere.firebasestorage.app",
-            messagingSenderId: "418578879301",
-            appId: "1:418578879301:web:56bdf323bf186cbbe1a42c",
-            measurementId: "G-4DGEQXXDLG"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-
-        // Current logged in user
-        let currentUser = null;
-        let usersData = [];
-        let referralsData = [];
-
-        // Page Navigation
-        function showPage(pageId) {
-            // Hide all pages
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            // Show the selected page
-            document.getElementById(pageId).classList.add('active');
-            
-            // Load data based on page
-            if (pageId === 'user-dashboard') {
-                loadUserDashboard();
-            } else if (pageId === 'admin-dashboard') {
-                loadAdminDashboard();
-            }
-        }
-
-        // Auth Tab Switching
-        function switchAuthTab(tab) {
-            // Update tab buttons
-            const tabs = document.querySelectorAll('.auth-tab');
-            tabs.forEach(t => {
-                t.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Update tab content
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            
-            if (tab === 'login') {
-                loginForm.classList.add('active');
-                registerForm.classList.remove('active');
-            } else {
-                loginForm.classList.remove('active');
-                registerForm.classList.add('active');
-            }
-        }
-
-        // Handle Login
-        function handleLogin(event) {
-            event.preventDefault();
-            
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            
-            // Show loading state
-            showNotification('Logging in...', 'warning');
-            
-            // Query Firestore for user
-            db.collection('users').where('email', '==', email).where('password', '==', password).get()
-                .then((querySnapshot) => {
-                    if (querySnapshot.empty) {
-                        showNotification('Invalid email or password!', 'error');
-                        return;
-                    }
-                    
-                    const userDoc = querySnapshot.docs[0];
-                    currentUser = userDoc.data();
-                    currentUser.id = userDoc.id;
-                    
-                    // Update UI
-                    document.getElementById('user-name').textContent = currentUser.name;
-                    
-                    if (currentUser.isAdmin) {
-                        showPage('admin-dashboard');
-                    } else {
-                        showPage('user-dashboard');
-                    }
-                    
-                    showNotification('Login successful!', 'success');
-                })
-                .catch((error) => {
-                    console.error("Error logging in: ", error);
-                    showNotification('Login failed. Please try again.', 'error');
-                });
-        }
-
-        // Handle Register
-        function handleRegister(event) {
-            event.preventDefault();
-            
-            const firstName = document.getElementById('register-firstname').value;
-            const lastName = document.getElementById('register-lastname').value;
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-            const referralCode = document.getElementById('register-referral').value;
-            
-            // Show loading state
-            showNotification('Creating account...', 'warning');
-            
-            // Check if user already exists
-            db.collection('users').where('email', '==', email).get()
-                .then((querySnapshot) => {
-                    if (!querySnapshot.empty) {
-                        showNotification('User with this email already exists!', 'error');
-                        return;
-                    }
-                    
-                    // Generate unique referral code
-                    const newReferralCode = 'FXP' + Math.floor(10000 + Math.random() * 90000);
-                    
-                    // Create new user
-                    const newUser = {
-                        name: firstName + ' ' + lastName,
-                        email: email,
-                        password: password,
-                        referralCode: newReferralCode,
-                        referredBy: referralCode || null,
-                        joinDate: new Date().toISOString().split('T')[0],
-                        isActive: false,
-                        isAdmin: false,
-                        accountBalance: 0,
-                        portfolioValue: 0,
-                        todayPL: 0,
-                        availableMargin: 0,
-                        directReferrals: 0,
-                        totalTeamSize: 0,
-                        teamCommission: 0,
-                        teamTradingVolume: 0
-                    };
-                    
-                    // Add to Firestore
-                    db.collection('users').add(newUser)
-                        .then((docRef) => {
-                            // If referred by someone, update their referral count
-                            if (referralCode) {
-                                db.collection('users').where('referralCode', '==', referralCode).get()
-                                    .then((querySnapshot) => {
-                                        if (!querySnapshot.empty) {
-                                            const referrerDoc = querySnapshot.docs[0];
-                                            const referrer = referrerDoc.data();
-                                            
-                                            // Update referrer's direct referrals count
-                                            db.collection('users').doc(referrerDoc.id).update({
-                                                directReferrals: firebase.firestore.FieldValue.increment(1)
-                                            });
-                                            
-                                            // Create referral record
-                                            db.collection('referrals').add({
-                                                referrerId: referrerDoc.id,
-                                                referredId: docRef.id,
-                                                referralDate: new Date().toISOString().split('T')[0],
-                                                commission: 0,
-                                                status: 'Pending'
-                                            });
-                                        }
-                                    });
-                            }
-                            
-                            // Log in the new user
-                            currentUser = newUser;
-                            currentUser.id = docRef.id;
-                            
-                            document.getElementById('user-name').textContent = currentUser.name;
-                            
-                            showPage('user-dashboard');
-                            showNotification('Registration successful!', 'success');
-                        })
-                        .catch((error) => {
-                            console.error("Error registering user: ", error);
-                            showNotification('Registration failed. Please try again.', 'error');
-                        });
-                });
-        }
-
-        // Handle Logout
-        function handleLogout() {
-            currentUser = null;
-            showPage('landing-page');
-            showNotification('You have been logged out!', 'success');
-        }
-
-        // Copy Referral Code
-        function copyReferralCode() {
-            const referralCodeInput = document.getElementById('user-referral-code');
-            referralCodeInput.select();
-            document.execCommand('copy');
-            showNotification('Referral code copied to clipboard!', 'success');
-        }
-
-        // Copy Referral Link
-        function copyReferralLink() {
-            const referralLinkInput = document.getElementById('user-referral-link');
-            referralLinkInput.select();
-            document.execCommand('copy');
-            showNotification('Referral link copied to clipboard!', 'success');
-        }
-
-        // Load User Dashboard
-        function loadUserDashboard() {
-            if (!currentUser) return;
-            
-            // Update user referral code and link
-            document.getElementById('user-referral-code').value = currentUser.referralCode;
-            document.getElementById('user-referral-link').value = `https://forexpro.com/ref/${currentUser.referralCode}`;
-            
-            // Update user stats
-            document.getElementById('account-balance').textContent = `$${currentUser.accountBalance.toFixed(2)}`;
-            document.getElementById('today-pl').textContent = `${currentUser.todayPL >= 0 ? '+' : ''}$${currentUser.todayPL.toFixed(2)}`;
-            document.getElementById('portfolio-value').textContent = `$${currentUser.portfolioValue.toFixed(2)}`;
-            document.getElementById('available-margin').textContent = `$${currentUser.availableMargin.toFixed(2)}`;
-            
-            // Update team stats
-            document.getElementById('direct-referrals').textContent = currentUser.directReferrals || 0;
-            document.getElementById('total-team-size').textContent = currentUser.totalTeamSize || 0;
-            document.getElementById('team-commission').textContent = `$${(currentUser.teamCommission || 0).toFixed(2)}`;
-            document.getElementById('team-trading-volume').textContent = `$${(currentUser.teamTradingVolume || 0).toFixed(2)}`;
-            
-            // Load referrals
-            loadReferrals();
-        }
-
-        // Load Referrals
-        function loadReferrals() {
-            if (!currentUser) return;
-            
-            // Show update indicator
-            showUpdateIndicator();
-            
-            // Get referrals for current user
-            db.collection('referrals').where('referrerId', '==', currentUser.id).get()
-                .then((querySnapshot) => {
-                    const referralsTable = document.getElementById('referrals-table');
-                    referralsTable.innerHTML = '';
-                    
-                    if (querySnapshot.empty) {
-                        const row = referralsTable.insertRow();
-                        row.innerHTML = '<td colspan="6" style="text-align: center;">No referrals found</td>';
-                        return;
-                    }
-                    
-                    // Process each referral
-                    const referralPromises = [];
-                    querySnapshot.forEach((doc) => {
-                        const referral = doc.data();
-                        referral.id = doc.id;
-                        
-                        // Get referred user details
-                        const userPromise = db.collection('users').doc(referral.referredId).get()
-                            .then((userDoc) => {
-                                if (userDoc.exists) {
-                                    const user = userDoc.data();
-                                    return {
-                                        ...referral,
-                                        userName: user.name,
-                                        userEmail: user.email,
-                                        userJoinDate: user.joinDate,
-                                        userStatus: user.isActive ? 'Active' : 'Inactive'
-                                    };
-                                }
-                                return null;
-                            });
-                        
-                        referralPromises.push(userPromise);
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
                     });
-                    
-                    // Wait for all user details to be fetched
-                    Promise.all(referralPromises).then((referralDetails) => {
-                        referralDetails.forEach((detail) => {
-                            if (detail) {
-                                const row = referralsTable.insertRow();
-                                
-                                // Status class
-                                let statusClass = 'warning';
-                                if (detail.userStatus === 'Active') {
-                                    statusClass = 'success';
-                                }
-                                
-                                row.innerHTML = `
-                                    <td>${detail.userName}</td>
-                                    <td>${detail.userEmail}</td>
-                                    <td>${detail.userJoinDate}</td>
-                                    <td>$${(detail.tradingVolume || 0).toFixed(2)}</td>
-                                    <td>$${(detail.commission || 0).toFixed(2)}</td>
-                                    <td><span class="status ${statusClass}">${detail.userStatus}</span></td>
-                                `;
-                            }
-                        });
-                        
-                        // Hide update indicator
-                        hideUpdateIndicator();
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error loading referrals: ", error);
-                    showNotification('Failed to load referrals', 'error');
-                    hideUpdateIndicator();
-                });
-        }
-
-        // Load Admin Dashboard
-        function loadAdminDashboard() {
-            if (!currentUser || !currentUser.isAdmin) return;
-            
-            // Load users
-            loadAdminUsers();
-            
-            // Load platform stats
-            loadPlatformStats();
-        }
-
-        // Load Admin Users
-        function loadAdminUsers() {
-            // Show update indicator
-            showUpdateIndicator();
-            
-            // Get all users
-            db.collection('users').get()
-                .then((querySnapshot) => {
-                    const usersTable = document.getElementById('admin-users-table');
-                    usersTable.innerHTML = '';
-                    
-                    if (querySnapshot.empty) {
-                        const row = usersTable.insertRow();
-                        row.innerHTML = '<td colspan="8" style="text-align: center;">No users found</td>';
-                        return;
-                    }
-                    
-                    querySnapshot.forEach((doc) => {
-                        const user = doc.data();
-                        user.id = doc.id;
-                        
-                        const row = usersTable.insertRow();
-                        
-                        // Status class
-                        let statusClass = 'warning';
-                        if (user.isActive) {
-                            statusClass = 'success';
-                        }
-                        
-                        row.innerHTML = `
-                            <td>#${user.id.substring(0, 8)}</td>
-                            <td>${user.name}</td>
-                            <td>${user.email}</td>
-                            <td>${user.referralCode}</td>
-                            <td>${user.referredBy || '-'}</td>
-                            <td>${user.joinDate}</td>
-                            <td><span class="status ${statusClass}">${user.isActive ? 'Active' : 'Inactive'}</span></td>
-                            <td>
-                                <button class="btn" style="padding: 5px 10px; font-size: 12px;" onclick="viewUserDetails('${user.id}')">View</button>
-                                ${!user.isActive ? `<button class="btn" style="padding: 5px 10px; font-size: 12px; margin-left: 5px;" onclick="activateUser('${user.id}')">Activate</button>` : ''}
-                            </td>
-                        `;
-                    });
-                    
-                    // Hide update indicator
-                    hideUpdateIndicator();
-                })
-                .catch((error) => {
-                    console.error("Error loading users: ", error);
-                    showNotification('Failed to load users', 'error');
-                    hideUpdateIndicator();
-                });
-        }
-
-        // Load Platform Stats
-        function loadPlatformStats() {
-            // Get total users count
-            db.collection('users').get().then((querySnapshot) => {
-                document.getElementById('total-users').textContent = querySnapshot.size;
-            });
-            
-            // Get new users this month
-            const currentMonth = new Date().getMonth();
-            const currentYear = new Date().getFullYear();
-            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-            
-            db.collection('users')
-                .where('joinDate', '>=', firstDayOfMonth.toISOString().split('T')[0])
-                .get()
-                .then((querySnapshot) => {
-                    document.getElementById('new-users').textContent = querySnapshot.size;
-                });
-            
-            // Mock data for trades and volume
-            document.getElementById('today-trades').textContent = '3,567';
-            document.getElementById('daily-volume').textContent = '$1.2M';
-        }
-
-        // View User Details (Admin)
-        function viewUserDetails(userId) {
-            db.collection('users').doc(userId).get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        const user = doc.data();
-                        alert(`User Details:\n\nName: ${user.name}\nEmail: ${user.email}\nReferral Code: ${user.referralCode}\nReferred By: ${user.referredBy || 'None'}\nJoin Date: ${user.joinDate}\nStatus: ${user.isActive ? 'Active' : 'Inactive'}\nAccount Balance: $${user.accountBalance.toFixed(2)}`);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error getting user details: ", error);
-                    showNotification('Failed to load user details', 'error');
-                });
-        }
-
-        // Activate User (Admin)
-        function activateUser(userId) {
-            if (!confirm('Are you sure you want to activate this user? This will award a 50% bonus to their referrer.')) {
-                return;
-            }
-            
-            // Show loading state
-            showNotification('Activating user...', 'warning');
-            
-            // Get user details
-            db.collection('users').doc(userId).get()
-                .then((doc) => {
-                    if (!doc.exists) {
-                        showNotification('User not found', 'error');
-                        return;
-                    }
-                    
-                    const user = doc.data();
-                    
-                    // Update user status
-                    return db.collection('users').doc(userId).update({
-                        isActive: true
-                    });
-                })
-                .then(() => {
-                    // Find referrer and award bonus
-                    return db.collection('users').doc(userId).get();
-                })
-                .then((doc) => {
-                    const user = doc.data();
-                    
-                    if (user.referredBy) {
-                        // Find referrer
-                        return db.collection('users').where('referralCode', '==', user.referredBy).get()
-                            .then((querySnapshot) => {
-                                if (!querySnapshot.empty) {
-                                    const referrerDoc = querySnapshot.docs[0];
-                                    const referrer = referrerDoc.data();
-                                    
-                                    // Calculate bonus (50% of 100 = 50)
-                                    const bonus = 50;
-                                    
-                                    // Update referrer's account balance and commission
-                                    return db.collection('users').doc(referrerDoc.id).update({
-                                        accountBalance: firebase.firestore.FieldValue.increment(bonus),
-                                        teamCommission: firebase.firestore.FieldValue.increment(bonus)
-                                    });
-                                }
-                            });
-                    }
-                })
-                .then(() => {
-                    // Update referral record
-                    return db.collection('referrals')
-                        .where('referredId', '==', userId)
-                        .get()
-                        .then((querySnapshot) => {
-                            if (!querySnapshot.empty) {
-                                const referralDoc = querySnapshot.docs[0];
-                                return db.collection('referrals').doc(referralDoc.id).update({
-                                    commission: 50,
-                                    status: 'Completed'
-                                });
-                            }
-                        });
-                })
-                .then(() => {
-                    showNotification('User activated successfully!', 'success');
-                    // Reload admin dashboard
-                    loadAdminDashboard();
-                })
-                .catch((error) => {
-                    console.error("Error activating user: ", error);
-                    showNotification('Failed to activate user', 'error');
-                });
-        }
-
-        // Show Notification
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            const notificationMessage = document.getElementById('notification-message');
-            
-            notificationMessage.textContent = message;
-            
-            // Reset classes
-            notification.classList.remove('success', 'error', 'warning');
-            
-            // Add appropriate class based on type
-            if (type === 'success') {
-                notification.classList.add('success');
-                notification.querySelector('i').className = 'fas fa-check-circle';
-            } else if (type === 'error') {
-                notification.classList.add('error');
-                notification.querySelector('i').className = 'fas fa-times-circle';
-            } else if (type === 'warning') {
-                notification.classList.add('warning');
-                notification.querySelector('i').className = 'fas fa-exclamation-circle';
-            }
-            
-            // Show notification
-            notification.classList.add('show');
-            
-            // Hide notification after 3 seconds
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Show Update Indicator
-        function showUpdateIndicator() {
-            document.getElementById('update-indicator').classList.add('show');
-        }
-
-        // Hide Update Indicator
-        function hideUpdateIndicator() {
-            document.getElementById('update-indicator').classList.remove('show');
-        }
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set the default page
-            showPage('landing-page');
-            
-            // Check if user is already logged in (for demo purposes, we'll check localStorage)
-            const savedUser = localStorage.getItem('currentUser');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                document.getElementById('user-name').textContent = currentUser.name;
-                
-                if (currentUser.isAdmin) {
-                    showPage('admin-dashboard');
-                } else {
-                    showPage('user-dashboard');
                 }
+            });
+        });
+
+        // Add shadow to header on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
             }
         });
 
-        // Save user to localStorage when logging in
-        window.addEventListener('beforeunload', function() {
-            if (currentUser) {
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            }
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
         });
     </script>
 </body>
