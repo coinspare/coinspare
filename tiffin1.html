@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TiffinWala — Fresh Tiffin Delivery</title>
+  <meta name="description" content="TiffinWala - Professional daily & monthly tiffin services. Contact: Arvind Sharma - 9876543210" />
+  <style>
+    :root{--primary:#0077b6;--primary-dark:#023e8a;--secondary:#48cae4;--muted:#6c757d}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;color:#212529;background:#f8f9fa;line-height:1.6}
+    header{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.05);position:sticky;top:0;z-index:100}
+    .container{max-width:1200px;margin:0 auto;padding:16px}
+    .flex{display:flex;align-items:center;justify-content:space-between}
+    .logo{font-size:24px;font-weight:700;color:var(--primary);text-decoration:none}
+    nav a{margin-left:16px;color:var(--muted);text-decoration:none;font-weight:500;transition:.2s}
+    nav a:hover{color:var(--primary)}
+    .btn{background:var(--primary);color:#fff;padding:10px 18px;border:none;border-radius:6px;cursor:pointer;font-weight:600;text-decoration:none;display:inline-block;transition:.3s}
+    .btn:hover{background:var(--primary-dark)}
+
+    /* Hero */
+    .hero{background:linear-gradient(rgba(0,119,182,0.6),rgba(2,62,138,0.7)),url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600') center/cover no-repeat;height:480px;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center;padding:0 20px}
+    .hero h1{font-size:42px;margin-bottom:14px}
+    .hero p{font-size:18px;max-width:720px;margin:0 auto 20px}
+
+    /* Plans */
+    section{padding:60px 20px}
+    h2{text-align:center;font-size:28px;color:var(--primary-dark);margin-bottom:36px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+    .card{background:#fff;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.06);padding:24px;transition:transform .2s}
+    .card:hover{transform:translateY(-6px)}
+    .card img{width:100%;border-radius:8px;height:160px;object-fit:cover;margin-bottom:14px}
+    .price{font-size:20px;font-weight:700;color:var(--primary)}
+    .muted{font-size:14px;color:var(--muted)}
+    .qty{display:flex;align-items:center;margin:12px 0}
+    .qty button{background:#f1f1f1;border:none;width:32px;height:32px;border-radius:6px;cursor:pointer;font-weight:700}
+    .qty input{width:60px;text-align:center;margin:0 6px;border:1px solid #ddd;border-radius:6px;padding:6px}
+
+    /* Cart */
+    .cart-btn{position:fixed;right:20px;bottom:20px;background:var(--secondary);color:#fff;border:none;border-radius:50px;padding:14px 22px;font-weight:600;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,0.2)}
+    .cart-panel{position:fixed;right:20px;bottom:70px;width:340px;max-height:70vh;background:#fff;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.15);overflow:auto;padding:16px;display:none;z-index:200}
+    .cart-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee}
+    .total{display:flex;justify-content:space-between;font-weight:700;margin:14px 0}
+
+    /* Footer */
+    footer{background:#fff;border-top:1px solid #eee;padding:22px;text-align:center;font-size:14px;color:var(--muted)}
+
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:300}
+    .modal{background:#fff;padding:20px;border-radius:8px;max-width:400px;width:100%}
+    .form-row{margin-bottom:12px}
+    .form-row label{font-weight:500;margin-bottom:4px;display:block}
+    .form-row input{width:100%;padding:10px;border:1px solid #ddd;border-radius:6px}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container flex">
+      <a href="#" class="logo">TiffinWala</a>
+      <nav>
+        <a href="#" id="myAccountBtn">My Account</a>
+        <a href="#" id="loginBtn">Login</a>
+        <a href="#" id="registerBtn">Register</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>Delicious Home-Cooked Tiffins Delivered Daily</h1>
+      <p>Affordable tiffin services for students, professionals & families. Monthly Package ₹3000 • Daily ₹65. Order now and enjoy healthy meals at your doorstep.</p>
+      <a href="#plans" class="btn">View Plans</a>
+    </div>
+  </section>
+
+  <section id="plans">
+    <h2>Our Tiffin Plans</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1544378730-0b4b76b8f9a3?q=80&w=1200" alt="monthly">
+        <h3>Monthly Package</h3>
+        <p class="price">₹3000 / month</p>
+        <p class="muted">One tiffin per day • Free delivery</p>
+        <div class="qty">
+          <button onclick="decrement('monthlyQty')">-</button>
+          <input id="monthlyQty" type="number" value="1" min="1">
+          <button onclick="increment('monthlyQty')">+</button>
+        </div>
+        <button class="btn" onclick="addToCart('monthly')">Add to Cart</button>
+      </div>
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1200" alt="daily">
+        <h3>Daily Tiffin</h3>
+        <p class="price">₹65 / tiffin</p>
+        <p class="muted">Flexible daily ordering option</p>
+        <div class="qty">
+          <button onclick="decrement('dailyQty')">-</button>
+          <input id="dailyQty" type="number" value="1" min="1">
+          <button onclick="increment('dailyQty')">+</button>
+        </div>
+        <button class="btn" onclick="addToCart('daily')">Add to Cart</button>
+      </div>
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200" alt="combo">
+        <h3>Weekly Combo</h3>
+        <p class="price">₹420 / week</p>
+        <p class="muted">7 days of fresh tiffins</p>
+        <div class="qty">
+          <button onclick="decrement('comboQty')">-</button>
+          <input id="comboQty" type="number" value="1" min="1">
+          <button onclick="increment('comboQty')">+</button>
+        </div>
+        <button class="btn" onclick="addToCart('combo')">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <button class="cart-btn" id="openCart">🛒 Cart (<span id="cartCount">0</span>)</button>
+  <div class="cart-panel" id="cartPanel">
+    <h3>Your Cart</h3>
+    <div id="cartList"></div>
+    <div class="total"><span>Total</span><span id="cartTotal">₹0</span></div>
+    <button class="btn" onclick="checkoutWhatsApp()">Checkout on WhatsApp</button>
+    <button class="btn" style="background:#ccc;color:#000;margin-top:10px" onclick="clearCart()">Clear Cart</button>
+  </div>
+
+  <footer>
+    © <span id="year"></span> TiffinWala | Contact: Arvind Sharma • 9876543210
+  </footer>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" id="modalContent"></div>
+  </div>
+
+  <script>
+    const products = {
+      monthly: {id:'monthly',name:'Monthly Package',price:3000},
+      daily: {id:'daily',name:'Daily Tiffin',price:65},
+      combo: {id:'combo',name:'Weekly Combo',price:420}
+    };
+    function increment(id){const el=document.getElementById(id);el.value=+el.value+1}
+    function decrement(id){const el=document.getElementById(id);if(+el.value>1)el.value=+el.value-1}
+    function getCart(){return JSON.parse(localStorage.getItem('cart')||'[]')}
+    function saveCart(c){localStorage.setItem('cart',JSON.stringify(c));renderCart()}
+    function addToCart(k){const qtyEl=document.getElementById(k+'Qty');const qty=+qtyEl.value||1;const p=products[k];let cart=getCart();let exist=cart.find(i=>i.id===p.id);if(exist){exist.qty+=qty}else{cart.push({id:p.id,name:p.name,price:p.price,qty})}saveCart(cart)}
+    function renderCart(){let cart=getCart();let total=0,count=0;const list=document.getElementById('cartList');list.innerHTML='';cart.forEach(i=>{total+=i.price*i.qty;count+=i.qty;list.innerHTML+=`<div class='cart-item'><div>${i.name}<br><span class='muted'>₹${i.price} × ${i.qty}</span></div><div>₹${i.price*i.qty} <a href='#' onclick=removeItem('${i.id}') style='font-size:12px;color:red'>x</a></div></div>`});document.getElementById('cartTotal').innerText='₹'+total;document.getElementById('cartCount').innerText=count}
+    function removeItem(id){let c=getCart().filter(i=>i.id!==id);saveCart(c)}
+    function clearCart(){localStorage.removeItem('cart');renderCart()}
+    function checkoutWhatsApp(){let cart=getCart();if(cart.length===0)return alert('Cart empty');let items=cart.map(i=>`${i.name} x${i.qty} = ₹${i.price*i.qty}`).join('\n');let total=cart.reduce((s,i)=>s+i.price*i.qty,0);let msg=encodeURIComponent(`Hello Arvind, I'd like to order:\n${items}\nTotal: ₹${total}`);window.open(`https://wa.me/919876543210?text=${msg}`,'_blank')}
+    document.getElementById('openCart').onclick=()=>{const p=document.getElementById('cartPanel');p.style.display=p.style.display==='block'?'none':'block'}
+    document.getElementById('year').innerText=new Date().getFullYear()
+    renderCart()
+
+    // Modal auth simulation
+    const modalBackdrop=document.getElementById('modalBackdrop');const modalContent=document.getElementById('modalContent');
+    function openModal(type){modalBackdrop.style.display='flex';if(type==='login'){modalContent.innerHTML=`<h3>Login</h3><div class='form-row'><label>Email/Mobile</label><input></div><div class='form-row'><label>Password</label><input type='password'></div><button class='btn' onclick='closeModal()'>Login</button>`}if(type==='register'){modalContent.innerHTML=`<h3>Register</h3><div class='form-row'><label>Name</label><input></div><div class='form-row'><label>Mobile</label><input></div><div class='form-row'><label>Password</label><input type='password'></div><button class='btn' onclick='closeModal()'>Register</button>`}if(type==='account'){modalContent.innerHTML=`<h3>My Account</h3><p>No account linked. Please login/register.</p><button class='btn' onclick='closeModal()'>Close</button>`}}
+    function closeModal(){modalBackdrop.style.display='none'}
+    document.getElementById('loginBtn').onclick=()=>openModal('login')
+    document.getElementById('registerBtn').onclick=()=>openModal('register')
+    document.getElementById('myAccountBtn').onclick=()=>openModal('account')
+    modalBackdrop.addEventListener('click',e=>{if(e.target===modalBackdrop)closeModal()})
+  </script>
+</body>
+</html>
