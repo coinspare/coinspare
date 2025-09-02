@@ -1,24 +1,165 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Coinspare - Dashboard</title>
-  <link rel="stylesheet" href="style.css">
-  <script type="module" src="app.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Dashboard • CoinSpare</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e3a8a',
+            accent: '#2563eb',
+            light: '#f8fafc'
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body>
-  <header>Coinspare</header>
+<body class="bg-light min-h-screen flex flex-col">
 
-  <div class="container">
-    <h2>Dashboard</h2>
-    <p><b>Welcome:</b> <span id="userName"></span></p>
-    <p><b>Your Referral Code:</b> <span id="refCode"></span></p>
-    <p><b>Wallet Balance:</b> ₹<span id="walletBalance">0</span></p>
-
-    <h3>Team</h3>
-    <ul id="teamList"></ul>
-
-    <button onclick="logoutUser()">Logout</button>
+<!-- Header -->
+<header class="border-b bg-white sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-2xl bg-accent/10 flex items-center justify-center text-accent font-black">C</div>
+      <span class="font-extrabold text-xl text-primary">CoinSpare</span>
+    </a>
+    <div class="flex items-center gap-4">
+      <span id="welcomeUser" class="text-sm text-slate-600"></span>
+      <button onclick="logout()" class="text-sm px-3 py-1 bg-accent text-white rounded-xl hover:bg-blue-700">Logout</button>
+    </div>
   </div>
+</header>
+
+<!-- Dashboard -->
+<main class="flex-grow max-w-6xl mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-primary mb-6">User Dashboard</h1>
+
+  <!-- Portfolio Section -->
+  <section class="mb-8">
+    <h2 class="text-lg font-semibold text-primary mb-3">Portfolio</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-2xl shadow">
+        <p class="text-sm text-slate-500">Balance</p>
+        <p id="balance" class="text-2xl font-bold text-primary">₹0</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow">
+        <p class="text-sm text-slate-500">Invested</p>
+        <p id="invested" class="text-2xl font-bold text-primary">₹0</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow">
+        <p class="text-sm text-slate-500">Profit / Loss</p>
+        <p id="profitLoss" class="text-2xl font-bold text-primary">₹0</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trade Form -->
+  <section>
+    <h2 class="text-lg font-semibold text-primary mb-3">Make a Trade</h2>
+    <form id="tradeForm" class="bg-white p-6 rounded-2xl shadow space-y-4 max-w-lg">
+      <div>
+        <label class="block text-sm font-medium text-slate-700">Asset</label>
+        <select id="asset" class="mt-1 w-full px-3 py-2 border rounded-xl">
+          <option value="BTC">Bitcoin (BTC)</option>
+          <option value="ETH">Ethereum (ETH)</option>
+          <option value="USDT">Tether (USDT)</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700">Amount (₹)</label>
+        <input type="number" id="amount" required min="100" class="mt-1 w-full px-3 py-2 border rounded-xl" />
+      </div>
+      <button type="submit" class="w-full bg-accent text-white py-2 rounded-xl hover:bg-blue-700 font-medium">Submit Trade</button>
+    </form>
+
+    <!-- Trade History -->
+    <div class="mt-8">
+      <h3 class="text-lg font-semibold text-primary mb-3">Trade History</h3>
+      <table class="w-full bg-white shadow rounded-2xl overflow-hidden">
+        <thead class="bg-accent text-white">
+          <tr>
+            <th class="px-4 py-2 text-left">Asset</th>
+            <th class="px-4 py-2 text-left">Amount</th>
+            <th class="px-4 py-2 text-left">Date</th>
+          </tr>
+        </thead>
+        <tbody id="tradeHistory" class="divide-y">
+          <tr><td colspan="3" class="text-center text-slate-500 py-3">No trades yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="border-t bg-white">
+  <div class="max-w-6xl mx-auto px-4 py-6 text-center text-xs text-slate-500">
+    © <span id="year"></span> CoinSpare. All rights reserved.
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const user = JSON.parse(localStorage.getItem('currentUser'));
+  if(!user){
+    window.location.href = 'login.html';
+  } else {
+    document.getElementById('welcomeUser').textContent = "Hi, " + user.name;
+  }
+
+  let portfolio = JSON.parse(localStorage.getItem('portfolio_' + user.email) || '{"balance":10000,"invested":0,"profitLoss":0,"trades":[]}');
+
+  function updatePortfolioUI(){
+    document.getElementById('balance').textContent = "₹" + portfolio.balance;
+    document.getElementById('invested').textContent = "₹" + portfolio.invested;
+    document.getElementById('profitLoss').textContent = "₹" + portfolio.profitLoss;
+
+    const historyEl = document.getElementById('tradeHistory');
+    historyEl.innerHTML = "";
+    if(portfolio.trades.length === 0){
+      historyEl.innerHTML = '<tr><td colspan="3" class="text-center text-slate-500 py-3">No trades yet</td></tr>';
+    } else {
+      portfolio.trades.forEach(t => {
+        historyEl.innerHTML += `<tr>
+          <td class="px-4 py-2">${t.asset}</td>
+          <td class="px-4 py-2">₹${t.amount}</td>
+          <td class="px-4 py-2">${t.date}</td>
+        </tr>`;
+      });
+    }
+  }
+  updatePortfolioUI();
+
+  document.getElementById('tradeForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const asset = document.getElementById('asset').value;
+    const amount = parseFloat(document.getElementById('amount').value);
+
+    if(amount > portfolio.balance){
+      alert("Insufficient balance.");
+      return;
+    }
+
+    portfolio.balance -= amount;
+    portfolio.invested += amount;
+    portfolio.trades.push({ asset, amount, date: new Date().toLocaleString() });
+
+    localStorage.setItem('portfolio_' + user.email, JSON.stringify(portfolio));
+    updatePortfolioUI();
+    document.getElementById('tradeForm').reset();
+  });
+
+  function logout(){
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+  }
+</script>
+
 </body>
 </html>
