@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CoinSpare — Smart Trading & Portfolio</title>
+  <meta name="description" content="CoinSpare — clean trading UI, portfolio, quick trades and insights." />
+
+  <!-- Google AdSense (replace publisher if needed) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+          data-ad-client="ca-pub-1732932379227343"></script>
+
+  <!-- Fonts & Tailwind -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#0b61ff',   /* primary */
+            brandDeep: '#0638a6',
+            accent: '#2563eb',
+            lightbg: '#f8fbff'
+          },
+          boxShadow: {
+            soft: '0 10px 30px rgba(2,6,23,0.12)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *{ font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, Arial; }
+    body { background: white; color: #0f172a; }
+  </style>
+</head>
+<body class="bg-white">
+
+  <!-- Top banner ad (responsive) -->
+  <div class="w-full bg-slate-50 border-b">
+    <div class="max-w-6xl mx-auto px-4 py-2 flex items-center justify-center">
+      <!-- Responsive Ad unit: full-width -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-1732932379227343"
+           data-ad-slot="7442267860"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-brand/10 flex items-center justify-center text-brand font-extrabold">C</div>
+        <div>
+          <div class="text-xl font-extrabold text-brandDeep">CoinSpare</div>
+          <div class="text-xs text-slate-400 -mt-1">Smart Trading & Portfolio</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href="index.html#features" class="hover:text-brand">Features</a>
+        <a href="pricing.html" class="hover:text-brand">Pricing</a>
+        <a href="about.html" class="hover:text-brand">About</a>
+        <a href="contact.html" class="hover:text-brand">Contact</a>
+        <a href="login.html" class="px-3 py-2 rounded-xl border hover:bg-slate-50">Login</a>
+        <a href="register.html" class="px-3 py-2 rounded-xl bg-brand text-white shadow-soft">Get Started</a>
+      </nav>
+
+      <div class="md:hidden">
+        <a href="login.html" class="px-3 py-2 rounded-xl border">Login</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main>
+    <section class="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-brandDeep leading-tight">
+          CoinSpare — Trade smarter, track better
+        </h1>
+        <p class="mt-4 text-slate-600 max-w-xl">
+          Clean UI for traders: real-time prices, portfolio analytics, quick trades and secure role-based panels.
+          Deploy on GitHub Pages or integrate with your backend APIs.
+        </p>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="register.html" class="px-5 py-3 rounded-2xl bg-brand text-white hover:bg-brandDeep shadow-soft">Create Account</a>
+          <a href="dashboard.html" class="px-5 py-3 rounded-2xl border hover:bg-slate-50">Demo Dashboard</a>
+        </div>
+
+        <ul class="mt-8 grid grid-cols-3 gap-4 text-center">
+          <li class="p-4 border rounded-2xl">
+            <div class="text-2xl font-bold text-brand">0.2s</div><div class="text-xs text-slate-500">Fast UI</div>
+          </li>
+          <li class="p-4 border rounded-2xl">
+            <div class="text-2xl font-bold text-brand">99.9%</div><div class="text-xs text-slate-500">Uptime</div>
+          </li>
+          <li class="p-4 border rounded-2xl">
+            <div class="text-2xl font-bold text-brand">AES-256</div><div class="text-xs text-slate-500">Secure</div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="rounded-3xl overflow-hidden shadow-soft border">
+        <img src="https://images.unsplash.com/photo-1559523182-a284c3fb7cff?q=80&w=1200&auto=format&fit=crop" alt="Trading" class="w-full h-72 md:h-full object-cover">
+      </div>
+    </section>
+
+    <!-- Inline ad between sections -->
+    <section class="max-w-6xl mx-auto px-4">
+      <div class="py-6">
+        <div class="rounded-lg border p-4 flex items-center justify-center">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-1732932379227343"
+               data-ad-slot="7442267860"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-6">
+      <div class="p-6 rounded-2xl border">
+        <h3 class="font-semibold text-brandDeep mb-2">Real-time prices</h3>
+        <p class="text-sm text-slate-600">Connect a live feed and show candle charts, depth and tickers.</p>
+      </div>
+      <div class="p-6 rounded-2xl border">
+        <h3 class="font-semibold text-brandDeep mb-2">Portfolio analytics</h3>
+        <p class="text-sm text-slate-600">Clean overview, profit/loss, and exportable statements.</p>
+      </div>
+      <div class="p-6 rounded-2xl border">
+        <h3 class="font-semibold text-brandDeep mb-2">User & Admin panels</h3>
+        <p class="text-sm text-slate-600">Role-based access: approve users, announcements and management tools.</p>
+      </div>
+    </section>
+
+    <!-- Article-style ad (in-content) -->
+    <section class="max-w-4xl mx-auto px-4 py-8">
+      <article class="prose prose-slate">
+        <h2>Market insights</h2>
+        <p>Short explanation or blog excerpt about market trends that helps SEO. Place contextual ad below.</p>
+
+        <div class="mt-4 mb-6">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-1732932379227343"
+               data-ad-slot="7442267860"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-16 border-t">
+    <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-8">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-8 h-8 rounded-2xl bg-brand/10 flex items-center justify-center text-brand font-black">C</div>
+          <span class="font-bold text-brandDeep">CoinSpare</span>
+        </div>
+        <p class="text-sm text-slate-500">Professional trading UI template. Replace demo logic with your backend API.</p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold mb-2">Product</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="index.html#features" class="hover:text-brand">Features</a></li>
+          <li><a href="pricing.html" class="hover:text-brand">Pricing</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-semibold mb-2">Company</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="about.html" class="hover:text-brand">About</a></li>
+          <li><a href="contact.html" class="hover:text-brand">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-semibold mb-2">Panels</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="dashboard.html" class="hover:text-brand">User Panel</a></li>
+          <li><a href="admin.html" class="hover:text-brand">Admin Panel</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="text-center text-xs text-slate-500 pb-6">© <span id="year"></span> CoinSpare. All rights reserved.</div>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+</body>
+</html>
