@@ -1,100 +1,212 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Register • CoinSpare</title>
+  <meta name="description" content="Register on CoinSpare using a referral code" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#1e3a8a',
-            accent: '#2563eb',
-            light: '#f8fafc'
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{ --brand:#0b61ff; --brand-deep:#0638a6; }
+    body{ font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; background:#fbfdff; color:#0f172a; }
+    main{ padding-top:88px; }
+  </style>
 </head>
-<body class="bg-light min-h-screen flex flex-col">
+<body class="antialiased">
 
-<!-- Header -->
-<header class="border-b bg-white sticky top-0 z-50">
-  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-2">
-      <div class="w-9 h-9 rounded-2xl bg-accent/10 flex items-center justify-center text-accent font-black">C</div>
-      <span class="font-extrabold text-xl text-primary">CoinSpare</span>
-    </a>
-    <nav class="hidden md:flex items-center gap-6">
-      <a href="index.html#features" class="hover:text-accent">Features</a>
-      <a href="pricing.html" class="hover:text-accent">Pricing</a>
-      <a href="about.html" class="hover:text-accent">About</a>
-      <a href="contact.html" class="hover:text-accent">Contact</a>
-    </nav>
-  </div>
-</header>
+  <!-- Header (fixed) -->
+  <header class="fixed inset-x-0 top-0 z-50 border-b bg-white/95">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-[color:var(--brand)]/10 flex items-center justify-center text-[color:var(--brand)] font-extrabold">C</div>
+        <div>
+          <div class="text-lg font-extrabold text-[color:var(--brand-deep)]">CoinSpare</div>
+          <div class="text-xs text-slate-400 -mt-0.5">Forex Trading</div>
+        </div>
+      </a>
+      <nav class="hidden md:flex items-center gap-4">
+        <a href="index.html" class="text-sm">Home</a>
+        <a href="login.html" class="px-3 py-2 rounded-lg border text-sm">Login</a>
+      </nav>
+    </div>
+  </header>
 
-<!-- Register Card -->
-<main class="flex-grow flex items-center justify-center px-4 py-10">
-  <div class="w-full max-w-md bg-white shadow-xl rounded-2xl p-8">
-    <h1 class="text-2xl font-bold text-primary mb-2">Create an Account</h1>
-    <p class="text-sm text-slate-500 mb-6">Join CoinSpare today</p>
+  <main class="min-h-screen flex items-center justify-center px-4 py-16">
+    <div class="w-full max-w-lg">
+      <div class="bg-white border rounded-2xl shadow p-8">
+        <h1 class="text-2xl font-bold text-[color:var(--brand-deep)]">Create your account</h1>
+        <p class="text-sm text-slate-500 mt-1">Register using a referral code</p>
 
-    <form id="registerForm" class="space-y-5">
-      <div>
-        <label class="block text-sm font-medium text-slate-700">Full Name</label>
-        <input type="text" id="name" required class="mt-1 w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent" />
+        <form id="registerForm" class="mt-6 space-y-4">
+          <div>
+            <label class="text-sm text-slate-700">Full name</label>
+            <input id="name" type="text" required class="mt-1 w-full px-3 py-2 border rounded-lg" />
+          </div>
+
+          <div>
+            <label class="text-sm text-slate-700">Email</label>
+            <input id="email" type="email" required class="mt-1 w-full px-3 py-2 border rounded-lg" />
+          </div>
+
+          <div>
+            <label class="text-sm text-slate-700">Password</label>
+            <input id="password" type="password" required minlength="6" class="mt-1 w-full px-3 py-2 border rounded-lg" />
+          </div>
+
+          <div>
+            <label class="text-sm text-slate-700">Referral code</label>
+            <input id="refInput" type="text" readonly class="mt-1 w-full px-3 py-2 border rounded-lg bg-slate-100" />
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button id="submitBtn" class="flex-1 px-4 py-2 rounded-lg bg-[color:var(--brand)] text-white">Register</button>
+            <button id="cancelBtn" type="button" class="px-4 py-2 rounded-lg border">Cancel</button>
+          </div>
+
+          <div id="msg" class="text-sm text-red-500 mt-2 hidden"></div>
+        </form>
+
+        <p class="text-xs text-slate-500 mt-4">Already registered? <a href="login.html" class="text-[color:var(--brand)]">Sign in</a></p>
       </div>
-      <div>
-        <label class="block text-sm font-medium text-slate-700">Email</label>
-        <input type="email" id="email" required class="mt-1 w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent" />
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-slate-700">Password</label>
-        <input type="password" id="password" required class="mt-1 w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent" />
-      </div>
-      <button type="submit" class="w-full bg-accent text-white py-2 rounded-xl hover:bg-blue-700 font-medium">Register</button>
-    </form>
+    </div>
+  </main>
 
-    <p class="text-center text-sm text-slate-500 mt-6">
-      Already have an account?
-      <a href="login.html" class="text-accent hover:underline">Login</a>
-    </p>
-  </div>
-</main>
+  <footer class="border-t bg-white">
+    <div class="max-w-6xl mx-auto px-4 py-4 text-xs text-slate-500">© <span id="year"></span> CoinSpare</div>
+  </footer>
 
-<!-- Footer -->
-<footer class="border-t bg-white">
-  <div class="max-w-6xl mx-auto px-4 py-6 text-center text-xs text-slate-500">
-    © <span id="year"></span> CoinSpare. All rights reserved.
-  </div>
-</footer>
+  <!-- Firebase (modular) + Firestore usage -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    import {
+      getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, updateDoc, arrayUnion
+    } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
+    const firebaseConfig = {
+      apiKey: "AIzaSyBxIujPFlHfqgL_-fLbsoSYo3gaGf2iPHQ",
+      authDomain: "sabjiwalahere.firebaseapp.com",
+      projectId: "sabjiwalahere",
+      storageBucket: "sabjiwalahere.firebasestorage.app",
+      messagingSenderId: "418578879301",
+      appId: "1:418578879301:web:56bdf323bf186cbbe1a42c",
+      measurementId: "G-4DGEQXXDLG"
+    };
 
-  document.getElementById('registerForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const pwd = document.getElementById('password').value;
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    if(users.find(u => u.email === email)){
-      alert('Email already registered.');
-      return;
+    // helpers
+    function qs(name){ const p = new URLSearchParams(location.search); return p.get(name); }
+    function el(id){ return document.getElementById(id); }
+    function showMsg(text, isError=true){
+      const m = el('msg'); m.textContent = text; m.classList.remove('hidden'); m.style.color = isError ? '#ef4444' : '#059669';
     }
 
-    const newUser = { name, email, password: pwd, role: 'user' };
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
-    alert('Registration successful! Please login.');
-    window.location.href = 'login.html';
-  });
-</script>
+    // populate referral from URL param
+    const refFromUrl = qs('ref') || '';
+    if(refFromUrl) el('refInput').value = refFromUrl;
 
+    el('cancelBtn').addEventListener('click', ()=> location.href = 'index.html');
+
+    // generate unique referral code (check Firestore for uniqueness)
+    async function genRefCode(prefix='CS'){
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      for(let attempt=0; attempt<8; attempt++){
+        const suffix = Array.from({length:6}).map(()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+        const code = prefix + suffix;
+        // check Firestore if code exists
+        const q = query(collection(db, 'users'), where('refCode', '==', code));
+        const snap = await getDocs(q);
+        if(snap.empty) return code;
+      }
+      // fallback
+      return prefix + Date.now().toString(36).toUpperCase();
+    }
+
+    // validate referral exists
+    async function findReferrer(refCode){
+      if(!refCode) return null;
+      const q = query(collection(db, 'users'), where('refCode', '==', refCode));
+      const snap = await getDocs(q);
+      if(snap.empty) return null;
+      // return first matched user doc data and id
+      const d = snap.docs[0];
+      return { id: d.id, data: d.data() };
+    }
+
+    el('registerForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      el('msg').classList.add('hidden');
+
+      const name = el('name').value.trim();
+      const email = el('email').value.trim().toLowerCase();
+      const password = el('password').value;
+      const refCode = el('refInput').value.trim();
+
+      if(!name || !email || !password){
+        showMsg('Please fill all required fields.');
+        return;
+      }
+      if(!refCode){
+        showMsg('Referral code is required to register.');
+        return;
+      }
+
+      try {
+        // verify referrer exists
+        const refDoc = await findReferrer(refCode);
+        if(!refDoc){
+          showMsg('Invalid referral code.');
+          return;
+        }
+
+        // create user in Firebase Auth
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        const uid = cred.user.uid;
+
+        // update displayName
+        await updateProfile(cred.user, { displayName: name });
+
+        // generate a unique referral code for the new user
+        const myRefCode = await genRefCode('CS');
+
+        // prepare user doc to save in Firestore
+        const userDoc = {
+          name,
+          email,
+          role: 'user',
+          refCode: myRefCode,
+          refBy: refCode,
+          team: [],
+          portfolio: { balance: 10000, invested: 0, profitLoss: 0, trades: [] },
+          status: 'active',
+          createdAt: new Date().toISOString()
+        };
+
+        // save user doc with uid as document id
+        await setDoc(doc(db, 'users', uid), userDoc);
+
+        // add this user to referrer's team (arrayUnion)
+        const refDocRef = doc(db, 'users', refDoc.id);
+        await updateDoc(refDocRef, {
+          team: arrayUnion({ uid, name, email, joinedAt: new Date().toISOString() })
+        });
+
+        // redirect to dashboard
+        location.href = 'dashboard.html';
+      } catch(err) {
+        console.error(err);
+        let msg = 'Registration failed.';
+        if(err.code === 'auth/email-already-in-use') msg = 'Email already in use.';
+        showMsg(msg);
+      }
+    });
+  </script>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
