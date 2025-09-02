@@ -1,24 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Coinspare - Register</title>
-  <link rel="stylesheet" href="style.css">
-  <script type="module" src="app.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register • CoinSpare</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e3a8a',
+            accent: '#2563eb',
+            light: '#f8fafc'
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body>
-  <header>Coinspare</header>
+<body class="bg-light min-h-screen flex flex-col">
 
-  <div class="container">
-    <h2>Register</h2>
-    <form id="registerForm">
-      <input type="text" id="name" placeholder="Full Name" required>
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <input type="text" id="phone" placeholder="Phone" required>
-      <input type="text" id="referredBy" placeholder="Referral Code (Required)" required>
-      <button type="submit">Register</button>
-    </form>
+<!-- Header -->
+<header class="border-b bg-white sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-2xl bg-accent/10 flex items-center justify-center text-accent font-black">C</div>
+      <span class="font-extrabold text-xl text-primary">CoinSpare</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-6">
+      <a href="index.html#features" class="hover:text-accent">Features</a>
+      <a href="pricing.html" class="hover:text-accent">Pricing</a>
+      <a href="about.html" class="hover:text-accent">About</a>
+      <a href="contact.html" class="hover:text-accent">Contact</a>
+    </nav>
   </div>
+</header>
+
+<!-- Register Card -->
+<main class="flex-grow flex items-center justify-center px-4 py-10">
+  <div class="w-full max-w-md bg-white shadow-xl rounded-2xl p-8">
+    <h1 class="text-2xl font-bold text-primary mb-2">Create an Account</h1>
+    <p class="text-sm text-slate-500 mb-6">Join CoinSpare today</p>
+
+    <form id="registerForm" class="space-y-5">
+      <div>
+        <label class="block text-sm font-medium text-slate-700">Full Name</label>
+        <input type="text" id="name" required class="mt-1 w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700">Email</label>
+        <input type="email" id="email" required class="mt-1 w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700">Password</label>
+        <input type="password" id="password" required class="mt-1 w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent" />
+      </div>
+      <button type="submit" class="w-full bg-accent text-white py-2 rounded-xl hover:bg-blue-700 font-medium">Register</button>
+    </form>
+
+    <p class="text-center text-sm text-slate-500 mt-6">
+      Already have an account?
+      <a href="login.html" class="text-accent hover:underline">Login</a>
+    </p>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="border-t bg-white">
+  <div class="max-w-6xl mx-auto px-4 py-6 text-center text-xs text-slate-500">
+    © <span id="year"></span> CoinSpare. All rights reserved.
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  document.getElementById('registerForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const pwd = document.getElementById('password').value;
+
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    if(users.find(u => u.email === email)){
+      alert('Email already registered.');
+      return;
+    }
+
+    const newUser = { name, email, password: pwd, role: 'user' };
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('Registration successful! Please login.');
+    window.location.href = 'login.html';
+  });
+</script>
+
 </body>
 </html>
