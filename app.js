@@ -1,120 +1,135 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, setDoc, doc, getDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+// app.js -- shared logic for CoinSpare demo (localStorage-based)
+// IMPORTANT: This is demo-only. Replace localStorage with Firebase/DB for production.
 
-// ✅ Firebase Config
-const firebaseConfig = {
-  apiKey: "AIzaSyBxIujPFlHfqgL_-fLbsoSYo3gaGf2iPHQ",
-  authDomain: "sabjiwalahere.firebaseapp.com",
-  projectId: "sabjiwalahere",
-  storageBucket: "sabjiwalahere.firebasestorage.app",
-  messagingSenderId: "418578879301",
-  appId: "1:418578879301:web:56bdf323bf186cbbe1a42c",
-  measurementId: "G-4DGEQXXDLG"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// 🔹 Generate Referral Code
-function generateReferral(name) {
-  return name.substring(0, 3).toUpperCase() + Math.floor(1000 + Math.random() * 9000);
+// Utilities
+function qs(name, url = location.href) {
+  name = name.replace(/[[]]/g, "\\$&");
+  const r = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = r.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-// 🔹 Register
-const regForm = document.getElementById("registerForm");
-if (regForm) {
-  regForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const phone = document.getElementById("phone").value;
-    const referredBy = document.getElementById("referredBy").value;
+function now() { return new Date().toLocaleString(); }
+function randCode(prefix='CS') {
+  // generate short unique code e.g., CS7F4A2
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let c;
+  do {
+    c = prefix + Array.from({length:6}).map(()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+  } while(getUserByRef(c));
+  return c;
+}
 
-    if (!referredBy) { alert("Referral is required!"); return; }
+// Data helpers
+function getAllUsers() {
+  return JSON.parse(localStorage.getItem('cs_users') || '[]');
+}
+function saveAllUsers(list) {
+  localStorage.setItem('cs_users', JSON.stringify(list));
+}
+function getUserByEmail(email){
+  return getAllUsers().find(u => u.email === (email||'').toLowerCase());
+}
+function getUserByRef(code){
+  return getAllUsers().find(u => u.refCode === code);
+}
+function currentUser(){
+  return JSON.parse(localStorage.getItem('cs_currentUser') || 'null');
+}
+function setCurrentUser(u){ localStorage.setItem('cs_currentUser', JSON.stringify(u)); }
+function logoutAndRedirect(to='login.html'){ localStorage.removeItem('cs_currentUser'); location.href = to; }
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = userCredential.user.uid;
-      const referralCode = generateReferral(name);
+// Ensure admin exists (on first load)
+(function ensureAdmin(){
+  const users = getAllUsers();
+  if(!users.find(u=>u.email==='admin@coinspare.com')){
+    users.push({
+      name: "Administrator",
+      email: "admin@coinspare.com",
+      password: "admin123",
+      role: "admin",
+      refCode: "CSADMIN",
+      refBy: null,
+      team: [],
+      portfolio: { balance: 500000, invested: 0, profitLoss: 0, trades: [] },
+      status: "active",
+      createdAt: now()
+    });
+    saveAllUsers(users);
+  }
+})();
 
-      await setDoc(doc(db, "users", uid), {
-        name, email, phone,
-        referralCode,
-        referredBy,
-        walletBalance: 0,
-        createdAt: new Date().toISOString()
-      });
+// Auth functions used by pages
+function registerUser({name,email,password,refCode}){
+  email = email.toLowerCase();
+  const users = getAllUsers();
+  if(getUserByEmail(email)) return { ok:false, msg: 'Email already registered' };
+  // refCode must exist (force referral-only registration)
+  const referrer = getUserByRef(refCode);
+  if(!referrer) return { ok:false, msg: 'Invalid referral code' };
 
-      alert("Registered Successfully!");
-      window.location.href = "dashboard.html";
-    } catch (err) {
-      alert(err.message);
-    }
+  const myRef = randCode('CS');
+  const newUser = {
+    name, email, password, role: 'user', refCode: myRef, refBy: refCode,
+    team: [], portfolio: { balance: 10000, invested: 0, profitLoss: 0, trades: [] },
+    status: 'active', createdAt: now()
+  };
+  users.push(newUser);
+
+  // add to referrer's team
+  const idx = users.findIndex(u => u.email === referrer.email);
+  if(idx !== -1){
+    users[idx].team = users[idx].team || [];
+    users[idx].team.push({ email, name, at: now() });
+  }
+
+  saveAllUsers(users);
+  return { ok:true, user: newUser };
+}
+
+function loginUser({email,password}){
+  email = email.toLowerCase();
+  const u = getUserByEmail(email);
+  if(!u) return { ok:false, msg: 'User not found' };
+  if(u.password !== password) return { ok:false, msg: 'Wrong password' };
+  if(u.status && u.status !== 'active') return { ok:false, msg: 'Account not active' };
+  setCurrentUser(u);
+  return { ok:true, user:u };
+}
+
+// Trade helper
+function placeTrade(userEmail, {asset, amount}){
+  const users = getAllUsers();
+  const i = users.findIndex(u => u.email === userEmail);
+  if(i === -1) return { ok:false, msg:'User missing' };
+  const u = users[i];
+  const pf = u.portfolio || { balance: 0, invested:0, profitLoss:0, trades: []};
+  if(amount > pf.balance) return { ok:false, msg: 'Insufficient balance' };
+  pf.balance -= amount;
+  pf.invested += amount;
+  const trade = { asset, amount, date: now() };
+  pf.trades.unshift(trade);
+  // simple dummy P/L change
+  pf.profitLoss = Math.round((Math.random()*200 - 50));
+  users[i].portfolio = pf;
+  saveAllUsers(users);
+  // if the current logged in user is this user, update session copy
+  const cur = currentUser();
+  if(cur && cur.email === userEmail){ setCurrentUser(users[i]); }
+  return { ok:true, trade };
+}
+
+// Utility for admin to aggregate all trades
+function allTradesFlatten(){
+  const users = getAllUsers();
+  let arr = [];
+  users.forEach(u=>{
+    (u.portfolio && u.portfolio.trades || []).forEach(t=>{
+      arr.push({ user: u.name, email: u.email, ...t});
+    });
   });
+  arr.sort((a,b)=> new Date(b.date) - new Date(a.date));
+  return arr;
 }
-
-// 🔹 Login
-const loginForm = document.getElementById("loginForm");
-if (loginForm) {
-  loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      window.location.href = "dashboard.html";
-    } catch (err) {
-      alert(err.message);
-    }
-  });
-}
-
-// 🔹 Dashboard Data
-if (window.location.pathname.includes("dashboard.html")) {
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      const uid = user.uid;
-      const docRef = doc(db, "users", uid);
-      const snap = await getDoc(docRef);
-
-      if (snap.exists()) {
-        const data = snap.data();
-        document.getElementById("userName").innerText = data.name;
-        document.getElementById("refCode").innerText = data.referralCode;
-        document.getElementById("walletBalance").innerText = data.walletBalance;
-
-        // Fetch team
-        const q = query(collection(db, "users"), where("referredBy", "==", data.referralCode));
-        const teamSnap = await getDocs(q);
-        const teamList = document.getElementById("teamList");
-        teamSnap.forEach((doc) => {
-          const li = document.createElement("li");
-          li.innerText = doc.data().name + " (" + doc.data().email + ")";
-          teamList.appendChild(li);
-        });
-      }
-    } else {
-      window.location.href = "login.html";
-    }
-  });
-}
-
-// 🔹 Admin Panel
-if (window.location.pathname.includes("admin.html")) {
-  const list = document.getElementById("allUsers");
-  const snap = await getDocs(collection(db, "users"));
-  snap.forEach((docu) => {
-    const li = document.createElement("li");
-    li.innerText = docu.data().name + " - " + docu.data().email + " (Ref: " + docu.data().referralCode + ")";
-    list.appendChild(li);
-  });
-}
-
-// 🔹 Logout
-window.logoutUser = async function() {
-  await signOut(auth);
-  window.location.href = "login.html";
-};
