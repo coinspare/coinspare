@@ -3,207 +3,202 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CoinSpare — Smart Trading & Portfolio</title>
-  <meta name="description" content="CoinSpare — clean trading UI, portfolio, quick trades and insights." />
+  <title>CoinSpare — Forex Trading</title>
+  <meta name="description" content="CoinSpare — professional forex trading platform with referral & team management." />
 
-  <!-- Google AdSense (replace publisher if needed) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-          data-ad-client="ca-pub-1732932379227343"></script>
-
-  <!-- Fonts & Tailwind -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind (CDN for quick start) -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: '#0b61ff',   /* primary */
-            brandDeep: '#0638a6',
-            accent: '#2563eb',
-            lightbg: '#f8fbff'
-          },
-          boxShadow: {
-            soft: '0 10px 30px rgba(2,6,23,0.12)'
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    *{ font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, Arial; }
-    body { background: white; color: #0f172a; }
+    :root {
+      --brand: #0b61ff;
+      --brand-deep: #0638a6;
+    }
+    html,body { height: 100%; }
+    body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background: #fbfdff; color: #0f172a; }
+    main { padding-top: 88px; } /* space for fixed header */
+    .glass { background: rgba(255,255,255,0.7); backdrop-filter: blur(6px); }
   </style>
 </head>
-<body class="bg-white">
+<body class="antialiased">
 
-  <!-- Top banner ad (responsive) -->
-  <div class="w-full bg-slate-50 border-b">
-    <div class="max-w-6xl mx-auto px-4 py-2 flex items-center justify-center">
-      <!-- Responsive Ad unit: full-width -->
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-1732932379227343"
-           data-ad-slot="7442267860"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-  </div>
-
-  <!-- Header -->
-  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b">
+  <!-- Fixed header -->
+  <header class="fixed inset-x-0 top-0 z-50 border-b bg-white/95 glass">
     <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-brand/10 flex items-center justify-center text-brand font-extrabold">C</div>
+        <div class="w-11 h-11 rounded-2xl bg-[color:var(--brand)]/10 flex items-center justify-center text-[color:var(--brand)] font-extrabold">C</div>
         <div>
-          <div class="text-xl font-extrabold text-brandDeep">CoinSpare</div>
-          <div class="text-xs text-slate-400 -mt-1">Smart Trading & Portfolio</div>
+          <div class="text-lg font-extrabold text-[color:var(--brand-deep)]">CoinSpare</div>
+          <div class="text-xs text-slate-400 -mt-0.5">Forex Trading</div>
         </div>
       </a>
 
-      <nav class="hidden md:flex items-center gap-6 text-sm">
-        <a href="index.html#features" class="hover:text-brand">Features</a>
-        <a href="pricing.html" class="hover:text-brand">Pricing</a>
-        <a href="about.html" class="hover:text-brand">About</a>
-        <a href="contact.html" class="hover:text-brand">Contact</a>
-        <a href="login.html" class="px-3 py-2 rounded-xl border hover:bg-slate-50">Login</a>
-        <a href="register.html" class="px-3 py-2 rounded-xl bg-brand text-white shadow-soft">Get Started</a>
+      <nav id="mainNav" class="hidden md:flex items-center gap-4">
+        <a href="index.html#platform" class="text-sm hover:text-[color:var(--brand-deep)]">Platform</a>
+        <a href="pricing.html" class="text-sm hover:text-[color:var(--brand-deep)]">Pricing</a>
+        <a href="about.html" class="text-sm hover:text-[color:var(--brand-deep)]">About</a>
+        <a id="navAuth" href="login.html" class="px-3 py-2 rounded-lg border text-sm">Login</a>
+        <a id="navRegister" href="register.html" class="px-3 py-2 rounded-lg bg-[color:var(--brand)] text-white text-sm shadow">Register</a>
       </nav>
 
       <div class="md:hidden">
-        <a href="login.html" class="px-3 py-2 rounded-xl border">Login</a>
+        <button id="mobileToggle" class="p-2 rounded-md border">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- mobile -->
+    <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+      <div class="px-4 py-3 flex flex-col gap-2">
+        <a href="index.html#platform" class="py-2">Platform</a>
+        <a href="pricing.html" class="py-2">Pricing</a>
+        <a href="about.html" class="py-2">About</a>
+        <a id="mNavAuth" href="login.html" class="py-2">Login</a>
+        <a id="mNavRegister" href="register.html" class="py-2">Register</a>
       </div>
     </div>
   </header>
 
-  <!-- Hero -->
+  <!-- Main -->
   <main>
-    <section class="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
+    <!-- Hero -->
+    <section class="max-w-6xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-10 items-center">
       <div>
-        <h1 class="text-4xl md:text-5xl font-extrabold text-brandDeep leading-tight">
-          CoinSpare — Trade smarter, track better
+        <h1 class="text-4xl md:text-5xl font-extrabold text-[color:var(--brand-deep)] leading-tight">
+          Professional Forex Trading, Simplified
         </h1>
         <p class="mt-4 text-slate-600 max-w-xl">
-          Clean UI for traders: real-time prices, portfolio analytics, quick trades and secure role-based panels.
-          Deploy on GitHub Pages or integrate with your backend APIs.
+          Trade confidently with a clean interface, referral-driven growth tools, and a centralized admin panel. Designed for real deployment with Firebase Authentication & Firestore.
         </p>
 
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a href="register.html" class="px-5 py-3 rounded-2xl bg-brand text-white hover:bg-brandDeep shadow-soft">Create Account</a>
-          <a href="dashboard.html" class="px-5 py-3 rounded-2xl border hover:bg-slate-50">Demo Dashboard</a>
+        <div class="mt-6 flex gap-3">
+          <a id="ctaRegister" class="px-5 py-3 rounded-2xl bg-[color:var(--brand)] text-white shadow" href="register.html">Create account</a>
+          <a class="px-5 py-3 rounded-2xl border" href="login.html">Sign in</a>
         </div>
-
-        <ul class="mt-8 grid grid-cols-3 gap-4 text-center">
-          <li class="p-4 border rounded-2xl">
-            <div class="text-2xl font-bold text-brand">0.2s</div><div class="text-xs text-slate-500">Fast UI</div>
-          </li>
-          <li class="p-4 border rounded-2xl">
-            <div class="text-2xl font-bold text-brand">99.9%</div><div class="text-xs text-slate-500">Uptime</div>
-          </li>
-          <li class="p-4 border rounded-2xl">
-            <div class="text-2xl font-bold text-brand">AES-256</div><div class="text-xs text-slate-500">Secure</div>
-          </li>
-        </ul>
       </div>
 
-      <div class="rounded-3xl overflow-hidden shadow-soft border">
-        <img src="https://images.unsplash.com/photo-1559523182-a284c3fb7cff?q=80&w=1200&auto=format&fit=crop" alt="Trading" class="w-full h-72 md:h-full object-cover">
+      <div class="rounded-3xl overflow-hidden border shadow">
+        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1400&auto=format&fit=crop" alt="Trading" class="w-full h-80 object-cover">
       </div>
     </section>
 
-    <!-- Inline ad between sections -->
-    <section class="max-w-6xl mx-auto px-4">
-      <div class="py-6">
-        <div class="rounded-lg border p-4 flex items-center justify-center">
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-1732932379227343"
-               data-ad-slot="7442267860"
-               data-ad-format="auto"
-               data-full-width-responsive="true"></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <!-- Platform quick -->
+    <section id="platform" class="max-w-6xl mx-auto px-4 py-12">
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="p-6 border rounded-xl">
+          <h3 class="font-semibold text-[color:var(--brand-deep)]">Secure Auth</h3>
+          <p class="mt-2 text-sm text-slate-600">Firebase Authentication with protected user sessions.</p>
+        </div>
+        <div class="p-6 border rounded-xl">
+          <h3 class="font-semibold text-[color:var(--brand-deep)]">Referral System</h3>
+          <p class="mt-2 text-sm text-slate-600">Unique referral codes and team tracking stored in Firestore.</p>
+        </div>
+        <div class="p-6 border rounded-xl">
+          <h3 class="font-semibold text-[color:var(--brand-deep)]">Admin Management</h3>
+          <p class="mt-2 text-sm text-slate-600">Centralized admin panel with user overview and impersonation.</p>
         </div>
       </div>
     </section>
 
-    <!-- Features -->
-    <section id="features" class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-6">
-      <div class="p-6 rounded-2xl border">
-        <h3 class="font-semibold text-brandDeep mb-2">Real-time prices</h3>
-        <p class="text-sm text-slate-600">Connect a live feed and show candle charts, depth and tickers.</p>
-      </div>
-      <div class="p-6 rounded-2xl border">
-        <h3 class="font-semibold text-brandDeep mb-2">Portfolio analytics</h3>
-        <p class="text-sm text-slate-600">Clean overview, profit/loss, and exportable statements.</p>
-      </div>
-      <div class="p-6 rounded-2xl border">
-        <h3 class="font-semibold text-brandDeep mb-2">User & Admin panels</h3>
-        <p class="text-sm text-slate-600">Role-based access: approve users, announcements and management tools.</p>
-      </div>
-    </section>
-
-    <!-- Article-style ad (in-content) -->
-    <section class="max-w-4xl mx-auto px-4 py-8">
-      <article class="prose prose-slate">
-        <h2>Market insights</h2>
-        <p>Short explanation or blog excerpt about market trends that helps SEO. Place contextual ad below.</p>
-
-        <div class="mt-4 mb-6">
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-1732932379227343"
-               data-ad-slot="7442267860"
-               data-ad-format="auto"
-               data-full-width-responsive="true"></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <!-- CTA strip -->
+    <section class="max-w-6xl mx-auto px-4 py-8">
+      <div class="rounded-2xl border p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <div class="text-lg font-semibold text-[color:var(--brand-deep)]">Ready to onboard traders?</div>
+          <div class="text-sm text-slate-600 mt-1">Register through a referral link to start building your team.</div>
         </div>
-      </article>
+        <div class="flex gap-3">
+          <a class="px-4 py-2 rounded-lg bg-[color:var(--brand)] text-white" href="register.html">Create account</a>
+          <a class="px-4 py-2 rounded-lg border" href="admin-login.html">Admin</a>
+        </div>
+      </div>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer class="mt-16 border-t">
-    <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-8">
-      <div>
-        <div class="flex items-center gap-2 mb-2">
-          <div class="w-8 h-8 rounded-2xl bg-brand/10 flex items-center justify-center text-brand font-black">C</div>
-          <span class="font-bold text-brandDeep">CoinSpare</span>
-        </div>
-        <p class="text-sm text-slate-500">Professional trading UI template. Replace demo logic with your backend API.</p>
-      </div>
-
-      <div>
-        <h4 class="font-semibold mb-2">Product</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="index.html#features" class="hover:text-brand">Features</a></li>
-          <li><a href="pricing.html" class="hover:text-brand">Pricing</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="font-semibold mb-2">Company</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="about.html" class="hover:text-brand">About</a></li>
-          <li><a href="contact.html" class="hover:text-brand">Contact</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="font-semibold mb-2">Panels</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="dashboard.html" class="hover:text-brand">User Panel</a></li>
-          <li><a href="admin.html" class="hover:text-brand">Admin Panel</a></li>
-        </ul>
-      </div>
+  <footer class="border-t bg-white">
+    <div class="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between text-sm text-slate-500">
+      <div>© <span id="yr"></span> CoinSpare</div>
+      <div>Built for production</div>
     </div>
-
-    <div class="text-center text-xs text-slate-500 pb-6">© <span id="year"></span> CoinSpare. All rights reserved.</div>
-    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   </footer>
 
+  <!-- Firebase modular SDK + minimal init (uses your config) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
+    // YOUR Firebase config (provided earlier)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBxIujPFlHfqgL_-fLbsoSYo3gaGf2iPHQ",
+      authDomain: "sabjiwalahere.firebaseapp.com",
+      projectId: "sabjiwalahere",
+      storageBucket: "sabjiwalahere.firebasestorage.app",
+      messagingSenderId: "418578879301",
+      appId: "1:418578879301:web:56bdf323bf186cbbe1a42c",
+      measurementId: "G-4DGEQXXDLG"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Auth state UI adjustments
+    const navAuth = document.getElementById('navAuth');
+    const navRegister = document.getElementById('navRegister');
+    const mNavAuth = document.getElementById('mNavAuth');
+    const mNavRegister = document.getElementById('mNavRegister');
+    const ctaRegister = document.getElementById('ctaRegister');
+
+    onAuthStateChanged(auth, user => {
+      if(user){
+        // Detect admin by custom logic (example: email match). For production, use custom claims.
+        const isAdmin = (user.email && user.email.toLowerCase() === 'admin@coinspare.com');
+        navAuth.textContent = 'Dashboard';
+        navAuth.href = isAdmin ? 'admin.html' : 'dashboard.html';
+        navRegister.textContent = 'Logout';
+        navRegister.href = '#';
+        navRegister.addEventListener('click', async (e)=>{ e.preventDefault(); await signOut(auth); location.reload(); }, { once:true });
+
+        if(mNavAuth) mNavAuth.href = isAdmin ? 'admin.html' : 'dashboard.html';
+        if(mNavRegister){
+          mNavRegister.textContent = 'Logout';
+          mNavRegister.href = '#';
+          mNavRegister.addEventListener('click', async (e)=>{ e.preventDefault(); await signOut(auth); location.reload(); }, { once:true });
+        }
+
+        if(ctaRegister) ctaRegister.href = isAdmin ? 'admin.html' : 'dashboard.html';
+      } else {
+        navAuth.textContent = 'Login';
+        navAuth.href = 'login.html';
+        navRegister.textContent = 'Register';
+        navRegister.href = 'register.html';
+        if(mNavAuth) mNavAuth.href = 'login.html';
+        if(mNavRegister) mNavRegister.href = 'register.html';
+        if(ctaRegister) ctaRegister.href = 'register.html';
+      }
+    });
+
+    // mobile toggle
+    document.getElementById('mobileToggle').addEventListener('click', ()=> {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    });
+
+    // propagate ref param if present
+    const params = new URLSearchParams(location.search);
+    const ref = params.get('ref');
+    if(ref){
+      const rlink = 'register.html?ref=' + encodeURIComponent(ref);
+      if(navRegister) navRegister.href = rlink;
+      if(mNavRegister) mNavRegister.href = rlink;
+      if(ctaRegister) ctaRegister.href = rlink;
+    }
+
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
