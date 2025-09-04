@@ -178,7 +178,7 @@
             font-weight: 700;
             margin-top: 10px;
         }
-        .deposit-item {
+        .deposit-item, .withdrawal-item {
             background: rgba(255, 193, 7, 0.2);
             border-radius: 10px;
             padding: 15px;
@@ -187,20 +187,20 @@
             align-items: center;
             justify-content: space-between;
         }
-        .deposit-info h5 {
+        .deposit-info, .withdrawal-info h5 {
             margin-bottom: 5px;
         }
-        .deposit-info p {
+        .deposit-info, .withdrawal-info p {
             margin-bottom: 0;
             opacity: 0.8;
             font-size: 0.9rem;
         }
-        .deposit-amount {
+        .deposit-amount, .withdrawal-amount {
             font-weight: 700;
             color: #ffc107;
             margin-right: 15px;
         }
-        .deposit-actions {
+        .deposit-actions, .withdrawal-actions {
             display: flex;
             gap: 10px;
         }
@@ -257,6 +257,11 @@
         .tab-content {
             padding-top: 20px;
         }
+        .payment-details {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -267,7 +272,7 @@
                 <i class="fas fa-user-shield"></i>
                 <h2>Admin Panel</h2>
             </div>
-            <h3 class="login-title">Admin Login</h3>
+            <h3 class="login-title"></h3>
             <form id="adminLoginForm">
                 <div class="mb-3">
                     <input type="text" class="form-control" id="adminUsername" placeholder="Admin Username" required>
@@ -326,8 +331,8 @@
                 </div>
                 <div class="col-md-3">
                     <div class="stats-card">
-                        <div class="stats-value" id="totalDeposits">$0</div>
-                        <div class="stats-label">Total Deposits</div>
+                        <div class="stats-value" id="pendingWithdrawals">0</div>
+                        <div class="stats-label">Pending Withdrawals</div>
                     </div>
                 </div>
             </div>
@@ -340,6 +345,9 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="deposits-tab" data-bs-toggle="tab" data-bs-target="#deposits" type="button" role="tab">Pending Deposits</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="withdrawals-tab" data-bs-toggle="tab" data-bs-target="#withdrawals" type="button" role="tab">Pending Withdrawals</button>
                     </li>
                 </ul>
                 <div class="tab-content" id="adminTabsContent">
@@ -373,6 +381,17 @@
                     <!-- Pending Deposits Tab -->
                     <div class="tab-pane fade" id="deposits" role="tabpanel">
                         <div id="pendingDepositsList">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pending Withdrawals Tab -->
+                    <div class="tab-pane fade" id="withdrawals" role="tabpanel">
+                        <div id="pendingWithdrawalsList">
                             <div class="text-center py-4">
                                 <div class="spinner-border text-light" role="status">
                                     <span class="visually-hidden">Loading...</span>
@@ -434,7 +453,6 @@
                 .then(querySnapshot => {
                     const users = [];
                     let totalReferrals = 0;
-                    let totalDeposits = 0;
                     
                     querySnapshot.forEach(doc => {
                         const userData = doc.data();
@@ -446,16 +464,11 @@
                         if (userData.teamMembers && userData.teamMembers.length > 0) {
                             totalReferrals += userData.teamMembers.length;
                         }
-                        
-                        if (userData.walletBalance) {
-                            totalDeposits += userData.walletBalance;
-                        }
                     });
                     
                     // Update stats
                     document.getElementById('totalUsers').textContent = users.length;
                     document.getElementById('totalReferrals').textContent = totalReferrals;
-                    document.getElementById('totalDeposits').textContent = `$${totalDeposits.toFixed(2)}`;
                     
                     // Populate users table
                     const tableBody = document.getElementById('usersTableBody');
@@ -484,7 +497,7 @@
                             <td>
                                 <div class="referral-code">${user.referralCode}</div>
                             </td>
-                            <td>$${walletBalance}</td>
+                            <td>₹${walletBalance}</td>
                             <td>
                                 <span class="team-size">${teamSize}</span>
                             </td>
@@ -497,6 +510,9 @@
                     // Load pending deposits
                     loadPendingDeposits();
                     
+                    // Load pending withdrawals
+                    loadPendingWithdrawals();
+                    
                     // Set up real-time updates
                     db.collection('users').onSnapshot(snapshot => {
                         loadAdminData();
@@ -504,6 +520,10 @@
                     
                     db.collection('deposits').onSnapshot(snapshot => {
                         loadPendingDeposits();
+                    });
+                    
+                    db.collection('withdrawals').onSnapshot(snapshot => {
+                        loadPendingWithdrawals();
                     });
                 })
                 .catch(error => {
@@ -555,7 +575,7 @@
                                             <p>${formattedDate} • ${depositData.note || 'No note'}</p>
                                         </div>
                                         <div style="display: flex; align-items: center;">
-                                            <div class="deposit-amount">$${depositData.amount.toFixed(2)}</div>
+                                            <div class="deposit-amount">₹${depositData.amount.toFixed(2)}</div>
                                             <div class="deposit-actions">
                                                 <button class="btn-approve" data-id="${doc.id}" data-user-id="${depositData.userId}" data-amount="${depositData.amount}">
                                                     <i class="fas fa-check"></i> Approve
@@ -586,6 +606,93 @@
                 })
                 .catch(error => {
                     console.error("Error loading pending deposits: ", error);
+                });
+        }
+        
+        // Load pending withdrawals
+        function loadPendingWithdrawals() {
+            const withdrawalsContainer = document.getElementById('pendingWithdrawalsList');
+            
+            db.collection('withdrawals')
+                .where('status', '==', 'pending')
+                .get()
+                .then(querySnapshot => {
+                    // Update pending withdrawals count
+                    document.getElementById('pendingWithdrawals').textContent = querySnapshot.size;
+                    
+                    if (querySnapshot.empty) {
+                        withdrawalsContainer.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <p>No pending withdrawals</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    withdrawalsContainer.innerHTML = '';
+                    
+                    querySnapshot.forEach(doc => {
+                        const withdrawalData = doc.data();
+                        
+                        // Get user info
+                        db.collection('users').doc(withdrawalData.userId).get()
+                            .then(userDoc => {
+                                if (userDoc.exists) {
+                                    const userData = userDoc.data();
+                                    const withdrawalElement = document.createElement('div');
+                                    withdrawalElement.className = 'withdrawal-item';
+                                    
+                                    // Format date
+                                    const withdrawalDate = new Date(withdrawalData.createdAt.toDate());
+                                    const formattedDate = withdrawalDate.toLocaleDateString();
+                                    
+                                    // Format payment details
+                                    let paymentDetailsText = '';
+                                    if (withdrawalData.paymentDetails.method === 'upi') {
+                                        paymentDetailsText = `UPI: ${withdrawalData.paymentDetails.upiId}`;
+                                    } else {
+                                        paymentDetailsText = `Bank: ${withdrawalData.paymentDetails.bankName}, Acct: ${withdrawalData.paymentDetails.accountNumber}`;
+                                    }
+                                    
+                                    withdrawalElement.innerHTML = `
+                                        <div class="withdrawal-info">
+                                            <h5>${userData.fullName} (${userData.email})</h5>
+                                            <p>${formattedDate} • ${withdrawalData.note || 'No note'}</p>
+                                            <div class="payment-details">${paymentDetailsText}</div>
+                                        </div>
+                                        <div style="display: flex; align-items: center;">
+                                            <div class="withdrawal-amount">₹${withdrawalData.amount.toFixed(2)}</div>
+                                            <div class="withdrawal-actions">
+                                                <button class="btn-approve" data-id="${doc.id}" data-user-id="${withdrawalData.userId}" data-amount="${withdrawalData.amount}">
+                                                    <i class="fas fa-check"></i> Approve
+                                                </button>
+                                                <button class="btn-reject" data-id="${doc.id}" data-user-id="${withdrawalData.userId}" data-amount="${withdrawalData.amount}">
+                                                    <i class="fas fa-times"></i> Reject
+                                                </button>
+                                            </div>
+                                        </div>
+                                    `;
+                                    
+                                    withdrawalsContainer.appendChild(withdrawalElement);
+                                    
+                                    // Add event listeners to buttons
+                                    withdrawalElement.querySelector('.btn-approve').addEventListener('click', function() {
+                                        approveWithdrawal(this.dataset.id, this.dataset.userId, parseFloat(this.dataset.amount));
+                                    });
+                                    
+                                    withdrawalElement.querySelector('.btn-reject').addEventListener('click', function() {
+                                        rejectWithdrawal(this.dataset.id, this.dataset.userId, parseFloat(this.dataset.amount));
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error getting user data: ", error);
+                            });
+                    });
+                })
+                .catch(error => {
+                    console.error("Error loading pending withdrawals: ", error);
                 });
         }
         
@@ -643,6 +750,65 @@
                 .catch(error => {
                     console.error("Error rejecting deposit: ", error);
                     alert('Error rejecting deposit. Please try again.');
+                });
+            }
+        }
+        
+        // Approve withdrawal
+        function approveWithdrawal(withdrawalId, userId, amount) {
+            // Update withdrawal status
+            db.collection('withdrawals').doc(withdrawalId).update({
+                status: 'approved',
+                approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                alert('Withdrawal approved successfully!');
+                loadPendingWithdrawals();
+            })
+            .catch(error => {
+                console.error("Error approving withdrawal: ", error);
+                alert('Error approving withdrawal. Please try again.');
+            });
+        }
+        
+        // Reject withdrawal
+        function rejectWithdrawal(withdrawalId, userId, amount) {
+            if (confirm('Are you sure you want to reject this withdrawal?')) {
+                // Update withdrawal status
+                db.collection('withdrawals').doc(withdrawalId).update({
+                    status: 'rejected',
+                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+                })
+                .then(() => {
+                    // Return amount to user's wallet
+                    db.collection('users').doc(userId).get()
+                        .then(doc => {
+                            if (doc.exists) {
+                                const userData = doc.data();
+                                const currentBalance = userData.walletBalance || 0;
+                                const newBalance = currentBalance + amount;
+                                
+                                db.collection('users').doc(userId).update({
+                                    walletBalance: newBalance
+                                })
+                                .then(() => {
+                                    alert('Withdrawal rejected and amount returned to wallet!');
+                                    loadPendingWithdrawals();
+                                })
+                                .catch(error => {
+                                    console.error("Error returning amount to wallet: ", error);
+                                    alert('Error returning amount to wallet. Please try again.');
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error getting user data: ", error);
+                            alert('Error getting user data. Please try again.');
+                        });
+                })
+                .catch(error => {
+                    console.error("Error rejecting withdrawal: ", error);
+                    alert('Error rejecting withdrawal. Please try again.');
                 });
             }
         }
