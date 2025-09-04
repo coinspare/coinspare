@@ -182,6 +182,9 @@
         .transaction-icon.referral {
             background: rgba(255, 193, 7, 0.3);
         }
+        .transaction-icon.pending {
+            background: rgba(255, 193, 7, 0.3);
+        }
         .transaction-details h5 {
             margin-bottom: 0;
             font-size: 1rem;
@@ -199,6 +202,9 @@
         }
         .transaction-amount.negative {
             color: #dc3545;
+        }
+        .transaction-amount.pending {
+            color: #ffc107;
         }
         .profile-field {
             display: flex;
@@ -290,7 +296,185 @@
         .level-progress-bar {
             height: 100%;
             background: linear-gradient(90deg, #ff6b6b, #ee5a24);
-            width: 65%;
+            width: 0%;
+        }
+        .deposit-modal .modal-content {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: none;
+            color: white;
+        }
+        .deposit-modal .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .deposit-modal .modal-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .deposit-option {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .deposit-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .deposit-option.active {
+            background: rgba(255, 107, 107, 0.3);
+            border: 1px solid rgba(255, 107, 107, 0.5);
+        }
+        .deposit-option h5 {
+            margin-bottom: 5px;
+        }
+        .qr-code-container {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            background: white;
+            margin: 0 auto 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .upi-id {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 10px;
+            font-family: monospace;
+            font-weight: 600;
+            word-break: break-all;
+            margin-bottom: 15px;
+        }
+        .amount-input {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        .amount-input:focus {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+        }
+        .deposit-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        .deposit-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .deposit-instructions {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .deposit-instructions ol {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        .deposit-instructions li {
+            margin-bottom: 8px;
+        }
+        .deposit-proof {
+            margin-top: 15px;
+        }
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .file-input-label {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            display: block;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .file-input-label:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .file-name {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+        .custom-toast {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            min-width: 300px;
+        }
+        .toast-icon {
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+        .toast-icon.success {
+            color: #28a745;
+        }
+        .toast-icon.error {
+            color: #dc3545;
+        }
+        .toast-icon.info {
+            color: #17a2b8;
+        }
+        .toast-message {
+            flex: 1;
+        }
+        .toast-close {
+            background: none;
+            border: none;
+            color: white;
+            opacity: 0.7;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .toast-close:hover {
+            opacity: 1;
         }
     </style>
 </head>
@@ -360,21 +544,21 @@
                         Your Wallet
                     </h3>
                     <div class="text-center">
-                        <div class="wallet-balance">$1,245.67</div>
+                        <div class="wallet-balance" id="walletBalance">$0.00</div>
                         <div class="wallet-currency">USD Balance</div>
                         <div class="level-indicator">
                             <span>Level 1</span>
                             <div class="level-progress">
-                                <div class="level-progress-bar"></div>
+                                <div class="level-progress-bar" id="levelProgress"></div>
                             </div>
                             <span>Level 2</span>
                         </div>
                     </div>
                     <div class="wallet-actions">
-                        <button class="btn wallet-btn">
+                        <button class="btn wallet-btn" id="depositBtn">
                             <i class="fas fa-plus me-2"></i>Deposit
                         </button>
-                        <button class="btn wallet-btn">
+                        <button class="btn wallet-btn" id="withdrawBtn">
                             <i class="fas fa-minus me-2"></i>Withdraw
                         </button>
                     </div>
@@ -448,53 +632,10 @@
                         <!-- Transactions Tab -->
                         <div class="tab-pane fade" id="transactions" role="tabpanel">
                             <div id="transactionHistory">
-                                <div class="transaction-item">
-                                    <div class="transaction-info">
-                                        <div class="transaction-icon deposit">
-                                            <i class="fas fa-arrow-down"></i>
-                                        </div>
-                                        <div class="transaction-details">
-                                            <h5>Deposit</h5>
-                                            <p>From Bank Account</p>
-                                        </div>
+                                <div class="text-center py-4">
+                                    <div class="spinner-border text-light" role="status">
+                                        <span class="visually-hidden">Loading...</span>
                                     </div>
-                                    <div class="transaction-amount positive">+$500.00</div>
-                                </div>
-                                <div class="transaction-item">
-                                    <div class="transaction-info">
-                                        <div class="transaction-icon referral">
-                                            <i class="fas fa-gift"></i>
-                                        </div>
-                                        <div class="transaction-details">
-                                            <h5>Referral Bonus</h5>
-                                            <p>From John Doe</p>
-                                        </div>
-                                    </div>
-                                    <div class="transaction-amount positive">+$25.00</div>
-                                </div>
-                                <div class="transaction-item">
-                                    <div class="transaction-info">
-                                        <div class="transaction-icon withdrawal">
-                                            <i class="fas fa-arrow-up"></i>
-                                        </div>
-                                        <div class="transaction-details">
-                                            <h5>Withdrawal</h5>
-                                            <p>To Bank Account</p>
-                                        </div>
-                                    </div>
-                                    <div class="transaction-amount negative">-$100.00</div>
-                                </div>
-                                <div class="transaction-item">
-                                    <div class="transaction-info">
-                                        <div class="transaction-icon referral">
-                                            <i class="fas fa-gift"></i>
-                                        </div>
-                                        <div class="transaction-details">
-                                            <h5>Team Bonus</h5>
-                                            <p>Level 2 Commission</p>
-                                        </div>
-                                    </div>
-                                    <div class="transaction-amount positive">+$45.00</div>
                                 </div>
                             </div>
                         </div>
@@ -504,10 +645,91 @@
         </div>
     </div>
 
+    <!-- Deposit Modal -->
+    <div class="modal fade deposit-modal" id="depositModal" tabindex="-1" aria-labelledby="depositModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="depositModalLabel">Deposit Funds</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="deposit-instructions">
+                        <h6>Deposit Instructions:</h6>
+                        <ol>
+                            <li>Enter the amount you want to deposit</li>
+                            <li>Choose your payment method (UPI or QR)</li>
+                            <li>Make the payment to the provided UPI ID or scan the QR code</li>
+                            <li>Upload the payment screenshot as proof</li>
+                            <li>Submit for admin approval</li>
+                            <li>Once approved, the amount will be added to your wallet</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="depositAmount" class="form-label">Amount (USD)</label>
+                        <input type="number" class="amount-input" id="depositAmount" placeholder="Enter amount" min="1" step="0.01" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Payment Method</label>
+                        <div class="deposit-option active" id="upiOption">
+                            <h5><i class="fas fa-mobile-alt me-2"></i>UPI Payment</h5>
+                            <p>Pay directly to UPI ID</p>
+                        </div>
+                        <div class="deposit-option" id="qrOption">
+                            <h5><i class="fas fa-qrcode me-2"></i>QR Code Payment</h5>
+                            <p>Scan QR code to pay</p>
+                        </div>
+                    </div>
+                    
+                    <div id="upiPaymentMethod">
+                        <div class="upi-id">yadav.1014@superyes</div>
+                        <div class="text-center">
+                            <button class="btn copy-btn" id="copyUpiBtn">
+                                <i class="fas fa-copy me-2"></i>Copy UPI ID
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="qrPaymentMethod" style="display: none;">
+                        <div class="qr-code-container">
+                            <div class="qr-code">
+                                <i class="fas fa-qrcode fa-5x text-dark"></i>
+                            </div>
+                            <p>Scan this QR code to make payment</p>
+                        </div>
+                    </div>
+                    
+                    <div class="deposit-proof">
+                        <label class="form-label">Upload Payment Proof</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="paymentProof" accept="image/*" required>
+                            <label for="paymentProof" class="file-input-label">
+                                <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
+                                <p>Click to upload payment screenshot</p>
+                                <p class="mb-0">Supported formats: JPG, PNG</p>
+                            </label>
+                        </div>
+                        <div class="file-name" id="fileName">No file selected</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn deposit-btn" id="submitDepositBtn">Submit Deposit Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-storage-compat.js"></script>
     
     <script>
         // Initialize Firebase
@@ -524,6 +746,11 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const storage = firebase.storage();
+        
+        // Global variables
+        let currentUser = null;
+        let userData = null;
         
         // Check if user is logged in
         auth.onAuthStateChanged(user => {
@@ -532,11 +759,15 @@
                 return;
             }
             
+            currentUser = user;
+            
             // Load user data
             db.collection('users').doc(user.uid).get()
                 .then(doc => {
                     if (doc.exists) {
-                        const userData = doc.data();
+                        userData = doc.data();
+                        
+                        // Update UI with user data
                         document.getElementById('userName').textContent = userData.fullName;
                         document.getElementById('userEmail').textContent = userData.email;
                         document.getElementById('referralCode').textContent = userData.referralCode;
@@ -556,11 +787,17 @@
                             document.getElementById('memberSince').textContent = formattedDate;
                         }
                         
+                        // Load wallet balance
+                        loadWalletBalance();
+                        
                         // Load team members
                         loadTeamMembers(userData.teamMembers || []);
                         
                         // Update team stats
                         updateTeamStats(userData.teamMembers || []);
+                        
+                        // Load transaction history
+                        loadTransactionHistory();
                     } else {
                         console.log("No such document!");
                     }
@@ -569,6 +806,49 @@
                     console.error("Error getting document:", error);
                 });
         });
+        
+        // Load wallet balance
+        function loadWalletBalance() {
+            if (!currentUser) return;
+            
+            // Get wallet balance from Firestore
+            db.collection('wallets').doc(currentUser.uid).get()
+                .then(doc => {
+                    if (doc.exists) {
+                        const walletData = doc.data();
+                        const balance = walletData.balance || 0;
+                        document.getElementById('walletBalance').textContent = `$${balance.toFixed(2)}`;
+                        
+                        // Update level progress based on balance
+                        updateLevelProgress(balance);
+                    } else {
+                        // Create wallet document if it doesn't exist
+                        db.collection('wallets').doc(currentUser.uid).set({
+                            balance: 0,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        })
+                        .then(() => {
+                            document.getElementById('walletBalance').textContent = '$0.00';
+                            updateLevelProgress(0);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Error getting wallet data:", error);
+                    document.getElementById('walletBalance').textContent = '$0.00';
+                    updateLevelProgress(0);
+                });
+        }
+        
+        // Update level progress
+        function updateLevelProgress(balance) {
+            const levelProgress = document.getElementById('levelProgress');
+            // For demo, we'll set level progress based on balance
+            // Level 1: $0-$1000, Level 2: $1000-$5000, etc.
+            const maxLevel1 = 1000;
+            const progress = Math.min(100, (balance / maxLevel1) * 100);
+            levelProgress.style.width = `${progress}%`;
+        }
         
         // Load team members
         function loadTeamMembers(teamMemberIds) {
@@ -641,6 +921,92 @@
             document.getElementById('teamEarnings').textContent = `$${totalEarnings}`;
         }
         
+        // Load transaction history
+        function loadTransactionHistory() {
+            if (!currentUser) return;
+            
+            const transactionContainer = document.getElementById('transactionHistory');
+            
+            // Get transactions from Firestore
+            db.collection('transactions')
+                .where('userId', '==', currentUser.uid)
+                .orderBy('createdAt', 'desc')
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.empty) {
+                        transactionContainer.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-exchange-alt"></i>
+                                <p>No transactions yet.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    transactionContainer.innerHTML = '';
+                    
+                    querySnapshot.forEach(doc => {
+                        const transaction = doc.data();
+                        const transactionElement = document.createElement('div');
+                        transactionElement.className = 'transaction-item';
+                        
+                        // Format date
+                        const date = new Date(transaction.createdAt.toDate());
+                        const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                        
+                        // Determine transaction type and icon
+                        let iconClass, statusClass, amountClass;
+                        switch (transaction.type) {
+                            case 'deposit':
+                                iconClass = 'fas fa-arrow-down';
+                                statusClass = transaction.status === 'approved' ? 'deposit' : 'pending';
+                                amountClass = transaction.status === 'approved' ? 'positive' : 'pending';
+                                break;
+                            case 'withdrawal':
+                                iconClass = 'fas fa-arrow-up';
+                                statusClass = 'withdrawal';
+                                amountClass = 'negative';
+                                break;
+                            case 'referral':
+                                iconClass = 'fas fa-gift';
+                                statusClass = 'referral';
+                                amountClass = 'positive';
+                                break;
+                            default:
+                                iconClass = 'fas fa-exchange-alt';
+                                statusClass = 'deposit';
+                                amountClass = 'positive';
+                        }
+                        
+                        transactionElement.innerHTML = `
+                            <div class="transaction-info">
+                                <div class="transaction-icon ${statusClass}">
+                                    <i class="${iconClass}"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <h5>${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}</h5>
+                                    <p>${formattedDate} ${transaction.status === 'pending' ? '(Pending)' : ''}</p>
+                                </div>
+                            </div>
+                            <div class="transaction-amount ${amountClass}">
+                                ${transaction.type === 'withdrawal' ? '-' : '+'}$${transaction.amount.toFixed(2)}
+                            </div>
+                        `;
+                        
+                        transactionContainer.appendChild(transactionElement);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error getting transactions:", error);
+                    transactionContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Error loading transactions.</p>
+                        </div>
+                    `;
+                });
+        }
+        
         // Copy referral link
         document.getElementById('copyReferralBtn').addEventListener('click', function() {
             const referralLink = document.getElementById('referralLink').textContent;
@@ -656,6 +1022,170 @@
                     console.error('Failed to copy: ', err);
                 });
         });
+        
+        // Deposit button
+        document.getElementById('depositBtn').addEventListener('click', function() {
+            const depositModal = new bootstrap.Modal(document.getElementById('depositModal'));
+            depositModal.show();
+        });
+        
+        // Withdraw button
+        document.getElementById('withdrawBtn').addEventListener('click', function() {
+            showToast('Withdrawal feature coming soon!', 'info');
+        });
+        
+        // Payment method selection
+        document.getElementById('upiOption').addEventListener('click', function() {
+            document.getElementById('upiOption').classList.add('active');
+            document.getElementById('qrOption').classList.remove('active');
+            document.getElementById('upiPaymentMethod').style.display = 'block';
+            document.getElementById('qrPaymentMethod').style.display = 'none';
+        });
+        
+        document.getElementById('qrOption').addEventListener('click', function() {
+            document.getElementById('qrOption').classList.add('active');
+            document.getElementById('upiOption').classList.remove('active');
+            document.getElementById('qrPaymentMethod').style.display = 'block';
+            document.getElementById('upiPaymentMethod').style.display = 'none';
+        });
+        
+        // Copy UPI ID
+        document.getElementById('copyUpiBtn').addEventListener('click', function() {
+            const upiId = 'yadav.1014@superyes';
+            navigator.clipboard.writeText(upiId)
+                .then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+        });
+        
+        // File input change
+        document.getElementById('paymentProof').addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : 'No file selected';
+            document.getElementById('fileName').textContent = fileName;
+        });
+        
+        // Submit deposit
+        document.getElementById('submitDepositBtn').addEventListener('click', function() {
+            const amount = parseFloat(document.getElementById('depositAmount').value);
+            const paymentProof = document.getElementById('paymentProof').files[0];
+            
+            if (!amount || amount <= 0) {
+                showToast('Please enter a valid amount', 'error');
+                return;
+            }
+            
+            if (!paymentProof) {
+                showToast('Please upload payment proof', 'error');
+                return;
+            }
+            
+            // Show loading state
+            this.disabled = true;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+            
+            // Upload payment proof to Firebase Storage
+            const storageRef = storage.ref();
+            const proofRef = storageRef.child(`deposit_proofs/${currentUser.uid}/${Date.now()}_${paymentProof.name}`);
+            
+            proofRef.put(paymentProof)
+                .then(snapshot => {
+                    return snapshot.ref.getDownloadURL();
+                })
+                .then(downloadURL => {
+                    // Create deposit request in Firestore
+                    return db.collection('deposit_requests').add({
+                        userId: currentUser.uid,
+                        userName: userData.fullName,
+                        userEmail: userData.email,
+                        amount: amount,
+                        paymentProof: downloadURL,
+                        status: 'pending',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(docRef => {
+                    // Create transaction record
+                    return db.collection('transactions').add({
+                        userId: currentUser.uid,
+                        type: 'deposit',
+                        amount: amount,
+                        status: 'pending',
+                        depositRequestId: docRef.id,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(() => {
+                    // Close modal and reset form
+                    const depositModal = bootstrap.Modal.getInstance(document.getElementById('depositModal'));
+                    depositModal.hide();
+                    document.getElementById('depositAmount').value = '';
+                    document.getElementById('paymentProof').value = '';
+                    document.getElementById('fileName').textContent = 'No file selected';
+                    
+                    // Show success message
+                    showToast('Deposit request submitted successfully! Waiting for admin approval.', 'success');
+                    
+                    // Refresh transaction history
+                    loadTransactionHistory();
+                })
+                .catch(error => {
+                    console.error('Error submitting deposit:', error);
+                    showToast('Error submitting deposit request. Please try again.', 'error');
+                })
+                .finally(() => {
+                    // Reset button state
+                    this.disabled = false;
+                    this.innerHTML = 'Submit Deposit Request';
+                });
+        });
+        
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'custom-toast';
+            
+            let iconClass;
+            switch (type) {
+                case 'success':
+                    iconClass = 'fas fa-check-circle';
+                    break;
+                case 'error':
+                    iconClass = 'fas fa-exclamation-circle';
+                    break;
+                case 'info':
+                default:
+                    iconClass = 'fas fa-info-circle';
+                    break;
+            }
+            
+            toast.innerHTML = `
+                <div class="toast-icon ${type}">
+                    <i class="${iconClass}"></i>
+                </div>
+                <div class="toast-message">${message}</div>
+                <button class="toast-close">&times;</button>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Add event listener to close button
+            toast.querySelector('.toast-close').addEventListener('click', function() {
+                toast.remove();
+            });
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
         
         // Logout
         document.getElementById('logoutBtn').addEventListener('click', function() {
