@@ -37,14 +37,14 @@
             margin-right: 10px;
             font-size: 1.5rem;
         }
-        .referral-code {
+        .referral-link {
             background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             padding: 15px;
             text-align: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 2px;
+            font-size: 1rem;
+            font-weight: 600;
+            word-break: break-all;
             margin-bottom: 15px;
         }
         .copy-btn {
@@ -74,57 +74,13 @@
         .member-info p {
             margin-bottom: 0;
             opacity: 0.8;
+            font-size: 0.9rem;
         }
         .member-status {
             background: rgba(40, 167, 69, 0.3);
             border-radius: 20px;
             padding: 5px 15px;
             font-size: 0.85rem;
-        }
-        .crypto-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .crypto-item:last-child {
-            border-bottom: none;
-        }
-        .crypto-info {
-            display: flex;
-            align-items: center;
-        }
-        .crypto-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-        }
-        .crypto-name {
-            font-weight: 600;
-        }
-        .crypto-symbol {
-            font-size: 0.85rem;
-            opacity: 0.7;
-        }
-        .crypto-price {
-            font-weight: 700;
-        }
-        .crypto-change {
-            font-size: 0.85rem;
-            padding: 3px 8px;
-            border-radius: 5px;
-        }
-        .positive {
-            background: rgba(40, 167, 69, 0.3);
-        }
-        .negative {
-            background: rgba(220, 53, 69, 0.3);
         }
         .user-info {
             display: flex;
@@ -167,6 +123,174 @@
         .empty-state i {
             font-size: 3rem;
             margin-bottom: 15px;
+        }
+        .wallet-balance {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .wallet-currency {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        .wallet-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .wallet-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .wallet-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        .transaction-info {
+            display: flex;
+            align-items: center;
+        }
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        .transaction-icon.deposit {
+            background: rgba(40, 167, 69, 0.3);
+        }
+        .transaction-icon.withdrawal {
+            background: rgba(220, 53, 69, 0.3);
+        }
+        .transaction-icon.referral {
+            background: rgba(255, 193, 7, 0.3);
+        }
+        .transaction-details h5 {
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+        .transaction-details p {
+            margin-bottom: 0;
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+        .transaction-amount {
+            font-weight: 700;
+        }
+        .transaction-amount.positive {
+            color: #28a745;
+        }
+        .transaction-amount.negative {
+            color: #dc3545;
+        }
+        .profile-field {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .profile-field:last-child {
+            border-bottom: none;
+        }
+        .profile-label {
+            font-weight: 600;
+            opacity: 0.8;
+        }
+        .profile-value {
+            font-weight: 500;
+        }
+        .team-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .stat-label {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        .team-level {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 10px 15px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        .team-level-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .tab-container {
+            margin-bottom: 20px;
+        }
+        .nav-tabs {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .nav-tabs .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-bottom: 2px solid transparent;
+            padding: 10px 20px;
+            margin-right: 10px;
+        }
+        .nav-tabs .nav-link:hover {
+            color: white;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        .nav-tabs .nav-link.active {
+            color: white;
+            background: none;
+            border-bottom: 2px solid #ff6b6b;
+        }
+        .tab-content {
+            padding-top: 20px;
+        }
+        .level-indicator {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .level-progress {
+            flex: 1;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0 15px;
+        }
+        .level-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+            width: 65%;
         }
     </style>
 </head>
@@ -211,50 +335,167 @@
                             <p id="userEmail">Loading...</p>
                         </div>
                     </div>
+                    <div class="mt-3">
+                        <div class="profile-field">
+                            <span class="profile-label">Member Since</span>
+                            <span class="profile-value" id="memberSince">Loading...</span>
+                        </div>
+                        <div class="profile-field">
+                            <span class="profile-label">Account Status</span>
+                            <span class="profile-value">
+                                <span class="member-status">Active</span>
+                            </span>
+                        </div>
+                        <div class="profile-field">
+                            <span class="profile-label">Referral Code</span>
+                            <span class="profile-value" id="referralCode">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wallet Card -->
+                <div class="dashboard-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-wallet"></i>
+                        Your Wallet
+                    </h3>
+                    <div class="text-center">
+                        <div class="wallet-balance">$1,245.67</div>
+                        <div class="wallet-currency">USD Balance</div>
+                        <div class="level-indicator">
+                            <span>Level 1</span>
+                            <div class="level-progress">
+                                <div class="level-progress-bar"></div>
+                            </div>
+                            <span>Level 2</span>
+                        </div>
+                    </div>
+                    <div class="wallet-actions">
+                        <button class="btn wallet-btn">
+                            <i class="fas fa-plus me-2"></i>Deposit
+                        </button>
+                        <button class="btn wallet-btn">
+                            <i class="fas fa-minus me-2"></i>Withdraw
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Referral Card -->
                 <div class="dashboard-card">
                     <h3 class="card-title">
                         <i class="fas fa-link"></i>
-                        Your Referral Code
+                        Your Referral Link
                     </h3>
-                    <div class="referral-code" id="referralCode">Loading...</div>
+                    <div class="referral-link" id="referralLink">Loading...</div>
                     <div class="d-grid">
                         <button class="btn copy-btn" id="copyReferralBtn">
-                            <i class="fas fa-copy me-2"></i>Copy Code
+                            <i class="fas fa-copy me-2"></i>Copy Link
                         </button>
                     </div>
-                    <p class="mt-3 text-center">Share this code with others to build your team</p>
+                    <p class="mt-3 text-center">Share this link with others to build your team</p>
                 </div>
             </div>
 
             <div class="col-lg-8">
-                <!-- Crypto Prices Card -->
-                <div class="dashboard-card">
-                    <h3 class="card-title">
-                        <i class="fas fa-chart-line"></i>
-                        Real-time Crypto Prices
-                    </h3>
-                    <div id="cryptoPrices">
-                        <div class="text-center py-4">
-                            <div class="spinner-border text-light" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Card -->
+                <!-- Team Stats Card -->
                 <div class="dashboard-card">
                     <h3 class="card-title">
                         <i class="fas fa-users"></i>
                         Your Team
                     </h3>
-                    <div id="teamMembers">
-                        <div class="text-center py-4">
-                            <div class="spinner-border text-light" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                    <div class="team-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="directReferrals">0</div>
+                            <div class="stat-label">Direct Referrals</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalTeam">0</div>
+                            <div class="stat-label">Total Team</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="teamEarnings">$0</div>
+                            <div class="stat-label">Team Earnings</div>
+                        </div>
+                    </div>
+                    <div class="team-level">
+                        Team Level: Beginner
+                        <span class="team-level-badge">Level 1</span>
+                    </div>
+                </div>
+
+                <!-- Team Members & Transactions Tabs -->
+                <div class="dashboard-card">
+                    <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="team-tab" data-bs-toggle="tab" data-bs-target="#team" type="button" role="tab">Team Members</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions" type="button" role="tab">Transactions</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="dashboardTabsContent">
+                        <!-- Team Members Tab -->
+                        <div class="tab-pane fade show active" id="team" role="tabpanel">
+                            <div id="teamMembers">
+                                <div class="text-center py-4">
+                                    <div class="spinner-border text-light" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Transactions Tab -->
+                        <div class="tab-pane fade" id="transactions" role="tabpanel">
+                            <div id="transactionHistory">
+                                <div class="transaction-item">
+                                    <div class="transaction-info">
+                                        <div class="transaction-icon deposit">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </div>
+                                        <div class="transaction-details">
+                                            <h5>Deposit</h5>
+                                            <p>From Bank Account</p>
+                                        </div>
+                                    </div>
+                                    <div class="transaction-amount positive">+$500.00</div>
+                                </div>
+                                <div class="transaction-item">
+                                    <div class="transaction-info">
+                                        <div class="transaction-icon referral">
+                                            <i class="fas fa-gift"></i>
+                                        </div>
+                                        <div class="transaction-details">
+                                            <h5>Referral Bonus</h5>
+                                            <p>From John Doe</p>
+                                        </div>
+                                    </div>
+                                    <div class="transaction-amount positive">+$25.00</div>
+                                </div>
+                                <div class="transaction-item">
+                                    <div class="transaction-info">
+                                        <div class="transaction-icon withdrawal">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </div>
+                                        <div class="transaction-details">
+                                            <h5>Withdrawal</h5>
+                                            <p>To Bank Account</p>
+                                        </div>
+                                    </div>
+                                    <div class="transaction-amount negative">-$100.00</div>
+                                </div>
+                                <div class="transaction-item">
+                                    <div class="transaction-info">
+                                        <div class="transaction-icon referral">
+                                            <i class="fas fa-gift"></i>
+                                        </div>
+                                        <div class="transaction-details">
+                                            <h5>Team Bonus</h5>
+                                            <p>Level 2 Commission</p>
+                                        </div>
+                                    </div>
+                                    <div class="transaction-amount positive">+$45.00</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -300,8 +541,26 @@
                         document.getElementById('userEmail').textContent = userData.email;
                         document.getElementById('referralCode').textContent = userData.referralCode;
                         
+                        // Format referral link
+                        const referralLink = `https://coinspare.github.io/coinspare?ref=${userData.referralCode}`;
+                        document.getElementById('referralLink').textContent = referralLink;
+                        
+                        // Format member since date
+                        if (userData.createdAt) {
+                            const joinDate = new Date(userData.createdAt.toDate());
+                            const formattedDate = joinDate.toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            });
+                            document.getElementById('memberSince').textContent = formattedDate;
+                        }
+                        
                         // Load team members
                         loadTeamMembers(userData.teamMembers || []);
+                        
+                        // Update team stats
+                        updateTeamStats(userData.teamMembers || []);
                     } else {
                         console.log("No such document!");
                     }
@@ -309,9 +568,6 @@
                 .catch(error => {
                     console.error("Error getting document:", error);
                 });
-            
-            // Load crypto prices
-            loadCryptoPrices();
         });
         
         // Load team members
@@ -323,7 +579,7 @@
                     <div class="empty-state">
                         <i class="fas fa-users"></i>
                         <p>You don't have any team members yet.</p>
-                        <p>Share your referral code to build your team!</p>
+                        <p>Share your referral link to build your team!</p>
                     </div>
                 `;
                 return;
@@ -338,10 +594,22 @@
                             const memberData = doc.data();
                             const memberElement = document.createElement('div');
                             memberElement.className = 'team-member';
+                            
+                            // Format join date
+                            let joinDate = 'N/A';
+                            if (memberData.createdAt) {
+                                const date = new Date(memberData.createdAt.toDate());
+                                joinDate = date.toLocaleDateString();
+                            }
+                            
+                            // Get team size
+                            const teamSize = memberData.teamMembers ? memberData.teamMembers.length : 0;
+                            
                             memberElement.innerHTML = `
                                 <div class="member-info">
                                     <h5>${memberData.fullName}</h5>
-                                    <p>${memberData.email}</p>
+                                    <p>${memberData.email} • Joined: ${joinDate}</p>
+                                    <p>Team Size: ${teamSize}</p>
                                 </div>
                                 <div class="member-status">Active</div>
                             `;
@@ -354,80 +622,29 @@
             });
         }
         
-        // Load crypto prices (mock data for demo)
-        function loadCryptoPrices() {
-            const cryptoContainer = document.getElementById('cryptoPrices');
+        // Update team stats
+        function updateTeamStats(teamMemberIds) {
+            // Direct referrals count
+            document.getElementById('directReferrals').textContent = teamMemberIds.length;
             
-            // Mock crypto data
-            const cryptoData = [
-                { name: 'Bitcoin', symbol: 'BTC', price: '$42,356.78', change: '+2.45%', positive: true },
-                { name: 'Ethereum', symbol: 'ETH', price: '$2,245.67', change: '+1.78%', positive: true },
-                { name: 'Binance Coin', symbol: 'BNB', price: '$315.42', change: '-0.65%', positive: false },
-                { name: 'Cardano', symbol: 'ADA', price: '$0.58', change: '+3.21%', positive: true },
-                { name: 'Solana', symbol: 'SOL', price: '$98.76', change: '-1.23%', positive: false },
-                { name: 'Polkadot', symbol: 'DOT', price: '$7.89', change: '+0.92%', positive: true }
-            ];
+            // For demo, we'll calculate total team and earnings
+            // In a real app, this would be more complex with recursive team structure
+            let totalTeamSize = teamMemberIds.length;
+            let totalEarnings = teamMemberIds.length * 25; // $25 per direct referral
             
-            cryptoContainer.innerHTML = '';
+            // Simulate level 2 team members
+            const level2TeamSize = Math.floor(teamMemberIds.length * 1.5);
+            totalTeamSize += level2TeamSize;
+            totalEarnings += level2TeamSize * 10; // $10 per level 2 referral
             
-            cryptoData.forEach(crypto => {
-                const cryptoElement = document.createElement('div');
-                cryptoElement.className = 'crypto-item';
-                cryptoElement.innerHTML = `
-                    <div class="crypto-info">
-                        <div class="crypto-icon">
-                            <i class="fab fa-bitcoin"></i>
-                        </div>
-                        <div>
-                            <div class="crypto-name">${crypto.name}</div>
-                            <div class="crypto-symbol">${crypto.symbol}</div>
-                        </div>
-                    </div>
-                    <div class="text-end">
-                        <div class="crypto-price">${crypto.price}</div>
-                        <div class="crypto-change ${crypto.positive ? 'positive' : 'negative'}">${crypto.change}</div>
-                    </div>
-                `;
-                cryptoContainer.appendChild(cryptoElement);
-            });
-            
-            // Simulate real-time updates
-            setInterval(() => {
-                cryptoData.forEach(crypto => {
-                    const randomChange = (Math.random() * 4 - 2).toFixed(2);
-                    crypto.change = (randomChange >= 0 ? '+' : '') + randomChange + '%';
-                    crypto.positive = randomChange >= 0;
-                });
-                
-                cryptoContainer.innerHTML = '';
-                
-                cryptoData.forEach(crypto => {
-                    const cryptoElement = document.createElement('div');
-                    cryptoElement.className = 'crypto-item';
-                    cryptoElement.innerHTML = `
-                        <div class="crypto-info">
-                            <div class="crypto-icon">
-                                <i class="fab fa-bitcoin"></i>
-                            </div>
-                            <div>
-                                <div class="crypto-name">${crypto.name}</div>
-                                <div class="crypto-symbol">${crypto.symbol}</div>
-                            </div>
-                        </div>
-                        <div class="text-end">
-                            <div class="crypto-price">${crypto.price}</div>
-                            <div class="crypto-change ${crypto.positive ? 'positive' : 'negative'}">${crypto.change}</div>
-                        </div>
-                    `;
-                    cryptoContainer.appendChild(cryptoElement);
-                });
-            }, 5000); // Update every 5 seconds
+            document.getElementById('totalTeam').textContent = totalTeamSize;
+            document.getElementById('teamEarnings').textContent = `$${totalEarnings}`;
         }
         
-        // Copy referral code
+        // Copy referral link
         document.getElementById('copyReferralBtn').addEventListener('click', function() {
-            const referralCode = document.getElementById('referralCode').textContent;
-            navigator.clipboard.writeText(referralCode)
+            const referralLink = document.getElementById('referralLink').textContent;
+            navigator.clipboard.writeText(referralLink)
                 .then(() => {
                     const originalText = this.innerHTML;
                     this.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
@@ -451,5 +668,6 @@
                 });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
