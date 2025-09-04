@@ -178,40 +178,27 @@
             font-weight: 700;
             margin-top: 10px;
         }
-        .deposit-request {
-            background: rgba(0, 0, 0, 0.2);
+        .deposit-item {
+            background: rgba(255, 193, 7, 0.2);
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 15px;
-        }
-        .deposit-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            justify-content: space-between;
         }
-        .deposit-user {
-            font-weight: 600;
+        .deposit-info h5 {
+            margin-bottom: 5px;
+        }
+        .deposit-info p {
+            margin-bottom: 0;
+            opacity: 0.8;
+            font-size: 0.9rem;
         }
         .deposit-amount {
             font-weight: 700;
-            font-size: 1.2rem;
-        }
-        .deposit-details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        .deposit-proof {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .deposit-proof img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 10px;
+            color: #ffc107;
+            margin-right: 15px;
         }
         .deposit-actions {
             display: flex;
@@ -220,11 +207,10 @@
         .btn-approve {
             background: rgba(40, 167, 69, 0.3);
             border: none;
-            border-radius: 10px;
-            padding: 8px 15px;
-            font-weight: 600;
-            flex: 1;
-            transition: all 0.3s;
+            border-radius: 5px;
+            padding: 5px 10px;
+            color: white;
+            font-size: 0.85rem;
         }
         .btn-approve:hover {
             background: rgba(40, 167, 69, 0.5);
@@ -232,11 +218,10 @@
         .btn-reject {
             background: rgba(220, 53, 69, 0.3);
             border: none;
-            border-radius: 10px;
-            padding: 8px 15px;
-            font-weight: 600;
-            flex: 1;
-            transition: all 0.3s;
+            border-radius: 5px;
+            padding: 5px 10px;
+            color: white;
+            font-size: 0.85rem;
         }
         .btn-reject:hover {
             background: rgba(220, 53, 69, 0.5);
@@ -252,7 +237,6 @@
         }
         .nav-tabs {
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 20px;
         }
         .nav-tabs .nav-link {
             color: rgba(255, 255, 255, 0.7);
@@ -270,55 +254,8 @@
             background: none;
             border-bottom: 2px solid #ff6b6b;
         }
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1050;
-        }
-        .custom-toast {
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            min-width: 300px;
-        }
-        .toast-icon {
-            margin-right: 15px;
-            font-size: 1.5rem;
-        }
-        .toast-icon.success {
-            color: #28a745;
-        }
-        .toast-icon.error {
-            color: #dc3545;
-        }
-        .toast-icon.info {
-            color: #17a2b8;
-        }
-        .toast-message {
-            flex: 1;
-        }
-        .toast-close {
-            background: none;
-            border: none;
-            color: white;
-            opacity: 0.7;
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        .toast-close:hover {
-            opacity: 1;
-        }
-        .loading-spinner {
-            display: flex;
-            justify-content: center;
-            padding: 20px;
+        .tab-content {
+            padding-top: 20px;
         }
     </style>
 </head>
@@ -395,24 +332,19 @@
                 </div>
             </div>
 
-            <!-- Tabs for Users and Deposits -->
-            <ul class="nav nav-tabs" id="adminTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab">Users</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="deposits-tab" data-bs-toggle="tab" data-bs-target="#deposits" type="button" role="tab">Deposit Requests</button>
-                </li>
-            </ul>
-            
-            <div class="tab-content" id="adminTabsContent">
-                <!-- Users Tab -->
-                <div class="tab-pane fade show active" id="users" role="tabpanel">
-                    <div class="dashboard-card">
-                        <h3 class="card-title">
-                            <i class="fas fa-users"></i>
-                            All Users
-                        </h3>
+            <!-- Tabs -->
+            <div class="dashboard-card">
+                <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab">Users</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="deposits-tab" data-bs-toggle="tab" data-bs-target="#deposits" type="button" role="tab">Pending Deposits</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="adminTabsContent">
+                    <!-- Users Tab -->
+                    <div class="tab-pane fade show active" id="users" role="tabpanel">
                         <div class="table-responsive">
                             <table class="user-table">
                                 <thead>
@@ -420,8 +352,8 @@
                                         <th>User</th>
                                         <th>Email</th>
                                         <th>Referral Code</th>
-                                        <th>Team Size</th>
                                         <th>Wallet Balance</th>
+                                        <th>Team Size</th>
                                         <th>Joined</th>
                                     </tr>
                                 </thead>
@@ -437,17 +369,11 @@
                             </table>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Deposits Tab -->
-                <div class="tab-pane fade" id="deposits" role="tabpanel">
-                    <div class="dashboard-card">
-                        <h3 class="card-title">
-                            <i class="fas fa-money-bill-wave"></i>
-                            Deposit Requests
-                        </h3>
-                        <div id="depositRequests">
-                            <div class="loading-spinner">
+                    
+                    <!-- Pending Deposits Tab -->
+                    <div class="tab-pane fade" id="deposits" role="tabpanel">
+                        <div id="pendingDepositsList">
+                            <div class="text-center py-4">
                                 <div class="spinner-border text-light" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
@@ -458,9 +384,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
@@ -499,9 +422,8 @@
                 document.getElementById('adminLogin').style.display = 'none';
                 document.getElementById('adminDashboard').style.display = 'block';
                 loadAdminData();
-                setupRealtimeUpdates();
             } else {
-                showToast('Invalid admin credentials!', 'error');
+                alert('Invalid admin credentials!');
             }
         });
         
@@ -512,6 +434,7 @@
                 .then(querySnapshot => {
                     const users = [];
                     let totalReferrals = 0;
+                    let totalDeposits = 0;
                     
                     querySnapshot.forEach(doc => {
                         const userData = doc.data();
@@ -523,11 +446,16 @@
                         if (userData.teamMembers && userData.teamMembers.length > 0) {
                             totalReferrals += userData.teamMembers.length;
                         }
+                        
+                        if (userData.walletBalance) {
+                            totalDeposits += userData.walletBalance;
+                        }
                     });
                     
                     // Update stats
                     document.getElementById('totalUsers').textContent = users.length;
                     document.getElementById('totalReferrals').textContent = totalReferrals;
+                    document.getElementById('totalDeposits').textContent = `$${totalDeposits.toFixed(2)}`;
                     
                     // Populate users table
                     const tableBody = document.getElementById('usersTableBody');
@@ -537,6 +465,7 @@
                         const row = document.createElement('tr');
                         
                         const teamSize = user.teamMembers ? user.teamMembers.length : 0;
+                        const walletBalance = user.walletBalance ? user.walletBalance.toFixed(2) : '0.00';
                         const joinDate = user.createdAt ? 
                             new Date(user.createdAt.toDate()).toLocaleDateString() : 'N/A';
                         
@@ -555,369 +484,167 @@
                             <td>
                                 <div class="referral-code">${user.referralCode}</div>
                             </td>
+                            <td>$${walletBalance}</td>
                             <td>
                                 <span class="team-size">${teamSize}</span>
                             </td>
-                            <td id="wallet-${user.id}">Loading...</td>
                             <td>${joinDate}</td>
                         `;
                         
                         tableBody.appendChild(row);
-                        
-                        // Load wallet balance for each user
-                        loadWalletBalance(user.id);
+                    });
+                    
+                    // Load pending deposits
+                    loadPendingDeposits();
+                    
+                    // Set up real-time updates
+                    db.collection('users').onSnapshot(snapshot => {
+                        loadAdminData();
+                    });
+                    
+                    db.collection('deposits').onSnapshot(snapshot => {
+                        loadPendingDeposits();
                     });
                 })
                 .catch(error => {
                     console.error("Error getting users: ", error);
                 });
-            
-            // Get deposit requests
-            loadDepositRequests();
-            
-            // Get total deposits
-            loadTotalDeposits();
         }
         
-        // Load wallet balance for a user
-        function loadWalletBalance(userId) {
-            db.collection('wallets').doc(userId).get()
-                .then(doc => {
-                    if (doc.exists) {
-                        const walletData = doc.data();
-                        const balance = walletData.balance || 0;
-                        const walletCell = document.getElementById(`wallet-${userId}`);
-                        if (walletCell) {
-                            walletCell.textContent = `$${balance.toFixed(2)}`;
-                        }
-                    } else {
-                        const walletCell = document.getElementById(`wallet-${userId}`);
-                        if (walletCell) {
-                            walletCell.textContent = '$0.00';
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error("Error getting wallet balance: ", error);
-                    const walletCell = document.getElementById(`wallet-${userId}`);
-                    if (walletCell) {
-                        walletCell.textContent = 'Error';
-                    }
-                });
-        }
-        
-        // Load deposit requests
-        function loadDepositRequests() {
-            const depositContainer = document.getElementById('depositRequests');
+        // Load pending deposits
+        function loadPendingDeposits() {
+            const depositsContainer = document.getElementById('pendingDepositsList');
             
-            db.collection('deposit_requests')
+            db.collection('deposits')
                 .where('status', '==', 'pending')
-                .orderBy('createdAt', 'desc')
                 .get()
                 .then(querySnapshot => {
                     // Update pending deposits count
                     document.getElementById('pendingDeposits').textContent = querySnapshot.size;
                     
                     if (querySnapshot.empty) {
-                        depositContainer.innerHTML = `
+                        depositsContainer.innerHTML = `
                             <div class="empty-state">
-                                <i class="fas fa-inbox"></i>
-                                <p>No pending deposit requests.</p>
+                                <i class="fas fa-coins"></i>
+                                <p>No pending deposits</p>
                             </div>
                         `;
                         return;
                     }
                     
-                    depositContainer.innerHTML = '';
+                    depositsContainer.innerHTML = '';
                     
                     querySnapshot.forEach(doc => {
-                        const deposit = doc.data();
-                        const depositElement = document.createElement('div');
-                        depositElement.className = 'deposit-request';
-                        depositElement.id = `deposit-${doc.id}`;
+                        const depositData = doc.data();
                         
-                        // Format date
-                        const date = new Date(deposit.createdAt.toDate());
-                        const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                        
-                        depositElement.innerHTML = `
-                            <div class="deposit-header">
-                                <div class="deposit-user">${deposit.userName}</div>
-                                <div class="deposit-amount">$${deposit.amount.toFixed(2)}</div>
-                            </div>
-                            <div class="deposit-details">
-                                <div>Email: ${deposit.userEmail}</div>
-                                <div>Date: ${formattedDate}</div>
-                            </div>
-                            <div class="deposit-proof">
-                                <img src="${deposit.paymentProof}" alt="Payment Proof">
-                            </div>
-                            <div class="deposit-actions">
-                                <button class="btn btn-approve" onclick="approveDeposit('${doc.id}', '${deposit.userId}', ${deposit.amount})">
-                                    <i class="fas fa-check me-2"></i>Approve
-                                </button>
-                                <button class="btn btn-reject" onclick="rejectDeposit('${doc.id}')">
-                                    <i class="fas fa-times me-2"></i>Reject
-                                </button>
-                            </div>
-                        `;
-                        
-                        depositContainer.appendChild(depositElement);
+                        // Get user info
+                        db.collection('users').doc(depositData.userId).get()
+                            .then(userDoc => {
+                                if (userDoc.exists) {
+                                    const userData = userDoc.data();
+                                    const depositElement = document.createElement('div');
+                                    depositElement.className = 'deposit-item';
+                                    
+                                    // Format date
+                                    const depositDate = new Date(depositData.createdAt.toDate());
+                                    const formattedDate = depositDate.toLocaleDateString();
+                                    
+                                    depositElement.innerHTML = `
+                                        <div class="deposit-info">
+                                            <h5>${userData.fullName} (${userData.email})</h5>
+                                            <p>${formattedDate} • ${depositData.note || 'No note'}</p>
+                                        </div>
+                                        <div style="display: flex; align-items: center;">
+                                            <div class="deposit-amount">$${depositData.amount.toFixed(2)}</div>
+                                            <div class="deposit-actions">
+                                                <button class="btn-approve" data-id="${doc.id}" data-user-id="${depositData.userId}" data-amount="${depositData.amount}">
+                                                    <i class="fas fa-check"></i> Approve
+                                                </button>
+                                                <button class="btn-reject" data-id="${doc.id}">
+                                                    <i class="fas fa-times"></i> Reject
+                                                </button>
+                                            </div>
+                                        </div>
+                                    `;
+                                    
+                                    depositsContainer.appendChild(depositElement);
+                                    
+                                    // Add event listeners to buttons
+                                    depositElement.querySelector('.btn-approve').addEventListener('click', function() {
+                                        approveDeposit(this.dataset.id, this.dataset.userId, parseFloat(this.dataset.amount));
+                                    });
+                                    
+                                    depositElement.querySelector('.btn-reject').addEventListener('click', function() {
+                                        rejectDeposit(this.dataset.id);
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error getting user data: ", error);
+                            });
                     });
                 })
                 .catch(error => {
-                    console.error("Error getting deposit requests: ", error);
-                    depositContainer.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <p>Error loading deposit requests.</p>
-                        </div>
-                    `;
-                });
-        }
-        
-        // Load total deposits
-        function loadTotalDeposits() {
-            db.collection('transactions')
-                .where('type', '==', 'deposit')
-                .where('status', '==', 'approved')
-                .get()
-                .then(querySnapshot => {
-                    let total = 0;
-                    querySnapshot.forEach(doc => {
-                        const transaction = doc.data();
-                        total += transaction.amount;
-                    });
-                    document.getElementById('totalDeposits').textContent = `$${total.toFixed(2)}`;
-                })
-                .catch(error => {
-                    console.error("Error getting total deposits: ", error);
-                    document.getElementById('totalDeposits').textContent = '$0';
+                    console.error("Error loading pending deposits: ", error);
                 });
         }
         
         // Approve deposit
         function approveDeposit(depositId, userId, amount) {
-            // Show loading state
-            const depositElement = document.getElementById(`deposit-${depositId}`);
-            const approveBtn = depositElement.querySelector('.btn-approve');
-            const rejectBtn = depositElement.querySelector('.btn-reject');
-            
-            approveBtn.disabled = true;
-            approveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
-            rejectBtn.disabled = true;
-            
-            // Update deposit request status
-            db.collection('deposit_requests').doc(depositId).update({
+            // Update deposit status
+            db.collection('deposits').doc(depositId).update({
                 status: 'approved',
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(() => {
-                // Update transaction status
-                return db.collection('transactions')
-                    .where('depositRequestId', '==', depositId)
-                    .get();
-            })
-            .then(querySnapshot => {
-                const batch = db.batch();
-                querySnapshot.forEach(doc => {
-                    batch.update(doc.ref, {
-                        status: 'approved',
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                });
-                return batch.commit();
+                approvedAt: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then(() => {
                 // Update user wallet balance
-                const walletRef = db.collection('wallets').doc(userId);
-                
-                return db.runTransaction(transaction => {
-                    return transaction.get(walletRef).then(doc => {
-                        if (!doc.exists) {
-                            // Create wallet if it doesn't exist
-                            transaction.set(walletRef, {
-                                balance: amount,
-                                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                            });
-                        } else {
-                            // Update existing wallet
-                            const newBalance = doc.data().balance + amount;
-                            transaction.update(walletRef, {
-                                balance: newBalance,
-                                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                db.collection('users').doc(userId).get()
+                    .then(doc => {
+                        if (doc.exists) {
+                            const userData = doc.data();
+                            const currentBalance = userData.walletBalance || 0;
+                            const newBalance = currentBalance + amount;
+                            
+                            db.collection('users').doc(userId).update({
+                                walletBalance: newBalance
+                            })
+                            .then(() => {
+                                alert('Deposit approved successfully!');
+                                loadPendingDeposits();
+                            })
+                            .catch(error => {
+                                console.error("Error updating user balance: ", error);
+                                alert('Error updating user balance. Please try again.');
                             });
                         }
-                        return newBalance;
+                    })
+                    .catch(error => {
+                        console.error("Error getting user data: ", error);
+                        alert('Error getting user data. Please try again.');
                     });
-                });
-            })
-            .then(newBalance => {
-                // Remove deposit request from UI
-                depositElement.remove();
-                
-                // Show success message
-                showToast(`Deposit approved successfully! New balance: $${newBalance.toFixed(2)}`, 'success');
-                
-                // Update pending deposits count
-                const pendingCount = parseInt(document.getElementById('pendingDeposits').textContent) - 1;
-                document.getElementById('pendingDeposits').textContent = pendingCount;
-                
-                // Update total deposits
-                const currentTotal = parseFloat(document.getElementById('totalDeposits').textContent.replace('$', ''));
-                document.getElementById('totalDeposits').textContent = `$${(currentTotal + amount).toFixed(2)}`;
-                
-                // Check if there are no more pending deposits
-                if (pendingCount === 0) {
-                    document.getElementById('depositRequests').innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-inbox"></i>
-                            <p>No pending deposit requests.</p>
-                        </div>
-                    `;
-                }
             })
             .catch(error => {
                 console.error("Error approving deposit: ", error);
-                showToast('Error approving deposit. Please try again.', 'error');
-                
-                // Reset button state
-                approveBtn.disabled = false;
-                approveBtn.innerHTML = '<i class="fas fa-check me-2"></i>Approve';
-                rejectBtn.disabled = false;
+                alert('Error approving deposit. Please try again.');
             });
         }
         
         // Reject deposit
         function rejectDeposit(depositId) {
-            // Show loading state
-            const depositElement = document.getElementById(`deposit-${depositId}`);
-            const approveBtn = depositElement.querySelector('.btn-approve');
-            const rejectBtn = depositElement.querySelector('.btn-reject');
-            
-            rejectBtn.disabled = true;
-            rejectBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
-            approveBtn.disabled = true;
-            
-            // Update deposit request status
-            db.collection('deposit_requests').doc(depositId).update({
-                status: 'rejected',
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(() => {
-                // Update transaction status
-                return db.collection('transactions')
-                    .where('depositRequestId', '==', depositId)
-                    .get();
-            })
-            .then(querySnapshot => {
-                const batch = db.batch();
-                querySnapshot.forEach(doc => {
-                    batch.update(doc.ref, {
-                        status: 'rejected',
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+            if (confirm('Are you sure you want to reject this deposit?')) {
+                db.collection('deposits').doc(depositId).update({
+                    status: 'rejected',
+                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+                })
+                .then(() => {
+                    alert('Deposit rejected successfully!');
+                    loadPendingDeposits();
+                })
+                .catch(error => {
+                    console.error("Error rejecting deposit: ", error);
+                    alert('Error rejecting deposit. Please try again.');
                 });
-                return batch.commit();
-            })
-            .then(() => {
-                // Remove deposit request from UI
-                depositElement.remove();
-                
-                // Show success message
-                showToast('Deposit rejected successfully.', 'success');
-                
-                // Update pending deposits count
-                const pendingCount = parseInt(document.getElementById('pendingDeposits').textContent) - 1;
-                document.getElementById('pendingDeposits').textContent = pendingCount;
-                
-                // Check if there are no more pending deposits
-                if (pendingCount === 0) {
-                    document.getElementById('depositRequests').innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-inbox"></i>
-                            <p>No pending deposit requests.</p>
-                        </div>
-                    `;
-                }
-            })
-            .catch(error => {
-                console.error("Error rejecting deposit: ", error);
-                showToast('Error rejecting deposit. Please try again.', 'error');
-                
-                // Reset button state
-                rejectBtn.disabled = false;
-                rejectBtn.innerHTML = '<i class="fas fa-times me-2"></i>Reject';
-                approveBtn.disabled = false;
-            });
-        }
-        
-        // Setup real-time updates
-        function setupRealtimeUpdates() {
-            // Listen for new deposit requests
-            db.collection('deposit_requests')
-                .where('status', '==', 'pending')
-                .onSnapshot(snapshot => {
-                    // Update pending deposits count
-                    document.getElementById('pendingDeposits').textContent = snapshot.size;
-                    
-                    // If deposits tab is active, reload deposit requests
-                    const depositsTab = document.getElementById('deposits-tab');
-                    if (depositsTab.classList.contains('active')) {
-                        loadDepositRequests();
-                    }
-                });
-            
-            // Listen for new approved deposits
-            db.collection('transactions')
-                .where('type', '==', 'deposit')
-                .where('status', '==', 'approved')
-                .onSnapshot(() => {
-                    // Update total deposits
-                    loadTotalDeposits();
-                });
-        }
-        
-        // Show toast notification
-        function showToast(message, type = 'info') {
-            const toastContainer = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = 'custom-toast';
-            
-            let iconClass;
-            switch (type) {
-                case 'success':
-                    iconClass = 'fas fa-check-circle';
-                    break;
-                case 'error':
-                    iconClass = 'fas fa-exclamation-circle';
-                    break;
-                case 'info':
-                default:
-                    iconClass = 'fas fa-info-circle';
-                    break;
             }
-            
-            toast.innerHTML = `
-                <div class="toast-icon ${type}">
-                    <i class="${iconClass}"></i>
-                </div>
-                <div class="toast-message">${message}</div>
-                <button class="toast-close">&times;</button>
-            `;
-            
-            toastContainer.appendChild(toast);
-            
-            // Add event listener to close button
-            toast.querySelector('.toast-close').addEventListener('click', function() {
-                toast.remove();
-            });
-            
-            // Auto remove after 5 seconds
-            setTimeout(() => {
-                toast.remove();
-            }, 5000);
         }
         
         // Admin logout
