@@ -156,11 +156,11 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
         
-        // Generate unique referral code
+        // Generate unique referral code starting with "CS" followed by 6 random characters
         function generateReferralCode() {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let result = '';
-            const length = 8;
+            let result = 'CS'; // Start with "CS"
+            const length = 6; // 6 more characters to make total 8
             for (let i = 0; i < length; i++) {
                 result += characters.charAt(Math.floor(Math.random() * characters.length));
             }
