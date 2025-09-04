@@ -1,117 +1,403 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Admin • CoinSpare</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>body{font-family:Inter,system-ui}</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - CoinSpare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            margin: 100px auto;
+        }
+        .admin-container {
+            display: none;
+            padding: 30px 0;
+        }
+        .navbar {
+            background: rgba(0, 0, 0, 0.3) !important;
+        }
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .card-title {
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .card-title i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .user-table th,
+        .user-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .user-table th {
+            background: rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+        }
+        .user-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .user-details h5 {
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+        .user-details p {
+            margin-bottom: 0;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        .referral-code {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-family: monospace;
+            font-weight: 600;
+        }
+        .team-size {
+            background: rgba(40, 167, 69, 0.3);
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+        .login-title {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2rem;
+        }
+        .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+        }
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .btn-login {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 10px;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .btn-login:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .stats-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .stats-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .stats-label {
+            opacity: 0.8;
+        }
+        .logout-btn {
+            background: rgba(220, 53, 69, 0.3);
+            border: none;
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover {
+            background: rgba(220, 53, 69, 0.5);
+        }
+        .brand-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .brand-logo i {
+            font-size: 3rem;
+            color: white;
+        }
+        .brand-logo h2 {
+            color: white;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+    </style>
 </head>
-<body class="bg-slate-50 min-h-screen">
-  <header class="border-b bg-white sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-blue-100 flex items-center justify-center font-bold text-blue-700">C</div>
-        <div>
-          <div class="text-lg font-bold text-blue-800">CoinSpare Admin</div>
-          <div class="text-xs text-slate-400">Overview</div>
+<body>
+    <!-- Admin Login Form -->
+    <div id="adminLogin">
+        <div class="login-container">
+            <div class="brand-logo">
+                <i class="fas fa-user-shield"></i>
+                <h2>Admin Panel</h2>
+            </div>
+            <h3 class="login-title">Admin Login</h3>
+            <form id="adminLoginForm">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="adminUsername" placeholder="Admin Username" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="adminPassword" placeholder="Admin Password" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-login">Login</button>
+                </div>
+            </form>
         </div>
-      </div>
-      <div class="flex items-center gap-3">
-        <span id="adminWho" class="text-sm text-slate-600"></span>
-        <button id="logoutBtn" class="px-3 py-1 rounded-lg border">Logout</button>
-      </div>
     </div>
-  </header>
 
-  <main class="max-w-6xl mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold text-blue-800 mb-6">Admin Panel</h1>
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-container">
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="index.html">
+                    <i class="fas fa-coins me-2"></i>CoinSpare Admin
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" id="adminLogoutBtn">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-    <section class="mb-8">
-      <h2 class="font-semibold">Registered Users</h2>
-      <div class="overflow-x-auto mt-3">
-        <table class="w-full bg-white rounded-lg overflow-hidden">
-          <thead class="bg-blue-600 text-white"><tr><th class="px-4 py-2">Name</th><th>Email</th><th>Ref Code</th><th>Ref By</th><th>Team size</th><th>Balance</th><th>Actions</th></tr></thead>
-          <tbody id="usersAdmin" class="divide-y"></tbody>
-        </table>
-      </div>
-    </section>
+        <div class="container">
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="stats-card">
+                        <div class="stats-value" id="totalUsers">0</div>
+                        <div class="stats-label">Total Users</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stats-card">
+                        <div class="stats-value" id="totalReferrals">0</div>
+                        <div class="stats-label">Total Referrals</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stats-card">
+                        <div class="stats-value" id="avgTeamSize">0</div>
+                        <div class="stats-label">Avg. Team Size</div>
+                    </div>
+                </div>
+            </div>
 
-    <section>
-      <h2 class="font-semibold">All Trades</h2>
-      <div class="overflow-x-auto mt-3">
-        <table class="w-full bg-white rounded-lg overflow-hidden">
-          <thead class="bg-blue-600 text-white"><tr><th class="px-4 py-2">User</th><th>Email</th><th>Asset</th><th>Amt</th><th>Date</th></tr></thead>
-          <tbody id="tradesAdmin" class="divide-y"></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
+            <!-- Users Table -->
+            <div class="dashboard-card">
+                <h3 class="card-title">
+                    <i class="fas fa-users"></i>
+                    All Users
+                </h3>
+                <div class="table-responsive">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Referral Code</th>
+                                <th>Team Size</th>
+                                <th>Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="5" class="text-center py-4">
+                                    <div class="spinner-border text-light" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <footer class="border-t">
-    <div class="max-w-6xl mx-auto px-4 py-4 text-xs text-slate-500">© <span id="year"></span> CoinSpare</div>
-  </footer>
-
-  <script src="app.js"></script>
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    const cur = currentUser();
-    if(!cur || cur.role !== 'admin' || cur.email !== 'admin@coinspare.com'){ alert('Admin only'); location.href='login.html'; throw new Error('admin only'); }
-    document.getElementById('adminWho').textContent = cur.name + ' ('+cur.email+')';
-
-    function renderUsersAdmin(){
-      const users = getAllUsers();
-      const el = document.getElementById('usersAdmin');
-      el.innerHTML = '';
-      users.forEach(u=>{
-        const teamSize = (u.team || []).length;
-        const bal = u.portfolio ? '₹' + u.portfolio.balance : '-';
-        el.innerHTML += `<tr>
-          <td class="px-4 py-2">${u.name}</td>
-          <td>${u.email}</td>
-          <td>${u.refCode || '-'}</td>
-          <td>${u.refBy || '-'}</td>
-          <td>${teamSize}</td>
-          <td>${bal}</td>
-          <td class="px-4 py-2">
-            <button onclick="impersonate('${u.email}')" class="px-2 py-1 text-xs rounded bg-blue-600 text-white">Impersonate</button>
-            <button onclick="toggleBlock('${u.email}')" class="px-2 py-1 text-xs rounded bg-red-500 text-white">Block/Unblock</button>
-          </td>
-        </tr>`;
-      });
-    }
-    renderUsersAdmin();
-
-    function renderTradesAdmin(){
-      const arr = allTradesFlatten();
-      const el = document.getElementById('tradesAdmin');
-      el.innerHTML = '';
-      if(arr.length === 0) el.innerHTML = '<tr><td colspan="5" class="text-slate-500 py-2">No trades yet</td></tr>';
-      else arr.forEach(t=>{
-        el.innerHTML += `<tr><td class="px-4 py-2">${t.user}</td><td>${t.email}</td><td>${t.asset}</td><td>₹${t.amount}</td><td>${t.date}</td></tr>`;
-      });
-    }
-    renderTradesAdmin();
-
-    function impersonate(email){
-      // set current user to this user (admin still can access admin page)
-      const u = getUserByEmail(email);
-      if(!u) return alert('User not found');
-      setCurrentUser(u);
-      alert('Impersonating ' + u.email + '. Redirecting to dashboard.');
-      location.href = 'dashboard.html';
-    }
-
-    function toggleBlock(email){
-      const users = getAllUsers();
-      const i = users.findIndex(x=>x.email===email);
-      if(i===-1) return;
-      users[i].status = users[i].status === 'blocked' ? 'active' : 'blocked';
-      saveAllUsers(users);
-      renderUsersAdmin();
-      alert('Toggled block for ' + email);
-    }
-
-    document.getElementById('logoutBtn').addEventListener('click', ()=> logoutAndRedirect('login.html'));
-  </script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxIujPFlHfqgL_-fLbsoSYo3gaGf2iPHQ",
+            authDomain: "sabjiwalahere.firebaseapp.com",
+            projectId: "sabjiwalahere",
+            storageBucket: "sabjiwalahere.firebasestorage.app",
+            messagingSenderId: "418578879301",
+            appId: "1:418578879301:web:56bdf323bf186cbbe1a42c",
+            measurementId: "G-4DGEQXXDLG"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        // Admin credentials (in a real app, this should be handled more securely)
+        const adminCredentials = {
+            username: "admin",
+            password: "coinspare123"
+        };
+        
+        // Admin login form
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                loadAdminData();
+            } else {
+                alert('Invalid admin credentials!');
+            }
+        });
+        
+        // Load admin data
+        function loadAdminData() {
+            // Get all users
+            db.collection('users').get()
+                .then(querySnapshot => {
+                    const users = [];
+                    let totalReferrals = 0;
+                    
+                    querySnapshot.forEach(doc => {
+                        const userData = doc.data();
+                        users.push({
+                            id: doc.id,
+                            ...userData
+                        });
+                        
+                        if (userData.teamMembers && userData.teamMembers.length > 0) {
+                            totalReferrals += userData.teamMembers.length;
+                        }
+                    });
+                    
+                    // Update stats
+                    document.getElementById('totalUsers').textContent = users.length;
+                    document.getElementById('totalReferrals').textContent = totalReferrals;
+                    document.getElementById('avgTeamSize').textContent = 
+                        users.length > 0 ? (totalReferrals / users.length).toFixed(1) : 0;
+                    
+                    // Populate users table
+                    const tableBody = document.getElementById('usersTableBody');
+                    tableBody.innerHTML = '';
+                    
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+                        
+                        const teamSize = user.teamMembers ? user.teamMembers.length : 0;
+                        const joinDate = user.createdAt ? 
+                            new Date(user.createdAt.toDate()).toLocaleDateString() : 'N/A';
+                        
+                        row.innerHTML = `
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="user-details">
+                                        <h5>${user.fullName}</h5>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${user.email}</td>
+                            <td>
+                                <div class="referral-code">${user.referralCode}</div>
+                            </td>
+                            <td>
+                                <span class="team-size">${teamSize}</span>
+                            </td>
+                            <td>${joinDate}</td>
+                        `;
+                        
+                        tableBody.appendChild(row);
+                    });
+                    
+                    // Set up real-time updates
+                    db.collection('users').onSnapshot(snapshot => {
+                        loadAdminData();
+                    });
+                })
+                .catch(error => {
+                    console.error("Error getting users: ", error);
+                });
+        }
+        
+        // Admin logout
+        document.getElementById('adminLogoutBtn').addEventListener('click', function() {
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.getElementById('adminLogin').style.display = 'block';
+            document.getElementById('adminLoginForm').reset();
+        });
+    </script>
 </body>
 </html>
