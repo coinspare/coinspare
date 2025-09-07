@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinVare - Your Trusted Loan Partner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1560523159-1a68e8a341e1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .loan-card {
+            transition: all 0.3s ease;
+        }
+        
+        .loan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .gradient-bg-light {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Live Chat Styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .chat-bubble {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .chat-bubble:hover {
+            transform: scale(1.1);
+        }
+        
+        .chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+        }
+        
+        .chat-window.active {
+            display: flex;
+        }
+        
+        /* Testimonial Carousel */
+        .testimonial-carousel {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .testimonial-slide {
+            min-width: 100%;
+            padding: 0 15px;
+        }
+        
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        /* Partner Logos */
+        .partner-logos {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .partner-logo {
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+        
+        .partner-logo:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+        
+        /* Blog Cards */
+        .blog-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(240, 147, 251, 0.3);
+        }
+        
+        .blog-card img {
+            transition: all 0.5s ease;
+        }
+        
+        .blog-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .blog-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .blog-card:hover .blog-overlay {
+            opacity: 1;
+        }
+        
+        /* Blog Modal */
+        .blog-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        
+        .blog-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .blog-modal-content {
+            background: white;
+            max-width: 800px;
+            width: 90%;
+            margin: 2rem auto;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .blog-modal-header {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .blog-modal-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .blog-modal-body {
+            padding: 2rem;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+        
+        /* Enhanced Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(240, 147, 251, 0.3);
+        }
+        
+        .btn-outline {
+            border: 2px solid #f093fb;
+            color: #f093fb;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: transparent;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-outline:hover {
+            background: #f093fb;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Section Backgrounds */
+        .section-gradient {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        
+        .section-light {
+            background: #fafafa;
+        }
+    </style>
+</head>
+<body class="scroll-smooth">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white shadow-lg z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-university text-3xl mr-3" style="color: #f093fb;"></i>
+                    <span class="text-2xl font-bold gradient-text">FinVare</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-pink-500 transition">Home</a>
+                    <a href="#loans" class="text-gray-700 hover:text-pink-500 transition">Loan Types</a>
+                    <a href="#calculator" class="text-gray-700 hover:text-pink-500 transition">Calculator</a>
+                    <a href="#process" class="text-gray-700 hover:text-pink-500 transition">Process</a>
+                    <a href="#benefits" class="text-gray-700 hover:text-pink-500 transition">Benefits</a>
+                    <a href="#testimonials" class="text-gray-700 hover:text-pink-500 transition">Testimonials</a>
+                    <a href="#blog" class="text-gray-700 hover:text-pink-500 transition">Blog</a>
+                    <a href="#faq" class="text-gray-700 hover:text-pink-500 transition">FAQ</a>
+                    <a href="#contact" class="text-gray-700 hover:text-pink-500 transition">Contact</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-pink-500 hover:text-pink-600 transition">
+                        <i class="fas fa-user-circle text-2xl"></i>
+                    </button>
+                    <button class="btn-primary">
+                        Apply Now
+                    </button>
+                    <button class="md:hidden" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
+            <div class="px-6 py-4 space-y-3">
+                <a href="#home" class="block text-gray-700 hover:text-pink-500">Home</a>
+                <a href="#loans" class="block text-gray-700 hover:text-pink-500">Loan Types</a>
+                <a href="#calculator" class="block text-gray-700 hover:text-pink-500">Calculator</a>
+                <a href="#process" class="block text-gray-700 hover:text-pink-500">Process</a>
+                <a href="#benefits" class="block text-gray-700 hover:text-pink-500">Benefits</a>
+                <a href="#testimonials" class="block text-gray-700 hover:text-pink-500">Testimonials</a>
+                <a href="#blog" class="block text-gray-700 hover:text-pink-500">Blog</a>
+                <a href="#faq" class="block text-gray-700 hover:text-pink-500">FAQ</a>
+                <a href="#contact" class="block text-gray-700 hover:text-pink-500">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg min-h-screen flex items-center">
+        <div class="container mx-auto px-6">
+            <div class="text-white max-w-3xl">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6 animate-float">
+                    Your Dreams, Our Financial Support
+                </h1>
+                <p class="text-xl mb-8 text-gray-200">
+                    Get instant loans at competitive rates. Fast approval, minimal documentation, and flexible repayment options tailored just for you.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                    <button onclick="scrollToSection('calculator')" class="btn-primary">
+                        Calculate Your Loan
+                    </button>
+                    <button onclick="scrollToSection('contact')" class="btn-outline text-white border-white hover:bg-white hover:text-pink-500">
+                        Talk to Expert
+                    </button>
+                </div>
+                <!-- Loan Status Tracker -->
+                <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-4">Track Your Application</h3>
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="Enter Application ID" class="flex-1 px-4 py-2 rounded-lg text-gray-800">
+                        <button class="bg-pink-500 text-white px-6 py-2 rounded-lg hover:bg-pink-600 transition">
+                            Track
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partner Banks Section -->
+    <section class="py-12 bg-white border-b">
+        <div class="container mx-auto px-6">
+            <h3 class="text-center text-gray-600 mb-8">Trusted by Leading Financial Institutions</h3>
+            <div class="partner-logos">
+                <div class="partner-logo">
+                    <i class="fas fa-university text-4xl" style="color: #f093fb;"></i>
+                </div>
+                <div class="partner-logo">
+                    <i class="fas fa-landmark text-4xl" style="color: #f093fb;"></i>
+                </div>
+                <div class="partner-logo">
+                    <i class="fas fa-coins text-4xl" style="color: #f093fb;"></i>
+                </div>
+                <div class="partner-logo">
+                    <i class="fas fa-chart-line text-4xl" style="color: #f093fb;"></i>
+                </div>
+                <div class="partner-logo">
+                    <i class="fas fa-piggy-bank text-4xl" style="color: #f093fb;"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loan Types Section -->
+    <section id="loans" class="py-20 section-light">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 gradient-text">Our Loan Products</h2>
+                <p class="text-xl text-gray-600">Choose the perfect loan that fits your needs</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Personal Loan -->
+                <div class="loan-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="mb-4">
+                        <i class="fas fa-user-circle text-5xl" style="color: #f093fb;"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Personal Loan</h3>
+                    <ul class="space-y-3 text-gray-600 mb-6">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Amount: ₹50,000 - ₹40 Lakhs</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Interest: 10.99% - 24% p.a.</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Tenure: 12 - 60 months</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>No collateral required</li>
+                    </ul>
+                    <button class="btn-primary w-full">
+                        Apply Now
+                    </button>
+                </div>
+
+                <!-- Home Loan -->
+                <div class="loan-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="mb-4">
+                        <i class="fas fa-home text-5xl" style="color: #f093fb;"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Home Loan</h3>
+                    <ul class="space-y-3 text-gray-600 mb-6">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Amount: ₹10 Lakhs - ₹5 Crores</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Interest: 8.35% - 11.5% p.a.</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Tenure: Up to 30 years</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Tax benefits available</li>
+                    </ul>
+                    <button class="btn-primary w-full">
+                        Apply Now
+                    </button>
+                </div>
+
+                <!-- Business Loan -->
+                <div class="loan-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="mb-4">
+                        <i class="fas fa-briefcase text-5xl" style="color: #f093fb;"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Business Loan</h3>
+                    <ul class="space-y-3 text-gray-600 mb-6">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Amount: ₹5 Lakhs - ₹2 Crores</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Interest: 14% - 22% p.a.</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Tenure: 12 - 48 months</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Flexible repayment options</li>
+                    </ul>
+                    <button class="btn-primary w-full">
+                        Apply Now
+                    </button>
+                </div>
+
+                <!-- Car Loan -->
+                <div class="loan-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="mb-4">
+                        <i class="fas fa-car text-5xl" style="color: #f093fb;"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Car Loan</h3>
+                    <ul class="space-y-3 text-gray-600 mb-6">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Amount: Up to 100% of car value</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Interest: 7.5% - 15% p.a.</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Tenure: Up to 7 years</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>New & used cars</li>
+                    </ul>
+                    <button class="btn-primary w-full">
+                        Apply Now
+                    </button>
+                </div>
+
+                <!-- Education Loan -->
+                <div class="loan-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="mb-4">
+                        <i class="fas fa-graduation-cap text-5xl" style="color: #f093fb;"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Education Loan</h3>
+                    <ul class="space-y-3 text-gray-600 mb-6">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Amount: ₹50,000 - ₹1.5 Crores</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Interest: 9.5% - 13% p.a.</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Moratorium period available</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Study in India & abroad</li>
+                    </ul>
+                    <button class="btn-primary w-full">
+                        Apply Now
+                    </button>
+                </div>
+
+                <!-- Gold Loan -->
+                <div class="loan-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="mb-4">
+                        <i class="fas fa-coins text-5xl" style="color: #f093fb;"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Gold Loan</h3>
+                    <ul class="space-y-3 text-gray-600 mb-6">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Amount: Up to 75% of gold value</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Interest: 7% - 29% p.a.</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Tenure: 3 - 36 months</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Instant approval</li>
+                    </ul>
+                    <button class="btn-primary w-full">
+                        Apply Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loan Calculator Section -->
+    <section id="calculator" class="py-20 section-gradient">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-white">Loan Calculator</h2>
+                <p class="text-xl text-gray-700">Calculate your EMI and plan your finances better</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-white rounded-xl p-8 shadow-2xl">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-semibold mb-2">Loan Amount (₹)</label>
+                            <input type="range" id="loanAmount" min="50000" max="5000000" value="1000000" 
+                                   class="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                                   style="background: linear-gradient(to right, #f093fb, #f5576c);"
+                                   oninput="updateCalculator()">
+                            <div class="flex justify-between text-sm text-gray-600 mt-1">
+                                <span>50K</span>
+                                <span id="loanAmountDisplay" class="font-bold" style="color: #f093fb;">₹10,00,000</span>
+                                <span>50L</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-semibold mb-2">Interest Rate (%)</label>
+                            <input type="range" id="interestRate" min="5" max="30" value="12" step="0.1"
+                                   class="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                                   style="background: linear-gradient(to right, #f093fb, #f5576c);"
+                                   oninput="updateCalculator()">
+                            <div class="flex justify-between text-sm text-gray-600 mt-1">
+                                <span>5%</span>
+                                <span id="interestRateDisplay" class="font-bold" style="color: #f093fb;">12%</span>
+                                <span>30%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-semibold mb-2">Loan Tenure (Months)</label>
+                            <input type="range" id="loanTenure" min="12" max="360" value="60"
+                                   class="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                                   style="background: linear-gradient(to right, #f093fb, #f5576c);"
+                                   oninput="updateCalculator()">
+                            <div class="flex justify-between text-sm text-gray-600 mt-1">
+                                <span>12</span>
+                                <span id="loanTenureDisplay" class="font-bold" style="color: #f093fb;">60 months</span>
+                                <span>360</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 rounded-lg" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                        <h3 class="text-2xl font-bold mb-6 text-center">Loan Summary</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Monthly EMI:</span>
+                                <span id="monthlyEMI" class="font-bold text-xl" style="color: #f5576c;">₹22,244</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Principal Amount:</span>
+                                <span id="principalAmount" class="font-semibold">₹10,00,000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Total Interest:</span>
+                                <span id="totalInterest" class="font-semibold">₹3,34,667</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Total Amount:</span>
+                                <span id="totalAmount" class="font-bold text-xl" style="color: #f5576c;">₹13,34,667</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary w-full mt-6">
+                            Apply for This Loan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 gradient-text">What Our Customers Say</h2>
+                <p class="text-xl text-gray-600">Real stories from satisfied customers</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="testimonial-carousel">
+                    <div class="testimonial-track" id="testimonialTrack">
+                        <div class="testimonial-slide">
+                            <div class="p-8 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                                <div class="flex items-center mb-4">
+                                    <img src="https://picsum.photos/seed/person1/60/60" alt="Customer" class="w-16 h-16 rounded-full mr-4">
+                                    <div>
+                                        <h4 class="font-bold text-lg">Rahul Sharma</h4>
+                                        <div class="text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 italic">"FinVare made my home loan process incredibly smooth. The team was supportive throughout, and I got the best interest rate in the market. Highly recommended!"</p>
+                            </div>
+                        </div>
+                        
+                        <div class="testimonial-slide">
+                            <div class="p-8 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                                <div class="flex items-center mb-4">
+                                    <img src="https://picsum.photos/seed/person2/60/60" alt="Customer" class="w-16 h-16 rounded-full mr-4">
+                                    <div>
+                                        <h4 class="font-bold text-lg">Priya Patel</h4>
+                                        <div class="text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 italic">"I needed a personal loan for my medical emergency. FinVare approved it within hours and disbursed the amount the next day. Truly a lifesaver!"</p>
+                            </div>
+                        </div>
+                        
+                        <div class="testimonial-slide">
+                            <div class="p-8 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                                <div class="flex items-center mb-4">
+                                    <img src="https://picsum.photos/seed/person3/60/60" alt="Customer" class="w-16 h-16 rounded-full mr-4">
+                                    <div>
+                                        <h4 class="font-bold text-lg">Amit Kumar</h4>
+                                        <div class="text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 italic">"The business loan from FinVare helped me expand my manufacturing unit. Flexible repayment options and competitive rates made all the difference."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center mt-6 space-x-2">
+                    <button onclick="moveTestimonial(-1)" class="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <i class="fas fa-chevron-left text-white"></i>
+                    </button>
+                    <button onclick="moveTestimonial(1)" class="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <i class="fas fa-chevron-right text-white"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-20 section-light">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 gradient-text">Financial Insights</h2>
+                <p class="text-xl text-gray-600">Stay updated with the latest financial tips and trends</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="blog-card bg-white rounded-xl shadow-lg overflow-hidden" onclick="openBlogModal('blog1')">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://picsum.photos/seed/blog1/400/300" alt="Blog" class="w-full h-full object-cover">
+                        <div class="blog-overlay"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-2">
+                            <span class="text-sm font-semibold px-3 py-1 rounded-full" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">Loan Tips</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">5 Things to Know Before Applying for a Personal Loan</h3>
+                        <p class="text-gray-600 mb-4">Understanding the key factors can help you make an informed decision and get the best deal...</p>
+                        <a href="#" class="font-semibold hover:underline" style="color: #f093fb;">Read More →</a>
+                    </div>
+                </div>
+                
+                <div class="blog-card bg-white rounded-xl shadow-lg overflow-hidden" onclick="openBlogModal('blog2')">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://picsum.photos/seed/blog2/400/300" alt="Blog" class="w-full h-full object-cover">
+                        <div class="blog-overlay"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-2">
+                            <span class="text-sm font-semibold px-3 py-1 rounded-full" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">Financial Planning</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">How to Improve Your Credit Score for Better Loan Rates</h3>
+                        <p class="text-gray-600 mb-4">A good credit score is crucial for getting loans at favorable interest rates. Here's how to improve yours...</p>
+                        <a href="#" class="font-semibold hover:underline" style="color: #f093fb;">Read More →</a>
+                    </div>
+                </div>
+                
+                <div class="blog-card bg-white rounded-xl shadow-lg overflow-hidden" onclick="openBlogModal('blog3')">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://picsum.photos/seed/blog3/400/300" alt="Blog" class="w-full h-full object-cover">
+                        <div class="blog-overlay"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-2">
+                            <span class="text-sm font-semibold px-3 py-1 rounded-full" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">Investment</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Home Loan vs Rent: Which is Better in 2024?</h3>
+                        <p class="text-gray-600 mb-4">With changing market conditions, let's analyze whether buying a home or renting makes more sense...</p>
+                        <a href="#" class="font-semibold hover:underline" style="color: #f093fb;">Read More →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-10">
+                <button class="btn-primary">
+                    View All Articles
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Process Section -->
+    <section id="process" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 gradient-text">Simple Application Process</h2>
+                <p class="text-xl text-gray-600">Get your loan approved in just 4 easy steps</p>
+            </div>
+            
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        1
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Apply Online</h3>
+                    <p class="text-gray-600">Fill our simple application form with basic details</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        2
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Upload Documents</h3>
+                    <p class="text-gray-600">Submit required documents through our secure portal</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        3
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Instant Approval</h3>
+                    <p class="text-gray-600">Get quick approval with minimal verification</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        4
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Get Funds</h3>
+                    <p class="text-gray-600">Receive loan amount in your bank account within 24 hours</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="py-20 section-gradient">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-white">Why Choose FinVare?</h2>
+                <p class="text-xl text-gray-700">Experience the difference with our customer-centric approach</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg">
+                    <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <i class="fas fa-bolt text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Quick Processing</h3>
+                    <p class="text-gray-600">Get loan approval within minutes and disbursal in 24 hours</p>
+                </div>
+                
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg">
+                    <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <i class="fas fa-shield-alt text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">100% Secure</h3>
+                    <p class="text-gray-600">Your data is protected with bank-level security measures</p>
+                </div>
+                
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg">
+                    <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <i class="fas fa-percentage text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Best Rates</h3>
+                    <p class="text-gray-600">Competitive interest rates with no hidden charges</p>
+                </div>
+                
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg">
+                    <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <i class="fas fa-file-alt text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Minimal Docs</h3>
+                    <p class="text-gray-600">Submit only essential documents for faster processing</p>
+                </div>
+                
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg">
+                    <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <i class="fas fa-headset text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">24/7 Support</h3>
+                    <p class="text-gray-600">Round-the-clock customer support for all your queries</p>
+                </div>
+                
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg">
+                    <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <i class="fas fa-sync-alt text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Flexible Repayment</h3>
+                    <p class="text-gray-600">Choose repayment tenure that suits your financial situation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 gradient-text">Frequently Asked Questions</h2>
+                <p class="text-xl text-gray-600">Find answers to common questions about our loans</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="space-y-4">
+                    <div class="bg-white rounded-lg shadow-lg border">
+                        <button class="w-full p-6 text-left flex justify-between items-center" onclick="toggleFAQ(1)">
+                            <h3 class="text-lg font-semibold">What are the eligibility criteria for a loan?</h3>
+                            <i class="fas fa-chevron-down transition-transform" id="faq-icon-1" style="color: #f093fb;"></i>
+                        </button>
+                        <div id="faq-content-1" class="hidden p-6 pt-0 text-gray-600">
+                            To be eligible for a loan, you must be: 21-60 years old, have a stable income source, minimum monthly income of ₹15,000, good credit score, and valid ID and address proof.
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg border">
+                        <button class="w-full p-6 text-left flex justify-between items-center" onclick="toggleFAQ(2)">
+                            <h3 class="text-lg font-semibold">How long does it take to get loan approval?</h3>
+                            <i class="fas fa-chevron-down transition-transform" id="faq-icon-2" style="color: #f093fb;"></i>
+                        </button>
+                        <div id="faq-content-2" class="hidden p-6 pt-0 text-gray-600">
+                            With FinVare, you can get instant approval within minutes of application. The complete process including verification and disbursal takes 24-48 hours.
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg border">
+                        <button class="w-full p-6 text-left flex justify-between items-center" onclick="toggleFAQ(3)">
+                            <h3 class="text-lg font-semibold">What documents are required for loan application?</h3>
+                            <i class="fas fa-chevron-down transition-transform" id="faq-icon-3" style="color: #f093fb;"></i>
+                        </button>
+                        <div id="faq-content-3" class="hidden p-6 pt-0 text-gray-600">
+                            Basic documents include: ID proof (Aadhaar/PAN/Passport), address proof, income proof (salary slips/IT returns), bank statements, and passport-sized photographs.
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg border">
+                        <button class="w-full p-6 text-left flex justify-between items-center" onclick="toggleFAQ(4)">
+                            <h3 class="text-lg font-semibold">Can I prepay my loan? Are there any charges?</h3>
+                            <i class="fas fa-chevron-down transition-transform" id="faq-icon-4" style="color: #f093fb;"></i>
+                        </button>
+                        <div id="faq-content-4" class="hidden p-6 pt-0 text-gray-600">
+                            Yes, you can prepay your loan anytime. We offer zero prepayment charges on most of our loan products. Some specific loans may have minimal charges as per regulatory guidelines.
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg border">
+                        <button class="w-full p-6 text-left flex justify-between items-center" onclick="toggleFAQ(5)">
+                            <h3 class="text-lg font-semibold">What happens if I miss an EMI payment?</h3>
+                            <i class="fas fa-chevron-down transition-transform" id="faq-icon-5" style="color: #f093fb;"></i>
+                        </button>
+                        <div id="faq-content-5" class="hidden p-6 pt-0 text-gray-600">
+                            If you miss an EMI, a late payment fee may be charged. We recommend contacting our customer support immediately to discuss repayment options and avoid affecting your credit score.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 section-gradient">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-white">Get in Touch</h2>
+                <p class="text-xl text-gray-700">Our loan experts are here to help you</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <div>
+                    <form class="space-y-6 bg-white p-8 rounded-xl shadow-2xl" onsubmit="handleSubmit(event)">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Full Name</label>
+                            <input type="text" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-pink-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Email Address</label>
+                            <input type="email" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-pink-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Phone Number</label>
+                            <input type="tel" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-pink-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Loan Type</label>
+                            <select class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-pink-500">
+                                <option>Personal Loan</option>
+                                <option>Home Loan</option>
+                                <option>Business Loan</option>
+                                <option>Car Loan</option>
+                                <option>Education Loan</option>
+                                <option>Gold Loan</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Message</label>
+                            <textarea rows="4" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-pink-500"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary w-full">
+                            Submit Request
+                        </button>
+                    </form>
+                </div>
+                
+                <div>
+                    <div class="p-8 rounded-xl shadow-2xl bg-white bg-opacity-90">
+                        <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-map-marker-alt text-2xl mr-4 mt-1" style="color: #f093fb;"></i>
+                                <div>
+                                    <h4 class="font-semibold">Head Office</h4>
+                                    <p class="text-gray-600">123 Finance Street, Business District, Mumbai - 400001</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-phone text-2xl mr-4 mt-1" style="color: #f093fb;"></i>
+                                <div>
+                                    <h4 class="font-semibold">Call Us</h4>
+                                    <p class="text-gray-600">Toll Free: 1800-123-4567<br>Mobile: +91 98765 43210</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-envelope text-2xl mr-4 mt-1" style="color: #f093fb;"></i>
+                                <div>
+                                    <h4 class="font-semibold">Email Us</h4>
+                                    <p class="text-gray-600">info@finvare.com<br>support@finvare.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-clock text-2xl mr-4 mt-1" style="color: #f093fb;"></i>
+                                <div>
+                                    <h4 class="font-semibold">Working Hours</h4>
+                                    <p class="text-gray-600">Monday - Saturday: 9:00 AM - 7:00 PM<br>Sunday: Closed</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="font-semibold mb-4">Follow Us</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                    <i class="fab fa-facebook-f text-white"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                    <i class="fab fa-twitter text-white"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                    <i class="fab fa-linkedin-in text-white"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                    <i class="fab fa-instagram text-white"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-university text-3xl mr-3" style="color: #f093fb;"></i>
+                        <span class="text-2xl font-bold gradient-text">FinVare</span>
+                    </div>
+                    <p class="text-gray-400">Your trusted partner for all financial needs. Making dreams come true with easy and accessible loans.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-pink-400 transition">About Us</a></li>
+                        <li><a href="#" class="hover:text-pink-400 transition">Loan Products</a></li>
+                        <li><a href="#" class="hover:text-pink-400 transition">Interest Rates</a></li>
+                        <li><a href="#" class="hover:text-pink-400 transition">EMI Calculator</a></li>
+                        <li><a href="#" class="hover:text-pink-400 transition">Apply Now</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-pink-400 transition">Terms & Conditions</a></li>
+                        <li><a href="#" class="hover:text-pink-400 transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-pink-400 transition">Disclaimer</a></li>
+                        <li><a href="#" class="hover:text-pink-400 transition">Cookie Policy</a></li>
+                        <li><a href="#" class="hover:text-pink-400 transition">Grievance Redressal</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 mb-4">Subscribe to get updates on new loan offers and financial tips.</p>
+                    <form class="flex" onsubmit="handleNewsletter(event)">
+                        <input type="email" placeholder="Your email" required 
+                               class="flex-1 px-4 py-2 bg-gray-800 text-white rounded-l-lg focus:outline-none focus:bg-gray-700">
+                        <button type="submit" class="px-4 py-2 rounded-r-lg hover:opacity-90 transition" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 FinVare. All rights reserved. | CIN: U74999MH2024PTC123456 | RBI Registered NBFC</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Blog Modal -->
+    <div id="blogModal" class="blog-modal">
+        <div class="blog-modal-content">
+            <div class="blog-modal-header">
+                <img id="blogModalImage" src="" alt="Blog">
+                <button class="close-modal" onclick="closeBlogModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="blog-modal-body">
+                <div id="blogModalCategory" class="mb-3"></div>
+                <h2 id="blogModalTitle" class="text-3xl font-bold mb-4"></h2>
+                <div id="blogModalContent" class="prose max-w-none"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Chat Widget -->
+    <div class="chat-widget">
+        <div class="chat-bubble" onclick="toggleChat()">
+            <i class="fas fa-comments text-white text-2xl"></i>
+        </div>
+        <div class="chat-window" id="chatWindow">
+            <div class="p-4 rounded-t-xl text-white" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <div class="flex justify-between items-center">
+                    <h4 class="font-semibold">Live Chat Support</h4>
+                    <button onclick="toggleChat()" class="text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 p-4 overflow-y-auto" style="height: 380px;">
+                <div class="space-y-4">
+                    <div class="bg-gray-100 p-3 rounded-lg max-w-xs">
+                        <p class="text-sm">Hello! How can I help you today?</p>
+                    </div>
+                    <div class="p-3 rounded-lg max-w-xs ml-auto" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                        <p class="text-sm">I need help with a loan application</p>
+                    </div>
+                    <div class="bg-gray-100 p-3 rounded-lg max-w-xs">
+                        <p class="text-sm">Sure! I'd be happy to help. What type of loan are you interested in?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t">
+                <div class="flex gap-2">
+                    <input type="text" placeholder="Type your message..." class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500">
+                    <button class="px-4 py-2 rounded-lg hover:opacity-90 transition text-white" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up text-white"></i>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-md mx-4">
+            <div class="text-center">
+                <i class="fas fa-check-circle text-5xl mb-4" style="color: #4caf50;"></i>
+                <h3 class="text-2xl font-bold mb-2">Success!</h3>
+                <p class="text-gray-600 mb-6" id="successMessage">Your request has been submitted successfully.</p>
+                <button onclick="closeModal()" class="btn-primary">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Blog Content Data
+        const blogContent = {
+            blog1: {
+                title: "5 Things to Know Before Applying for a Personal Loan",
+                category: "Loan Tips",
+                image: "https://picsum.photos/seed/blog1/800/400",
+                content: `
+                    <h3 class="text-2xl font-bold mb-4">1. Check Your Credit Score</h3>
+                    <p class="mb-4">Your credit score is one of the most important factors lenders consider when approving your loan application. A good credit score (typically 750 and above) can help you get better interest rates and faster approval. Before applying, check your credit score and take steps to improve it if necessary.</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4">2. Compare Interest Rates</h3>
+                    <p class="mb-4">Different lenders offer different interest rates based on your credit profile, income, and other factors. It's essential to compare rates from multiple lenders to ensure you get the best deal. Even a small difference in interest rate can save you a significant amount over the loan tenure.</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4">3. Understand the Fees and Charges</h3>
+                    <p class="mb-4">Besides the interest rate, personal loans come with various fees such as processing fees, prepayment charges, late payment fees, and more. Make sure you understand all the associated costs before signing the loan agreement.</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4">4. Calculate Your EMI Affordability</h3>
+                    <p class="mb-4">Use an EMI calculator to determine how much you'll need to pay each month. Ensure that the EMI fits comfortably within your monthly budget. Financial experts recommend that your total EMIs should not exceed 40-50% of your monthly income.</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4">5. Read the Fine Print</h3>
+                    <p class="mb-4">Before finalizing the loan, carefully read all terms and conditions. Pay attention to clauses related to prepayment, foreclosure, default, and other important aspects. If something is unclear, don't hesitate to ask the lender for clarification.</p>
+                    
+                    <p class="mt-6 p-4 rounded-lg" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                        <strong>Pro Tip:</strong> Always borrow only what you need and can comfortably repay. Responsible borrowing helps maintain a healthy financial life.
+                    </p>
+                `
+            },
+            blog2: {
+                title: "How to Improve Your Credit Score for Better Loan Rates",
+                category: "Financial Planning",
+                image: "https://picsum.photos/seed/blog2/800/400",
+                content: `
+                    <h3 class="text-2xl font-bold mb-4">What is a Credit Score?</h3>
+                    <p class="mb-4">A credit score is a three-digit number that represents your creditworthiness. In India, credit scores range from 300 to 900, with 750 and above considered excellent. Lenders use this score to assess the risk of lending money to you.</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4">1. Pay Your Bills on Time</h3>
+                    <p class="mb-4">Payment history is the most crucial factor affecting your credit score. Set up automatic payments or reminders to ensure you never miss a due date. Even a single late payment can significantly impact your score.</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4">2. Keep Credit Utilization Low</h3>
+                    <p class="mb-4">Credit utilization refers to the percentage of your available credit that you're using. Try to keep it below 30% of your total credit limit. For example, if you have a credit limit of ₹1 lakh, try not to use more than ₹30,000 at any time.</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4">3. Maintain a Healthy Credit Mix</h3>
+                    <p class="mb-4">Having a good mix of different types of credit (secured loans like home loans, and unsecured loans like personal loans and credit cards) can positively impact your score. However, don't take on unnecessary loans just to improve your mix.</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4">4. Don't Close Old Credit Cards</h3>
+                    <p class="mb-4">The length of your credit history matters. Closing old credit cards can shorten your credit history and increase your credit utilization ratio. Keep old accounts active by using them occasionally and paying the balance in full.</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4">5. Limit Credit Applications</h3>
+                    <p class="mb-4">Each time you apply for credit, it results in a hard inquiry on your credit report, which can temporarily lower your score. Apply for new credit only when necessary and avoid multiple applications in a short period.</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4">6. Monitor Your Credit Report Regularly</h3>
+                    <p class="mb-4">Check your credit report at least once a year to ensure there are no errors or fraudulent activities. You can get a free credit report from credit bureaus like CIBIL, Experian, or Equifax.</p>
+                    
+                    <div class="mt-6 p-4 rounded-lg" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                        <strong>Remember:</strong> Improving your credit score takes time and consistent effort. Start implementing these habits today for better financial health tomorrow.
+                    </div>
+                `
+            },
+            blog3: {
+                title: "Home Loan vs Rent: Which is Better in 2024?",
+                category: "Investment",
+                image: "https://picsum.photos/seed/blog3/800/400",
+                content: `
+                    <h3 class="text-2xl font-bold mb-4">The Great Debate: Own vs Rent</h3>
+                    <p class="mb-4">The decision between buying a home with a loan or continuing to rent is one of the most significant financial choices you'll make. Let's analyze both options in the context of 2024's economic landscape.</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4">Benefits of Home Ownership</h3>
+                    <ul class="list-disc pl-6 mb-4">
+                        <li class="mb-2"><strong>Asset Building:</strong> Each EMI payment builds equity in your property, making it a valuable asset over time.</li>
+                        <li class="mb-2"><strong>Tax Benefits:</strong> Home loan borrowers can claim tax deductions on both principal and interest payments under Sections 80C and 24(b).</li>
+                        <li class="mb-2"><strong>Stability:</strong> Owning a home provides long-term stability and freedom from landlord decisions.</li>
+                        <li class="mb-2"><strong>Potential Appreciation:</strong> Real estate generally appreciates over time, offering potential capital gains.</li>
+                    </ul>
+                    
+                    <h3 class="text-2xl font-bold mb-4">Advantages of Renting</h3>
+                    <ul class="list-disc pl-6 mb-4">
+                        <li class="mb-2"><strong>Flexibility:</strong> Renting offers the freedom to move easily for job opportunities or lifestyle changes.</li>
+                        <li class="mb-2"><strong>Lower Initial Costs:</strong> No down payment or processing fees required compared to home loans.</li>
+                        <li class="mb-2"><strong>Maintenance-Free:</strong> Landlords typically handle major repairs and maintenance costs.</li>
+                        <li class="mb-2"><strong>Investment Opportunities:</strong> Money saved on down payment can be invested elsewhere for potentially higher returns.</li>
+                    </ul>
+                    
+                    <h3 class="text-2xl font-bold mb-4">2024 Market Considerations</h3>
+                    <p class="mb-4">Current home loan interest rates range from 8.35% to 11.5%, while rental yields in major cities average 2-4%. Property prices have seen moderate growth, but economic uncertainties persist.</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4">Making the Right Choice</h3>
+                    <p class="mb-4">Consider these factors:</p>
+                    <ul class="list-disc pl-6 mb-4">
+                        <li class="mb-2"><strong>Financial Stability:</strong> Do you have a stable income and sufficient savings for the down payment?</li>
+                        <li class="mb-2"><strong>Long-term Plans:</strong> Do you plan to stay in the same city for at least 5-7 years?</li>
+                        <li class="mb-2"><strong>Current Rent vs EMI:</strong> Calculate if the home loan EMI is significantly higher than your current rent.</li>
+                        <li class="mb-2"><strong>Investment Goals:</strong> Compare potential real estate appreciation with other investment options.</li>
+                    </ul>
+                    
+                    <div class="mt-6 p-4 rounded-lg" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                        <strong>Hybrid Approach:</strong> Consider buying a smaller property within your budget while renting in a preferred location, or explore rent-to-own options available in some markets.
+                    </div>
+                `
+            }
+        };
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Smooth scroll to section
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Loan Calculator
+        function updateCalculator() {
+            const loanAmount = document.getElementById('loanAmount').value;
+            const interestRate = document.getElementById('interestRate').value;
+            const loanTenure = document.getElementById('loanTenure').value;
+            
+            // Update display values
+            document.getElementById('loanAmountDisplay').textContent = '₹' + parseInt(loanAmount).toLocaleString('en-IN');
+            document.getElementById('interestRateDisplay').textContent = interestRate + '%';
+            document.getElementById('loanTenureDisplay').textContent = loanTenure + ' months';
+            
+            // Calculate EMI
+            const monthlyRate = interestRate / 100 / 12;
+            const emi = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, loanTenure)) / 
+                       (Math.pow(1 + monthlyRate, loanTenure) - 1);
+            
+            const totalAmount = emi * loanTenure;
+            const totalInterest = totalAmount - loanAmount;
+            
+            // Update calculator results
+            document.getElementById('monthlyEMI').textContent = '₹' + Math.round(emi).toLocaleString('en-IN');
+            document.getElementById('principalAmount').textContent = '₹' + parseInt(loanAmount).toLocaleString('en-IN');
+            document.getElementById('totalInterest').textContent = '₹' + Math.round(totalInterest).toLocaleString('en-IN');
+            document.getElementById('totalAmount').textContent = '₹' + Math.round(totalAmount).toLocaleString('en-IN');
+        }
+
+        // FAQ Toggle
+        function toggleFAQ(id) {
+            const content = document.getElementById('faq-content-' + id);
+            const icon = document.getElementById('faq-icon-' + id);
+            
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // Testimonial Carousel
+        let currentTestimonial = 0;
+        const testimonials = document.querySelectorAll('.testimonial-slide');
+        const totalTestimonials = testimonials.length;
+
+        function moveTestimonial(direction) {
+            currentTestimonial += direction;
+            
+            if (currentTestimonial < 0) {
+                currentTestimonial = totalTestimonials - 1;
+            } else if (currentTestimonial >= totalTestimonials) {
+                currentTestimonial = 0;
+            }
+            
+            const track = document.getElementById('testimonialTrack');
+            track.style.transform = `translateX(-${currentTestimonial * 100}%)`;
+        }
+
+        // Auto-rotate testimonials
+        setInterval(() => {
+            moveTestimonial(1);
+        }, 5000);
+
+        // Live Chat Toggle
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('active');
+        }
+
+        // Blog Modal Functions
+        function openBlogModal(blogId) {
+            const blog = blogContent[blogId];
+            document.getElementById('blogModalImage').src = blog.image;
+            document.getElementById('blogModalCategory').innerHTML = `<span class="text-sm font-semibold px-3 py-1 rounded-full text-white" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">${blog.category}</span>`;
+            document.getElementById('blogModalTitle').textContent = blog.title;
+            document.getElementById('blogModalContent').innerHTML = blog.content;
+            document.getElementById('blogModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBlogModal() {
+            document.getElementById('blogModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+            showSuccessModal('Your loan request has been submitted successfully. Our team will contact you shortly!');
+            event.target.reset();
+        }
+
+        // Newsletter subscription
+        function handleNewsletter(event) {
+            event.preventDefault();
+            showSuccessModal('Thank you for subscribing to our newsletter!');
+            event.target.reset();
+        }
+
+        // Show success modal
+        function showSuccessModal(message) {
+            document.getElementById('successMessage').textContent = message;
+            document.getElementById('successModal').style.display = 'flex';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        // Back to top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Close blog modal on outside click
+        document.getElementById('blogModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBlogModal();
+            }
+        });
+
+        // Initialize calculator on page load
+        updateCalculator();
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('shadow-xl');
+            } else {
+                nav.classList.remove('shadow-xl');
+            }
+        });
+    </script>
+</body>
+</html>
